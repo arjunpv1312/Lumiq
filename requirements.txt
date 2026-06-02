@@ -1,0 +1,12 @@
+flask
+pandas
+numpy
+matplotlib
+seaborn
+scikit-learn
+nltk
+textblob
+vaderSentiment
+plotly
+fpdf2
+werkzeug

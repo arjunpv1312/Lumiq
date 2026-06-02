@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lumiq - Analysing...</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="logo">
+    <div class="logo-icon"><i class="ti ti-sparkles"></i></div>
+    <div>
+      <div class="logo-name">Lu<span>miq</span></div>
+      <div class="logo-tag">Illuminate your data</div>
+    </div>
+  </div>
+  <div class="file-pill">
+    <i class="ti ti-file-spreadsheet"></i>
+    <span>{{ filename }}</span>
+  </div>
+</nav>
+
+<main class="loading-body">
+  <div id="anim-container"></div>
+
+  <h2 class="loading-title" id="loading-title">
+    Analysing your data...
+  </h2>
+  <p class="loading-sub">
+    Lumiq is cleaning, processing and building
+    your full AI report
+  </p>
+
+  <div class="steps-track">
+    <div class="step-item done" id="step-1">
+      <div class="step-icon done-icon">
+        <i class="ti ti-check"></i>
+      </div>
+      <span class="step-text">
+        File uploaded successfully
+      </span>
+      <span class="step-status done-status">Done</span>
+    </div>
+    <div class="step-item active-step" id="step-2">
+      <div class="step-icon active-icon">
+        <i class="ti ti-sparkles"></i>
+      </div>
+      <span class="step-text">
+        Cleaning and removing duplicates
+      </span>
+      <span class="step-status active-status">
+        Running...
+      </span>
+    </div>
+    <div class="step-item wait-step" id="step-3">
+      <div class="step-icon wait-icon">
+        <i class="ti ti-brain"></i>
+      </div>
+      <span class="step-text">
+        Running AI sentiment models
+      </span>
+      <span class="step-status wait-status">Waiting</span>
+    </div>
+    <div class="step-item wait-step" id="step-4">
+      <div class="step-icon wait-icon">
+        <i class="ti ti-topology-star"></i>
+      </div>
+      <span class="step-text">
+        Discovering topics
+      </span>
+      <span class="step-status wait-status">Waiting</span>
+    </div>
+    <div class="step-item wait-step" id="step-5">
+      <div class="step-icon wait-icon">
+        <i class="ti ti-chart-bar"></i>
+      </div>
+      <span class="step-text">
+        Generating dashboard and reports
+      </span>
+      <span class="step-status wait-status">Waiting</span>
+    </div>
+  </div>
+
+  <div class="progress-wrap">
+    <div class="progress-track">
+      <div class="progress-fill" id="progress-fill"
+           style="width:5%"></div>
+    </div>
+    <div class="progress-label">
+      <span id="status-text">Starting...</span>
+      <span id="pct-label">5%</span>
+    </div>
+  </div>
+
+  <div class="anim-dots">
+    <div class="anim-dot active" onclick="showAnim(0)"
+         id="dot0"></div>
+    <div class="anim-dot" onclick="showAnim(1)"
+         id="dot1"></div>
+    <div class="anim-dot" onclick="showAnim(2)"
+         id="dot2"></div>
+  </div>
+</main>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+<script>
+var JOB_ID = "{{ job_id }}";
+
+var STATUS_MAP = {
+  "starting":  {pct:5,  text:"Starting engine..."},
+  "cleaning":  {pct:8,  text:"Cleaning your data..."},
+  "eda":       {pct:20, text:"Running EDA analysis..."},
+  "sentiment": {pct:40, text:"Training AI models..."},
+  "topics":    {pct:60, text:"Discovering topics..."},
+  "dashboard": {pct:70, text:"Building dashboard..."},
+  "wordcloud": {pct:78, text:"Generating word clouds..."},
+  "insights":  {pct:84, text:"Writing AI insights..."},
+  "excel":     {pct:90, text:"Creating Excel report..."},
+  "pdf":       {pct:95, text:"Creating PDF report..."},
+  "done":      {pct:100,text:"Complete! Redirecting..."},
+};
+
+function markDone(id) {
+  var el = document.getElementById(id);
+  if (!el) return;
+  el.className = "step-item done";
+  el.querySelector(".step-icon").className =
+    "step-icon done-icon";
+  el.querySelector(".step-icon").innerHTML =
+    '<i class="ti ti-check"></i>';
+  el.querySelector(".step-status").className =
+    "step-status done-status";
+  el.querySelector(".step-status").textContent = "Done";
+}
+
+function markActive(id) {
+  var el = document.getElementById(id);
+  if (!el) return;
+  el.className = "step-item active-step";
+  el.querySelector(".step-icon").className =
+    "step-icon active-icon";
+  el.querySelector(".step-status").className =
+    "step-status active-status";
+  el.querySelector(".step-status").textContent =
+    "Running...";
+}
+
+function updateUI(data) {
+  var info = STATUS_MAP[data.status] ||
+             {pct:0, text:"Processing..."};
+  var pct  = data.pct || info.pct;
+
+  var fill = document.getElementById("progress-fill");
+  var lbl  = document.getElementById("pct-label");
+  var stxt = document.getElementById("status-text");
+  var titl = document.getElementById("loading-title");
+
+  if (fill) fill.style.width   = pct + "%";
+  if (lbl)  lbl.textContent    = Math.floor(pct) + "%";
+  if (stxt) stxt.textContent   = info.text;
+  if (titl) titl.textContent   = info.text;
+
+  var s = data.status;
+  if (s === "eda" || s === "sentiment") {
+    markDone("step-2"); markActive("step-3");
+  }
+  if (s === "topics") {
+    markDone("step-2"); markDone("step-3");
+    markActive("step-4");
+  }
+  if (s === "dashboard" || s === "wordcloud" ||
+      s === "insights"  || s === "excel" ||
+      s === "pdf") {
+    markDone("step-2"); markDone("step-3");
+    markDone("step-4"); markActive("step-5");
+  }
+  if (s === "done") {
+    markDone("step-2"); markDone("step-3");
+    markDone("step-4"); markDone("step-5");
+  }
+}
+
+window.onload = function() {
+  initLoading();
+  fetch("/start_process")
+    .then(function(r) { return r.json(); })
+    .then(function() {
+      var es = new EventSource(
+        "/progress/" + JOB_ID);
+      es.onmessage = function(e) {
+        var data = JSON.parse(e.data);
+        updateUI(data);
+        if (data.status === "done") {
+          es.close();
+          setTimeout(function() {
+            window.location.href = "/results";
+          }, 800);
+        }
+        if (data.status === "error") {
+          es.close();
+          var t = document.getElementById(
+            "loading-title");
+          if (t) t.textContent =
+            "Error: " + (data.error ||
+            "Something went wrong");
+        }
+      };
+      es.onerror = function() {
+        es.close();
+        setTimeout(function() {
+          window.location.href = "/results";
+        }, 2000);
+      };
+    });
+};
+</script>
+</body>
+</html>

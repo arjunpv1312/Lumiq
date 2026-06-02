@@ -1,0 +1,1358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lumiq - Results</title>
+  <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <style>
+    .chart-placeholder {
+      display:flex; align-items:center;
+      justify-content:center; height:100%;
+      min-height:200px; flex-direction:column;
+      gap:10px; color:var(--text3); font-size:13px;
+    }
+    .chart-placeholder i {
+      font-size:32px; opacity:0.35;
+    }
+    .skeleton {
+      background:linear-gradient(90deg,
+        var(--bg2) 25%, var(--bg) 50%, var(--bg2) 75%);
+      background-size:200% 100%;
+      animation:shimmer 1.5s infinite;
+      border-radius:var(--radius-sm);
+    }
+    @keyframes shimmer {
+      0%  { background-position:200% 0; }
+      100%{ background-position:-200% 0; }
+    }
+    .results-wrap { animation:fadeUp 0.5s ease; }
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(16px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+    .tab-panel.active {
+      animation:tabFade 0.3s ease;
+    }
+    @keyframes tabFade {
+      from { opacity:0; transform:translateY(8px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+    .kpi-card { animation:popIn 0.4s ease backwards; }
+    .kpi-card:nth-child(1){ animation-delay:0.05s; }
+    .kpi-card:nth-child(2){ animation-delay:0.10s; }
+    .kpi-card:nth-child(3){ animation-delay:0.15s; }
+    .kpi-card:nth-child(4){ animation-delay:0.20s; }
+    @keyframes popIn {
+      from { opacity:0; transform:scale(0.94) translateY(10px); }
+      to   { opacity:1; transform:scale(1) translateY(0); }
+    }
+    .insight-card { animation:slideIn 0.4s ease backwards; }
+    .insight-card:nth-child(1){ animation-delay:0.05s; }
+    .insight-card:nth-child(2){ animation-delay:0.10s; }
+    .insight-card:nth-child(3){ animation-delay:0.15s; }
+    .insight-card:nth-child(4){ animation-delay:0.20s; }
+    .insight-card:nth-child(5){ animation-delay:0.25s; }
+    .insight-card:nth-child(6){ animation-delay:0.30s; }
+    @keyframes slideIn {
+      from { opacity:0; transform:translateX(-12px); }
+      to   { opacity:1; transform:translateX(0); }
+    }
+    .chart-card { transition:transform 0.2s,box-shadow 0.2s; }
+    .chart-card:hover { transform:translateY(-3px); box-shadow:var(--shadow); }
+    .topic-card {
+      background:var(--bg2); border:1px solid var(--border);
+      border-radius:var(--radius); padding:18px;
+      transition:transform 0.2s,box-shadow 0.2s;
+    }
+    .topic-card:hover { transform:translateY(-3px); box-shadow:var(--shadow); }
+    .topics-grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      gap:16px; margin-bottom:20px;
+    }
+    .sample-banner {
+      background:#FFF3E0; border:1px solid #E8822A;
+      border-radius:var(--radius-sm); padding:12px 16px;
+      margin-bottom:16px; display:flex;
+      align-items:center; gap:10px; font-size:13px;
+    }
+    .sample-banner i { color:#E8822A; font-size:18px; flex-shrink:0; }
+    .sample-banner span { color:#7A4A00; }
+  </style>
+</head>
+<body>
+
+<!-- Data store -->
+<script id="page-data" type="application/json">
+{
+  "sent":       {{ sentiment_stats  | tojson | safe }},
+  "dash":       {{ dashboard_charts | tojson | safe }},
+  "topics":     {{ topic_data       | tojson | safe }},
+  "rows":       {{ eda_stats.get('total_rows', 0) }},
+  "cols":       {{ eda_stats.get('total_cols', 0) }},
+  "pos":        {{ sentiment_stats.get('positive_pct', 0) }},
+  "acc":        {{ sentiment_stats.get('ml', {}).get('best_accuracy', 0) }}
+}
+</script>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="logo">
+    <div class="logo-icon"><i class="ti ti-sparkles"></i></div>
+    <div>
+      <div class="logo-name">Lu<span>miq</span></div>
+      <div class="logo-tag">Illuminate your data</div>
+    </div>
+  </div>
+  <div class="file-info">
+    <i class="ti ti-file-spreadsheet"></i>
+    <strong>{{ filename }}</strong>
+  </div>
+  <div class="nav-right">
+    <a href="/" class="back-btn">
+      <i class="ti ti-arrow-left"></i> New upload
+    </a>
+    <button class="pill" onclick="toggleTheme()">
+      <i class="ti ti-moon" id="theme-icon"></i>
+      <span id="theme-label">Dark mode</span>
+    </button>
+  </div>
+</nav>
+
+<div class="results-wrap">
+
+  <!-- Sample notice -->
+  {% if was_sampled %}
+  <div class="sample-banner">
+    <i class="ti ti-info-circle"></i>
+    <span>{{ sample_note }}</span>
+  </div>
+  {% endif %}
+
+  <!-- Top bar -->
+  <div class="results-topbar">
+    <div class="file-info">
+      <i class="ti ti-check-circle"
+         style="color:var(--green)"></i>
+      Analysis complete
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <a href="/download/csv" class="dl-btn">
+        <i class="ti ti-file-spreadsheet"></i> CSV
+      </a>
+      <a href="/download/excel" class="dl-btn"
+         style="background:var(--green);color:#fff;
+                border-color:var(--green)">
+        <i class="ti ti-table"></i> Excel
+      </a>
+      <a href="/download/pdf" class="dl-btn main">
+        <i class="ti ti-file-type-pdf"></i> PDF
+      </a>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs-bar">
+    <div class="rtab active" id="tab-insights"
+         onclick="switchTab('insights')">
+      <i class="ti ti-bulb"></i> Insights
+    </div>
+    <div class="rtab" id="tab-eda"
+         onclick="switchTab('eda')">
+      <i class="ti ti-report-analytics"></i> EDA
+    </div>
+    <div class="rtab" id="tab-sentiment"
+         onclick="switchTab('sentiment')">
+      <i class="ti ti-brain"></i> Sentiment AI
+    </div>
+    <div class="rtab" id="tab-topics"
+         onclick="switchTab('topics')">
+      <i class="ti ti-topology-star"></i> Topics
+    </div>
+    <div class="rtab" id="tab-dashboard"
+         onclick="switchTab('dashboard')">
+      <i class="ti ti-chart-bar"></i> Dashboard
+    </div>
+    <div class="rtab" id="tab-predictor"
+         onclick="switchTab('predictor')">
+      <i class="ti ti-keyboard"></i> Live Predictor
+    </div>
+  </div>
+
+  <!-- ═══════════ INSIGHTS ═══════════ -->
+  <div class="tab-panel active" id="panel-insights">
+    <div class="kpi-row">
+      <div class="kpi-card">
+        <div class="kpi-label">
+          <i class="ti ti-table"></i> Total rows
+        </div>
+        <div class="kpi-val purple" id="kpi-rows">
+          {{ eda_stats.get('total_rows',0) }}
+        </div>
+        <div class="kpi-sub">records analysed</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">
+          <i class="ti ti-columns"></i> Columns
+        </div>
+        <div class="kpi-val" id="kpi-cols">
+          {{ eda_stats.get('total_cols',0) }}
+        </div>
+        <div class="kpi-sub">features detected</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">
+          <i class="ti ti-mood-happy"></i> Positive
+        </div>
+        <div class="kpi-val green" id="kpi-pos">
+          {{ sentiment_stats.get('positive_pct',0) }}%
+        </div>
+        <div class="kpi-sub">of text reviews</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">
+          <i class="ti ti-target"></i> Best accuracy
+        </div>
+        <div class="kpi-val green" id="kpi-acc">
+          {% if sentiment_stats.get('ml',{}).get('available') %}
+            {{ sentiment_stats.ml.best_accuracy }}%
+          {% else %}N/A{% endif %}
+        </div>
+        <div class="kpi-sub">ML model score</div>
+      </div>
+    </div>
+
+    {% if insights %}
+    <div class="insights-grid">
+      {% for ins in insights %}
+      <div class="insight-card insight-{{ ins.color }}">
+        <div class="insight-icon">
+          <i class="ti {{ ins.icon }}"></i>
+        </div>
+        <div class="insight-body">
+          <div class="insight-title">{{ ins.title }}</div>
+          <div class="insight-text">{{ ins.text }}</div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if wc_paths %}
+    <div class="chart-card" style="margin-top:20px">
+      <h4><i class="ti ti-cloud"></i> Word Clouds</h4>
+      <p style="font-size:12px;color:var(--text3);
+                margin-bottom:14px">
+        Most frequent words in your dataset
+      </p>
+      <div class="wc-tabs">
+        {% if wc_paths.get('all') %}
+        <button class="wc-tab active"
+                onclick="showWC('all',this)">
+          All Words
+        </button>
+        {% endif %}
+        {% if wc_paths.get('positive') %}
+        <button class="wc-tab"
+                onclick="showWC('positive',this)">
+          Positive
+        </button>
+        {% endif %}
+        {% if wc_paths.get('negative') %}
+        <button class="wc-tab"
+                onclick="showWC('negative',this)">
+          Negative
+        </button>
+        {% endif %}
+      </div>
+      <div style="border-radius:12px;overflow:hidden;
+                  border:1px solid var(--border);
+                  margin-top:4px">
+        {% if wc_paths.get('all') %}
+        <img id="wc-all"
+             src="{{ url_for('static',
+               filename='outputs/'+wc_paths.all) }}"
+             class="wc-img" alt="Word Cloud"
+             style="display:block;width:100%">
+        {% endif %}
+        {% if wc_paths.get('positive') %}
+        <img id="wc-positive"
+             src="{{ url_for('static',
+               filename='outputs/'+wc_paths.positive) }}"
+             class="wc-img" alt="Positive"
+             style="display:none;width:100%">
+        {% endif %}
+        {% if wc_paths.get('negative') %}
+        <img id="wc-negative"
+             src="{{ url_for('static',
+               filename='outputs/'+wc_paths.negative) }}"
+             class="wc-img" alt="Negative"
+             style="display:none;width:100%">
+        {% endif %}
+      </div>
+    </div>
+    {% endif %}
+  </div>
+
+  <!-- ═══════════ EDA ═══════════ -->
+  <div class="tab-panel" id="panel-eda">
+    <div class="chart-card" style="margin-bottom:16px">
+      <h4><i class="ti ti-list"></i> Detected Columns</h4>
+      <div style="display:flex;flex-wrap:wrap;
+                  gap:8px;margin-top:8px">
+        {% for col in eda_stats.get('columns',[]) %}
+        <span class="col-badge">{{ col }}</span>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="kpi-row" style="margin-bottom:16px">
+      <div class="kpi-card">
+        <div class="kpi-label">Original Rows</div>
+        <div class="kpi-val purple">
+          {{ eda_stats.get('original_rows',
+             eda_stats.get('total_rows',0)) }}
+        </div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Clean Rows</div>
+        <div class="kpi-val green">
+          {{ eda_stats.get('total_rows',0) }}
+        </div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Dupes Removed</div>
+        <div class="kpi-val red">
+          {{ eda_stats.get('dupes_removed',0) }}
+        </div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Missing Data</div>
+        <div class="kpi-val red">
+          {{ eda_stats.get('missing_pct',0) }}%
+        </div>
+      </div>
+    </div>
+
+    {% if eda_stats.get('numeric_summary') %}
+    <div class="chart-card"
+         style="margin-bottom:16px;overflow-x:auto">
+      <h4><i class="ti ti-math"></i> Numeric Summary</h4>
+      <table class="model-table" style="margin-top:10px">
+        <thead>
+          <tr>
+            <th>Column</th><th>Mean</th><th>Median</th>
+            <th>Std Dev</th><th>Min</th><th>Max</th>
+            <th>Skewness</th><th>Outliers</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for col,s in eda_stats.numeric_summary.items() %}
+          <tr>
+            <td><strong>{{ col }}</strong></td>
+            <td>{{ s.mean }}</td><td>{{ s.median }}</td>
+            <td>{{ s.std }}</td><td>{{ s.min }}</td>
+            <td>{{ s.max }}</td><td>{{ s.skewness }}</td>
+            <td>
+              {% if s.outliers > 0 %}
+              <span style="color:var(--red);font-weight:700">
+                {{ s.outliers }}
+              </span>
+              {% else %}
+              <span style="color:var(--green)">0</span>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% endif %}
+
+    {% if eda_stats.get('missing_per_col') %}
+    <div class="chart-card" style="margin-bottom:16px">
+      <h4>
+        <i class="ti ti-alert-triangle"></i>
+        Missing Values per Column
+      </h4>
+      {% for col,cnt in eda_stats.missing_per_col.items() %}
+      <div style="display:flex;align-items:center;
+                  gap:10px;margin-top:10px">
+        <span style="width:130px;font-size:12px;
+                     color:var(--text2)">{{ col }}</span>
+        <div style="flex:1;background:var(--bg);
+                    border-radius:4px;height:8px">
+          <div style="height:8px;border-radius:4px;
+                      background:var(--red);width:20%">
+          </div>
+        </div>
+        <span style="font-size:12px;font-weight:700;
+                     color:var(--red)">{{ cnt }}</span>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if eda_stats.get('text_summary') %}
+    <div class="chart-grid">
+      {% for col,counts in eda_stats.text_summary.items() %}
+      <div class="chart-card">
+        <h4>
+          <i class="ti ti-text-size"></i>
+          Top values - {{ col }}
+        </h4>
+        {% for val,cnt in counts.items() %}
+        <div style="display:flex;align-items:center;
+                    gap:8px;margin-top:8px">
+          <span style="flex:1;font-size:12px;
+                       color:var(--text2)">
+            {{ val[:40] }}
+          </span>
+          <span class="badge-purple">{{ cnt }}</span>
+        </div>
+        {% endfor %}
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+
+  <!-- ═══════════ SENTIMENT AI ═══════════ -->
+  <div class="tab-panel" id="panel-sentiment">
+    {% if sentiment_stats.get('available') %}
+
+    <div class="kpi-row">
+      <div class="kpi-card">
+        <div class="kpi-label">
+          <i class="ti ti-mood-happy"></i> Positive
+        </div>
+        <div class="kpi-val green">
+          {{ sentiment_stats.get('positive_pct',0) }}%
+        </div>
+        <div class="kpi-sub">
+          {{ sentiment_stats.get('positive',0) }} entries
+        </div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">
+          <i class="ti ti-mood-sad"></i> Negative
+        </div>
+        <div class="kpi-val red">
+          {{ sentiment_stats.get('negative_pct',0) }}%
+        </div>
+        <div class="kpi-sub">
+          {{ sentiment_stats.get('negative',0) }} entries
+        </div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">
+          <i class="ti ti-mood-neutral"></i> Neutral
+        </div>
+        <div class="kpi-val purple">
+          {{ sentiment_stats.get('neutral_pct',0) }}%
+        </div>
+        <div class="kpi-sub">
+          {{ sentiment_stats.get('neutral',0) }} entries
+        </div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">
+          <i class="ti ti-trophy"></i> Best model
+        </div>
+        <div class="kpi-val green">
+          {% if sentiment_stats.get('ml',{}).get('available') %}
+            {{ sentiment_stats.ml.best_accuracy }}%
+          {% else %}N/A{% endif %}
+        </div>
+        <div class="kpi-sub">
+          {% if sentiment_stats.get('ml',{}).get('available') %}
+            {{ sentiment_stats.ml.best_model }}
+          {% else %}Rule-based{% endif %}
+        </div>
+      </div>
+    </div>
+
+    <div class="chart-grid" style="margin-top:16px">
+      <div class="chart-card">
+        <h4><i class="ti ti-chart-bar"></i>
+          Sentiment Distribution</h4>
+        <div id="chart-sent-bar" style="height:280px"></div>
+      </div>
+      <div class="chart-card">
+        <h4><i class="ti ti-chart-donut"></i>
+          Sentiment Breakdown</h4>
+        <div id="chart-sent-pie" style="height:280px"></div>
+      </div>
+    </div>
+
+    {% set kws = sentiment_stats.get('keywords',[]) %}
+    {% if kws %}
+    <div class="chart-grid" style="margin-top:16px">
+      <div class="chart-card">
+        <h4><i class="ti ti-key"></i> Top Keywords</h4>
+        <div style="display:flex;flex-wrap:wrap;
+                    gap:6px;margin-top:8px">
+          {% for k in kws[:15] %}
+          <span class="keyword-tag">{{ k.word }}</span>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="chart-card">
+        <h4>Positive vs Negative Keywords</h4>
+        <div style="display:flex;gap:32px;margin-top:8px">
+          <div style="flex:1">
+            <div style="font-size:11px;font-weight:700;
+                        color:var(--green);
+                        margin-bottom:10px">POSITIVE</div>
+            {% for k in sentiment_stats.get(
+               'pos_keywords',[])[:7] %}
+            <div class="kw-row">
+              <span class="kw-dot green-dot"></span>
+              {{ k.word }}
+            </div>
+            {% endfor %}
+          </div>
+          <div style="flex:1">
+            <div style="font-size:11px;font-weight:700;
+                        color:var(--red);
+                        margin-bottom:10px">NEGATIVE</div>
+            {% for k in sentiment_stats.get(
+               'neg_keywords',[])[:7] %}
+            <div class="kw-row">
+              <span class="kw-dot red-dot"></span>
+              {{ k.word }}
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+    {% set ml = sentiment_stats.get('ml',{}) %}
+    {% if ml.get('available') %}
+    <div class="chart-card"
+         style="margin-top:16px;overflow-x:auto">
+      <h4>
+        <i class="ti ti-trophy"></i> Model Comparison
+        <span style="font-size:11px;color:var(--text3);
+                     margin-left:8px;font-weight:400">
+          {% if ml.get('k_folds') and ml.k_folds > 0 %}
+            {{ ml.k_folds }}-fold CV &nbsp;&middot;&nbsp;
+          {% endif %}
+          Train: {{ ml.get('train_size',0) }}
+          &nbsp;&middot;&nbsp;
+          Test: {{ ml.get('test_size',0) }}
+        </span>
+      </h4>
+      <table class="model-table" style="margin-top:8px">
+        <thead>
+          <tr>
+            <th>Model</th><th>Accuracy</th>
+            <th>Precision</th><th>Recall</th>
+            <th>F1 Score</th><th>CV Mean</th>
+            <th>Time (s)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for mn,mr in ml.model_results.items() %}
+          <tr class="{{ 'best-row' if mn==ml.best_model else '' }}">
+            <td>
+              <strong>{{ mn }}</strong>
+              {% if mn == ml.best_model %}
+              <span class="best-badge">BEST</span>
+              {% endif %}
+            </td>
+            {% if mr.get('error') %}
+            <td colspan="6" style="color:var(--red)">
+              {{ mr.error }}
+            </td>
+            {% else %}
+            <td>{{ mr.get('accuracy','N/A') }}%</td>
+            <td>{{ mr.get('precision','N/A') }}%</td>
+            <td>{{ mr.get('recall','N/A') }}%</td>
+            <td><strong>{{ mr.get('f1','N/A') }}%</strong></td>
+            <td>
+              {% if mr.get('cv_mean') %}
+                {{ mr.cv_mean }}%
+              {% else %}N/A{% endif %}
+            </td>
+            <td>{{ mr.get('train_time_sec','N/A') }}</td>
+            {% endif %}
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    {% if ml.get('per_class') %}
+    <div class="chart-card" style="margin-top:16px">
+      <h4>
+        <i class="ti ti-list-details"></i>
+        Per-class Report
+        <span style="color:var(--purple)">
+          - {{ ml.best_model }}
+        </span>
+      </h4>
+      <table class="model-table" style="margin-top:8px">
+        <thead>
+          <tr>
+            <th>Class</th><th>Precision</th>
+            <th>Recall</th><th>F1 Score</th>
+            <th>Support</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for cls,m in ml.per_class.items() %}
+          <tr>
+            <td>
+              <span class="sent-badge
+                {% if cls=='Positive' %}badge-green
+                {% elif cls=='Negative' %}badge-red
+                {% else %}badge-purple{% endif %}">
+                {{ cls }}
+              </span>
+            </td>
+            <td>{{ m.precision }}%</td>
+            <td>{{ m.recall }}%</td>
+            <td><strong>{{ m.f1 }}%</strong></td>
+            <td>{{ m.support }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% endif %}
+
+    {% if ml.get('cv_each_fold') and ml.cv_each_fold %}
+    <div class="chart-card" style="margin-top:16px">
+      <h4>
+        <i class="ti ti-chart-line"></i>
+        Cross-Validation Fold Scores
+      </h4>
+      <div id="chart-cv" style="height:240px"></div>
+      <div style="font-size:12px;color:var(--text2);
+                  margin-top:8px">
+        Mean:
+        <strong style="color:var(--purple)">
+          {{ ml.cv_mean }}%
+        </strong>
+        &nbsp;&plusmn;&nbsp;{{ ml.cv_std }}%
+      </div>
+    </div>
+    {% endif %}
+
+    {% if ml.get('confusion_matrix') %}
+    <div class="chart-card" style="margin-top:16px">
+      <h4>
+        <i class="ti ti-grid-3x3"></i> Confusion Matrix
+      </h4>
+      <div id="chart-cm" style="height:340px"></div>
+    </div>
+    {% endif %}
+    {% endif %}
+
+    {% else %}
+    <div class="chart-card"
+         style="text-align:center;padding:48px">
+      <i class="ti ti-info-circle"
+         style="font-size:40px;color:var(--text3)"></i>
+      <p style="color:var(--text2);margin-top:14px">
+        No text column detected for sentiment analysis.
+      </p>
+    </div>
+    {% endif %}
+  </div>
+
+  <!-- ═══════════ TOPICS ═══════════ -->
+  <div class="tab-panel" id="panel-topics">
+    {% if topic_data and topic_data.get('available') %}
+
+    <div class="kpi-row">
+      <div class="kpi-card">
+        <div class="kpi-label">
+          <i class="ti ti-topology-star"></i> Topics Found
+        </div>
+        <div class="kpi-val purple">
+          {{ topic_data.get('n_topics',0) }}
+        </div>
+        <div class="kpi-sub">hidden themes</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">
+          <i class="ti ti-file-text"></i> Texts Analysed
+        </div>
+        <div class="kpi-val">
+          {{ topic_data.get('n_texts',0) }}
+        </div>
+        <div class="kpi-sub">documents</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">
+          <i class="ti ti-brain"></i> Method
+        </div>
+        <div class="kpi-val purple">
+          {{ topic_data.get('best_method','LDA') }}
+        </div>
+        <div class="kpi-sub">algorithm used</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">
+          <i class="ti ti-key"></i> Keywords
+        </div>
+        <div class="kpi-val">
+          {{ topic_data.get('keyword_freq',[])|length }}
+        </div>
+        <div class="kpi-sub">extracted</div>
+      </div>
+    </div>
+
+    <div class="topics-grid">
+      {% for topic in topic_data.get('topics',[]) %}
+      <div class="topic-card">
+        <div style="display:flex;align-items:center;
+                    justify-content:space-between;
+                    margin-bottom:12px">
+          <div style="font-size:14px;font-weight:700;
+                      color:var(--purple);
+                      display:flex;align-items:center;
+                      gap:6px">
+            <i class="ti ti-tag"></i>
+            {{ topic.label }}
+          </div>
+          <span style="font-size:11px;color:var(--text3)">
+            Topic {{ topic.id }}
+          </span>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px">
+          {% for word in topic.words %}
+          <span style="background:var(--purple-lt);
+                       color:var(--purple);
+                       padding:3px 10px;
+                       border-radius:20px;
+                       font-size:12px;
+                       font-weight:600">
+            {{ word }}
+          </span>
+          {% endfor %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    {% if topic_data.get('doc_topics') %}
+    <div class="chart-grid">
+      <div class="chart-card">
+        <h4>
+          <i class="ti ti-chart-bar"></i>
+          Topic Distribution
+        </h4>
+        <div id="chart-topics-bar" style="height:280px">
+          <div class="chart-placeholder">
+            <i class="ti ti-chart-bar"></i>Loading...
+          </div>
+        </div>
+      </div>
+      <div class="chart-card">
+        <h4>
+          <i class="ti ti-chart-donut"></i>
+          Topic Share
+        </h4>
+        <div id="chart-topics-pie" style="height:280px">
+          <div class="chart-placeholder">
+            <i class="ti ti-chart-donut"></i>Loading...
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+    {% if topic_data.get('keyword_freq') %}
+    <div class="chart-card" style="margin-top:16px">
+      <h4>
+        <i class="ti ti-chart-bar"></i>
+        Top Keyword Frequency
+      </h4>
+      <div id="chart-kw-freq" style="height:320px">
+        <div class="chart-placeholder">
+          <i class="ti ti-key"></i>Loading...
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+    {% else %}
+    <div class="chart-card"
+         style="text-align:center;padding:48px">
+      <i class="ti ti-topology-star"
+         style="font-size:40px;color:var(--text3)"></i>
+      <p style="color:var(--text2);margin-top:14px">
+        Topic modeling requires at least 10 text samples.
+      </p>
+    </div>
+    {% endif %}
+  </div>
+
+  <!-- ═══════════ DASHBOARD ═══════════ -->
+  <div class="tab-panel" id="panel-dashboard">
+    <div class="chart-grid">
+      <div class="chart-card">
+        <h4><i class="ti ti-chart-bar"></i>
+          Sentiment Overview</h4>
+        <div id="dash-sent-bar" style="height:300px">
+          <div class="chart-placeholder">
+            <i class="ti ti-chart-bar"></i>Loading...
+          </div>
+        </div>
+      </div>
+      <div class="chart-card">
+        <h4><i class="ti ti-chart-donut"></i>
+          Sentiment Donut</h4>
+        <div id="dash-sent-donut" style="height:300px">
+          <div class="chart-placeholder">
+            <i class="ti ti-chart-donut"></i>Loading...
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="chart-grid" style="margin-top:16px">
+      <div class="chart-card">
+        <h4><i class="ti ti-chart-histogram"></i>
+          Distribution</h4>
+        <div id="dash-dist" style="height:300px">
+          <div class="chart-placeholder">
+            <i class="ti ti-chart-histogram"></i>Loading...
+          </div>
+        </div>
+      </div>
+      <div class="chart-card">
+        <h4><i class="ti ti-chart-dots"></i>
+          Scatter Plot</h4>
+        <div id="dash-scatter" style="height:300px">
+          <div class="chart-placeholder">
+            <i class="ti ti-chart-dots"></i>Loading...
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="chart-card" style="margin-top:16px">
+      <h4><i class="ti ti-box"></i>
+        Box Plots - Outlier Detection</h4>
+      <div id="dash-box" style="height:320px">
+        <div class="chart-placeholder">
+          <i class="ti ti-box"></i>Loading...
+        </div>
+      </div>
+    </div>
+    <div class="chart-card" style="margin-top:16px">
+      <h4><i class="ti ti-grid"></i>
+        Correlation Heatmap</h4>
+      <div id="dash-heatmap" style="height:380px">
+        <div class="chart-placeholder">
+          <i class="ti ti-grid"></i>Loading...
+        </div>
+      </div>
+    </div>
+    <div class="chart-card" style="margin-top:16px">
+      <h4><i class="ti ti-chart-line"></i>
+        Sentiment Trend Over Time</h4>
+      <div id="dash-time" style="height:300px">
+        <div class="chart-placeholder">
+          <i class="ti ti-calendar"></i>
+          No date column detected
+        </div>
+      </div>
+    </div>
+    <div class="chart-card" style="margin-top:16px">
+      <h4><i class="ti ti-chart-bar"></i>
+        Top Categories</h4>
+      <div id="dash-cat" style="height:340px">
+        <div class="chart-placeholder">
+          <i class="ti ti-chart-bar"></i>Loading...
+        </div>
+      </div>
+    </div>
+    <div class="chart-card" style="margin-top:16px">
+      <h4><i class="ti ti-chart-radar"></i>
+        Model Performance Radar</h4>
+      <div id="dash-radar" style="height:400px">
+        <div class="chart-placeholder">
+          <i class="ti ti-chart-radar"></i>Loading...
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════ LIVE PREDICTOR ═══════════ -->
+  <div class="tab-panel" id="panel-predictor">
+    <div class="chart-card"
+         style="max-width:640px;margin:0 auto">
+      <h4>
+        <i class="ti ti-keyboard"></i>
+        Live Sentiment Predictor
+      </h4>
+      <p style="font-size:13px;color:var(--text2);
+                margin:12px 0 18px;line-height:1.6">
+        Type any text and get instant AI sentiment
+        prediction. Press <strong>Ctrl+Enter</strong>.
+      </p>
+      <textarea id="predict-input"
+        placeholder="e.g. This product is absolutely amazing!"
+        style="width:100%;height:130px;padding:14px;
+               border-radius:var(--radius-sm);
+               border:1.5px solid var(--border);
+               background:var(--bg);color:var(--text);
+               font-size:14px;resize:vertical;
+               font-family:inherit;outline:none;
+               transition:border-color .2s"
+        onfocus="this.style.borderColor='var(--purple)'"
+        onblur="this.style.borderColor='var(--border)'">
+      </textarea>
+      <button onclick="runPredict()" id="predict-btn"
+              class="btn-primary"
+              style="margin-top:14px;width:100%;
+                     justify-content:center;font-size:14px">
+        <i class="ti ti-brain"></i> Predict Sentiment
+      </button>
+      <p style="font-size:11px;color:var(--text3);
+                margin-top:8px;text-align:center">
+        Ctrl + Enter shortcut
+      </p>
+      <div id="predict-result"
+           style="display:none;margin-top:24px">
+        <div class="predict-box" id="predict-box">
+          <div style="font-size:11px;color:var(--text3);
+                      margin-bottom:10px;text-align:center;
+                      text-transform:uppercase;
+                      letter-spacing:0.5px">
+            Prediction Result
+          </div>
+          <div class="predict-label"
+               id="predict-label">--</div>
+          <div class="predict-score"
+               id="predict-score">--</div>
+          <div style="margin-top:18px">
+            <div style="display:flex;
+                        justify-content:space-between;
+                        font-size:11px;color:var(--text3);
+                        margin-bottom:6px">
+              <span>Confidence</span>
+              <span id="conf-pct">0%</span>
+            </div>
+            <div style="background:var(--bg);
+                        border-radius:6px;height:12px;
+                        overflow:hidden">
+              <div id="predict-bar"
+                   style="height:12px;border-radius:6px;
+                          background:var(--green);width:0%;
+                          transition:width 0.7s ease">
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;gap:12px;margin-top:18px">
+            <div style="flex:1;text-align:center;
+                        padding:12px;background:var(--bg);
+                        border-radius:10px">
+              <div style="font-size:10px;color:var(--text3);
+                          margin-bottom:5px;
+                          text-transform:uppercase">
+                VADER Score
+              </div>
+              <div id="vader-score"
+                   style="font-size:18px;font-weight:700">
+                --
+              </div>
+            </div>
+            <div style="flex:1;text-align:center;
+                        padding:12px;background:var(--bg);
+                        border-radius:10px">
+              <div style="font-size:10px;color:var(--text3);
+                          margin-bottom:5px;
+                          text-transform:uppercase">
+                Method
+              </div>
+              <div id="predict-method"
+                   style="font-size:14px;font-weight:600">
+                --
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <span>
+    <i class="ti ti-sparkles"></i>
+    Lumiq &middot; AI Data Analysis Platform
+  </span>
+  <span>Built with Flask &middot; Python &middot; Plotly</span>
+</footer>
+
+<div id="toast" class="toast" style="display:none"></div>
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+<script>
+var _raw    = document.getElementById("page-data").textContent;
+var _data   = JSON.parse(_raw);
+var SENT    = _data.sent   || {};
+var DASH    = _data.dash   || {};
+var TOPICS  = _data.topics || {};
+var ML      = SENT.ml      || {};
+var _drawn  = {};
+var CFG     = {responsive:true, displayModeBar:false};
+var COLORS  = ["#534AB7","#1D9E75","#E24B4A",
+               "#185FA5","#E8822A","#0891B2"];
+
+function bL(extra) {
+  var L = {
+    paper_bgcolor:"rgba(0,0,0,0)",
+    plot_bgcolor: "rgba(0,0,0,0)",
+    margin:{t:24,r:16,b:44,l:44},
+    font:{family:"inherit",size:12},
+    showlegend:false,
+    xaxis:{gridcolor:"rgba(150,150,150,0.12)",
+           zerolinecolor:"rgba(150,150,150,0.15)"},
+    yaxis:{gridcolor:"rgba(150,150,150,0.12)",
+           zerolinecolor:"rgba(150,150,150,0.15)"}
+  };
+  if (extra) {
+    for (var k in extra) { L[k] = extra[k]; }
+  }
+  return L;
+}
+
+function plotFig(id, jsonStr, extra) {
+  var el = document.getElementById(id);
+  if (!el || !jsonStr) return;
+  try {
+    var fig = JSON.parse(jsonStr);
+    var lay = bL(extra);
+    if (fig.layout) {
+      for (var k in fig.layout) {
+        if (lay[k] === undefined) lay[k] = fig.layout[k];
+      }
+    }
+    el.innerHTML = "";
+    Plotly.newPlot(el, fig.data, lay, CFG);
+  } catch(e) {
+    el.innerHTML =
+      '<div class="chart-placeholder">' +
+      '<i class="ti ti-alert-circle"></i>' +
+      'Chart error: ' + e.message + '</div>';
+  }
+}
+
+function renderSentiment() {
+  if (!SENT || !SENT.available) return;
+  var G = ["#1D9E75","#7F77DD","#E24B4A"];
+
+  var b = document.getElementById("chart-sent-bar");
+  if (b) {
+    b.innerHTML = "";
+    Plotly.newPlot(b, [{
+      type:"bar",
+      x:["Positive","Neutral","Negative"],
+      y:[SENT.positive_pct,SENT.neutral_pct,
+         SENT.negative_pct],
+      text:[SENT.positive_pct+"%",
+            SENT.neutral_pct+"%",
+            SENT.negative_pct+"%"],
+      textposition:"auto",
+      marker:{color:G,opacity:0.88}
+    }], bL({yaxis:{title:"Percentage (%)",
+             gridcolor:"rgba(150,150,150,0.12)"}}), CFG);
+  }
+
+  var p = document.getElementById("chart-sent-pie");
+  if (p) {
+    p.innerHTML = "";
+    Plotly.newPlot(p, [{
+      type:"pie",
+      labels:["Positive","Neutral","Negative"],
+      values:[SENT.positive,SENT.neutral,SENT.negative],
+      marker:{colors:G},
+      hole:0.45,
+      textinfo:"label+percent",
+      hoverinfo:"label+value+percent"
+    }], bL({showlegend:true}), CFG);
+  }
+
+  if (ML.available && ML.cv_each_fold &&
+      ML.cv_each_fold.length > 0) {
+    var cv = document.getElementById("chart-cv");
+    if (cv) {
+      var F  = ML.cv_each_fold;
+      var mn = Math.max(0,   Math.min.apply(null,F)-5);
+      var mx = Math.min(100, Math.max.apply(null,F)+5);
+      cv.innerHTML = "";
+      Plotly.newPlot(cv, [{
+        type:"scatter", mode:"lines+markers+text",
+        x:F.map(function(v,i){return "Fold "+(i+1);}),
+        y:F,
+        text:F.map(function(v){return v+"%";}),
+        textposition:"top center",
+        line:{color:"#534AB7",width:3},
+        marker:{color:"#534AB7",size:10},
+        fill:"tozeroy",
+        fillcolor:"rgba(83,74,183,0.1)"
+      }], bL({
+        yaxis:{title:"F1 Score (%)",range:[mn,mx],
+               gridcolor:"rgba(150,150,150,0.12)"}
+      }), CFG);
+    }
+  }
+
+  if (ML.available && ML.confusion_matrix &&
+      ML.confusion_matrix.length > 0) {
+    var cm = document.getElementById("chart-cm");
+    if (cm) {
+      var C  = ML.confusion_matrix;
+      var CL = ML.cm_labels || [];
+      cm.innerHTML = "";
+      Plotly.newPlot(cm, [{
+        type:"heatmap", z:C,
+        x:CL.map(function(l){return "Pred: "+l;}),
+        y:CL.map(function(l){return "True: "+l;}),
+        colorscale:"Purples", showscale:true,
+        text:C, texttemplate:"%{text}",
+        textfont:{size:22,color:"#fff"}
+      }], bL({margin:{t:30,r:30,b:70,l:90}}), CFG);
+    }
+  }
+}
+
+function renderDashboard() {
+  if (!DASH) return;
+  plotFig("dash-sent-bar",   DASH.sentiment_bar);
+  plotFig("dash-sent-donut", DASH.sentiment_donut);
+  plotFig("dash-dist",       DASH.distribution);
+  plotFig("dash-scatter",    DASH.scatter);
+  plotFig("dash-box",        DASH.boxplot);
+  plotFig("dash-heatmap",    DASH.heatmap);
+  plotFig("dash-time",       DASH.timeseries);
+  plotFig("dash-cat",        DASH.category_bar);
+  plotFig("dash-radar",      DASH.radar,
+          {showlegend:true});
+}
+
+function renderTopics() {
+  if (!TOPICS || !TOPICS.available) return;
+
+  var docT = TOPICS.doc_topics || [];
+  if (docT.length > 0) {
+    var tb = document.getElementById("chart-topics-bar");
+    if (tb) {
+      tb.innerHTML = "";
+      Plotly.newPlot(tb, [{
+        type:"bar",
+        x:docT.map(function(t){return t.topic;}),
+        y:docT.map(function(t){return t.count;}),
+        text:docT.map(function(t){return t.pct+"%";}),
+        textposition:"auto",
+        marker:{
+          color:COLORS.slice(0,docT.length),
+          opacity:0.88
+        }
+      }], bL({
+        yaxis:{title:"Document Count",
+               gridcolor:"rgba(150,150,150,0.12)"}
+      }), CFG);
+    }
+
+    var tp = document.getElementById("chart-topics-pie");
+    if (tp) {
+      tp.innerHTML = "";
+      Plotly.newPlot(tp, [{
+        type:"pie",
+        labels:docT.map(function(t){return t.topic;}),
+        values:docT.map(function(t){return t.count;}),
+        hole:0.4,
+        textinfo:"label+percent",
+        marker:{colors:COLORS.slice(0,docT.length)}
+      }], bL({showlegend:true}), CFG);
+    }
+  }
+
+  var kf = TOPICS.keyword_freq || [];
+  if (kf.length > 0) {
+    var kfEl = document.getElementById("chart-kw-freq");
+    if (kfEl) {
+      kfEl.innerHTML = "";
+      var top15 = kf.slice(0, 15);
+      Plotly.newPlot(kfEl, [{
+        type:"bar",
+        x:top15.map(function(k){return k.score;}),
+        y:top15.map(function(k){return k.word;}),
+        orientation:"h",
+        marker:{
+          color:top15.map(function(k,i){
+            return COLORS[i%COLORS.length];
+          }),
+          opacity:0.85
+        }
+      }], bL({
+        margin:{t:20,r:20,b:44,l:120},
+        yaxis:{autorange:"reversed",
+               gridcolor:"rgba(150,150,150,0.12)"},
+        xaxis:{title:"TF-IDF Score",
+               gridcolor:"rgba(150,150,150,0.12)"}
+      }), CFG);
+    }
+  }
+}
+
+function switchTab(name) {
+  document.querySelectorAll(".rtab").forEach(
+    function(t){t.classList.remove("active");});
+  document.querySelectorAll(".tab-panel").forEach(
+    function(p){p.classList.remove("active");});
+  var tab   = document.getElementById("tab-"+name);
+  var panel = document.getElementById("panel-"+name);
+  if (tab)   tab.classList.add("active");
+  if (panel) panel.classList.add("active");
+
+  if (!_drawn[name]) {
+    _drawn[name] = true;
+    if (name === "sentiment") {
+      setTimeout(renderSentiment, 200);
+    }
+    if (name === "dashboard") {
+      setTimeout(renderDashboard, 200);
+    }
+    if (name === "topics") {
+      setTimeout(renderTopics, 200);
+    }
+  }
+
+  setTimeout(function() {
+    if (!panel) return;
+    panel.querySelectorAll(
+      "[id^='chart-'],[id^='dash-']"
+    ).forEach(function(d) {
+      try { Plotly.Plots.resize(d); } catch(e) {}
+    });
+  }, 350);
+}
+
+function runPredict() {
+  var inp = document.getElementById("predict-input");
+  var btn = document.getElementById("predict-btn");
+  if (!inp || !inp.value.trim()) {
+    showToast("Please enter some text first");
+    return;
+  }
+  var text = inp.value.trim();
+  if (btn) {
+    btn.innerHTML =
+      '<i class="ti ti-loader"></i> Predicting...';
+    btn.disabled = true;
+  }
+  fetch("/predict", {
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({text:text})
+  })
+  .then(function(r){return r.json();})
+  .then(function(d){
+    var label = d.ml_label||d.vader_label||"Neutral";
+    var conf  = d.ml_confidence || 50;
+    var vs    = d.vader_score   || 0;
+    var meth  = d.ml_label ? "ML Model" : "VADER";
+    var cols  = {"Positive":"#1D9E75",
+                 "Negative":"#E24B4A",
+                 "Neutral": "#534AB7"};
+    var bgs   = {"Positive":"rgba(29,158,117,0.09)",
+                 "Negative":"rgba(226,75,74,0.09)",
+                 "Neutral": "rgba(83,74,183,0.09)"};
+    var col   = cols[label]||"#534AB7";
+    var box   = document.getElementById("predict-box");
+    var lbl   = document.getElementById("predict-label");
+    var scr   = document.getElementById("predict-score");
+    var bar   = document.getElementById("predict-bar");
+    var cpt   = document.getElementById("conf-pct");
+    var vsc   = document.getElementById("vader-score");
+    var mth   = document.getElementById("predict-method");
+    var res   = document.getElementById("predict-result");
+    if (box) {
+      box.style.borderColor=col;
+      box.style.background=bgs[label]||bgs["Neutral"];
+    }
+    if (lbl){lbl.textContent=label;lbl.style.color=col;}
+    if (scr) scr.textContent=conf+"% confidence";
+    if (bar){
+      bar.style.width=conf+"%";
+      bar.style.background=col;
+    }
+    if (cpt) cpt.textContent=conf+"%";
+    if (vsc) vsc.textContent=vs;
+    if (mth) mth.textContent=meth;
+    if (res) res.style.display="block";
+    showToast("Result: "+label+" ("+conf+"%)");
+  })
+  .catch(function(e){
+    showToast("Prediction failed");
+    console.error(e);
+  })
+  .finally(function(){
+    if (btn){
+      btn.innerHTML=
+        '<i class="ti ti-brain"></i> Predict Sentiment';
+      btn.disabled=false;
+    }
+  });
+}
+
+var pi = document.getElementById("predict-input");
+if (pi) {
+  pi.addEventListener("keydown",function(e){
+    if (e.key==="Enter" && e.ctrlKey){
+      e.preventDefault(); runPredict();
+    }
+  });
+}
+
+function showWC(type, btn) {
+  document.querySelectorAll(".wc-img").forEach(
+    function(img){img.style.display="none";});
+  document.querySelectorAll(".wc-tab").forEach(
+    function(b){b.classList.remove("active");});
+  var el = document.getElementById("wc-"+type);
+  if (el) el.style.display="block";
+  if (btn) btn.classList.add("active");
+}
+
+function animKPI(id, target, suffix) {
+  var el = document.getElementById(id);
+  if (!el || !target) return;
+  var cur = 0;
+  var iv  = setInterval(function(){
+    cur += target/50;
+    if (cur >= target){ cur=target; clearInterval(iv); }
+    if (target%1===0){
+      el.textContent = Math.floor(cur)+(suffix||"");
+    } else {
+      el.textContent = cur.toFixed(1)+(suffix||"");
+    }
+  }, 20);
+}
+
+window.addEventListener("load", function(){
+  animKPI("kpi-rows", _data.rows, "");
+  animKPI("kpi-cols", _data.cols, "");
+  animKPI("kpi-pos",  _data.pos,  "%");
+  animKPI("kpi-acc",  _data.acc,  "%");
+
+  if (SENT && SENT.available) {
+    setTimeout(renderSentiment, 300);
+    _drawn["sentiment"] = true;
+  }
+});
+</script>
+</body>
+</html>

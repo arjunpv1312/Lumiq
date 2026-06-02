@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lumiq — Illuminate your data</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="logo">
+    <div class="logo-icon"><i class="ti ti-sparkles"></i></div>
+    <div>
+      <div class="logo-name">Lu<span>miq</span></div>
+      <div class="logo-tag">Illuminate your data</div>
+    </div>
+  </div>
+  <div class="nav-right">
+    <button class="pill" onclick="toggleTheme()">
+      <i class="ti ti-moon" id="theme-icon"></i>
+      <span id="theme-label">Dark mode</span>
+    </button>
+  </div>
+</nav>
+
+<main class="upload-hero">
+  <div class="hero-badge">
+    <i class="ti ti-sparkles"></i> AI-powered · Free · Instant
+  </div>
+  <h1>Upload data.<br><span>Get instant intelligence.</span></h1>
+  <p>Drop any CSV file — Lumiq automatically runs EDA,
+     sentiment analysis, and builds a full visual dashboard.</p>
+
+  <form action="/upload" method="POST"
+        enctype="multipart/form-data" id="upload-form">
+    <div class="upload-box" id="drop-zone">
+      <div class="upload-icon">
+        <i class="ti ti-cloud-upload"></i>
+      </div>
+      <h3 id="drop-title">Drop your CSV file here</h3>
+      <p id="drop-sub">Lumiq detects your data and generates
+         a full AI analysis report automatically</p>
+      <label class="btn-primary" for="file-input">
+        <i class="ti ti-upload"></i> Browse file
+      </label>
+      <input type="file" id="file-input" name="file"
+             accept=".csv" style="display:none"
+             onchange="handleFile(this)">
+      <div id="file-chosen" class="file-chosen"
+           style="display:none"></div>
+      <button type="submit" id="submit-btn"
+              class="btn-primary submit-btn"
+              style="display:none; margin-top:12px;">
+        <i class="ti ti-rocket"></i> Analyse with Lumiq
+      </button>
+      <div class="file-meta">
+        <span><i class="ti ti-file-spreadsheet"></i> .csv only</span>
+        <span class="dot">·</span>
+        <span>Max 50 MB</span>
+        <span class="dot">·</span>
+        <span><i class="ti ti-lock"></i> Private &amp; secure</span>
+      </div>
+    </div>
+  </form>
+
+  <!-- Try sample button -->
+  <div style="text-align:center; margin-top:16px;">
+    <a href="/sample" class="btn-secondary">
+      <i class="ti ti-database"></i> Try with sample dataset
+    </a>
+  </div>
+
+  <!-- How it works -->
+  <div class="how-section">
+    <div class="how-label">How it works</div>
+    <div class="steps-row">
+      <div class="step-card">
+        <div class="step-num">1</div>
+        <div class="step-ico"><i class="ti ti-upload"></i></div>
+        <h4>Upload CSV</h4>
+        <p>Drop any raw dataset — messy data is fine</p>
+      </div>
+      <div class="step-arrow"><i class="ti ti-arrow-right"></i></div>
+      <div class="step-card">
+        <div class="step-num">2</div>
+        <div class="step-ico"><i class="ti ti-sparkles"></i></div>
+        <h4>Auto clean</h4>
+        <p>Missing values and duplicates handled automatically</p>
+      </div>
+      <div class="step-arrow"><i class="ti ti-arrow-right"></i></div>
+      <div class="step-card">
+        <div class="step-num">3</div>
+        <div class="step-ico"><i class="ti ti-brain"></i></div>
+        <h4>AI analysis</h4>
+        <p>EDA and sentiment models run instantly</p>
+      </div>
+      <div class="step-arrow"><i class="ti ti-arrow-right"></i></div>
+      <div class="step-card">
+        <div class="step-num">4</div>
+        <div class="step-ico"><i class="ti ti-download"></i></div>
+        <h4>Get results</h4>
+        <p>Download cleaned CSV and full PDF report</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Feature cards -->
+  <div class="feature-cards">
+    <div class="feat-card">
+      <div class="feat-icon" style="background:#EEEDFE">
+        <i class="ti ti-table-options" style="color:#534AB7"></i>
+      </div>
+      <h3>Smart EDA</h3>
+      <p>Auto detects missing values, distributions,
+         outliers and correlations instantly</p>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon" style="background:#E1F5EE">
+        <i class="ti ti-brain" style="color:#0F6E56"></i>
+      </div>
+      <h3>Sentiment AI</h3>
+      <p>4-model NLP engine with cross validation,
+         keyword extraction and live predictor</p>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon" style="background:#E6F1FB">
+        <i class="ti ti-chart-bar" style="color:#185FA5"></i>
+      </div>
+      <h3>Live Dashboard</h3>
+      <p>Interactive Plotly charts — radar, heatmap,
+         time series, scatter and more</p>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon" style="background:#FFF3E0">
+        <i class="ti ti-bulb" style="color:#E8822A"></i>
+      </div>
+      <h3>AI Insights</h3>
+      <p>Plain English insights automatically generated
+         from your data patterns</p>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon" style="background:#E1F5EE">
+        <i class="ti ti-file-type-pdf" style="color:#0F6E56"></i>
+      </div>
+      <h3>PDF Export</h3>
+      <p>Download a full professional report with all
+         stats, models and insights included</p>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon" style="background:#EEEDFE">
+        <i class="ti ti-keyboard" style="color:#534AB7"></i>
+      </div>
+      <h3>Live Predictor</h3>
+      <p>Type any text and get instant AI sentiment
+         prediction with confidence score</p>
+    </div>
+  </div>
+</main>
+
+<footer class="footer">
+  <span><i class="ti ti-sparkles"></i>
+    Lumiq · AI Data Analysis Platform</span>
+  <span>Built with Flask · Python · Plotly</span>
+</footer>
+
+<!-- Toast -->
+<div id="toast" class="toast" style="display:none"></div>
+
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
