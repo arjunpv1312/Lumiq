@@ -2,10 +2,29 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#534AB7">
+  <meta name="description" content="Lumiq - AI-powered data analysis. Upload CSV, get instant intelligence with EDA, sentiment analysis, and visual dashboards.">
+  <meta name="keywords" content="data analysis, EDA, sentiment analysis, CSV, AI, visualization">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  
   <title>Lumiq — Illuminate your data</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  
+  <noscript>
+    <style>
+      .upload-hero { padding: 24px; }
+      .upload-hero h1 { font-size: 24px; }
+      .upload-box { border: 2px solid #E2E2E7; border-radius: 12px; padding: 20px; }
+      .btn-primary { display: inline-block; padding: 10px 20px; background: #534AB7; color: white; border: none; border-radius: 8px; text-decoration: none; }
+    </style>
+    <noscript-warning style="background: #FFF4E6; border-left: 4px solid #E8822A; padding: 16px; margin-bottom: 20px; border-radius: 8px;">
+      <strong>JavaScript disabled</strong><br>
+      Some features may not work. For the best experience, please enable JavaScript in your browser.
+    </noscript-warning>
+  </noscript>
 </head>
 <body>
 
@@ -18,7 +37,7 @@
     </div>
   </div>
   <div class="nav-right">
-    <button class="pill" onclick="toggleTheme()">
+    <button class="pill" onclick="toggleTheme()" type="button" aria-label="Toggle theme">
       <i class="ti ti-moon" id="theme-icon"></i>
       <span id="theme-label">Dark mode</span>
     </button>
@@ -34,8 +53,8 @@
      sentiment analysis, and builds a full visual dashboard.</p>
 
   <form action="/upload" method="POST"
-        enctype="multipart/form-data" id="upload-form">
-    <div class="upload-box" id="drop-zone">
+        enctype="multipart/form-data" id="upload-form" novalidate>
+    <div class="upload-box" id="drop-zone" role="button" tabindex="0" aria-label="File drop area">
       <div class="upload-icon">
         <i class="ti ti-cloud-upload"></i>
       </div>
@@ -47,7 +66,7 @@
       </label>
       <input type="file" id="file-input" name="file"
              accept=".csv" style="display:none"
-             onchange="handleFile(this)">
+             onchange="handleFile(this)" required>
       <div id="file-chosen" class="file-chosen"
            style="display:none"></div>
       <button type="submit" id="submit-btn"
@@ -65,8 +84,9 @@
     </div>
   </form>
 
-  <!-- Try sample button -->
+  <!-- Try sample button (Progressive enhancement) -->
   <div style="text-align:center; margin-top:16px;">
+    <noscript><p style="margin-bottom: 8px;"><em>Note: Dynamic features disabled</em></p></noscript>
     <a href="/sample" class="btn-secondary">
       <i class="ti ti-database"></i> Try with sample dataset
     </a>

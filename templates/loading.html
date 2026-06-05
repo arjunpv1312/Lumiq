@@ -2,10 +2,21 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#534AB7">
+  <meta name="description" content="Analysing your data with Lumiq AI">
   <title>Lumiq - Analysing...</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <noscript>
+    <style>
+      .loading-body { padding: 20px; }
+      .loading-title { font-size: 20px; margin: 20px 0; }
+    </style>
+    <noscript-warning style="background: #FFF4E6; border-left: 4px solid #E8822A; padding: 16px; margin: 20px; border-radius: 8px;">
+      <strong>Note:</strong> Live progress updates require JavaScript enabled.
+    </noscript-warning>
+  </noscript>
 </head>
 <body>
 
@@ -26,7 +37,7 @@
 <main class="loading-body">
   <div id="anim-container"></div>
 
-  <h2 class="loading-title" id="loading-title">
+  <h2 class="loading-title" id="loading-title" aria-live="polite">
     Analysing your data...
   </h2>
   <p class="loading-sub">

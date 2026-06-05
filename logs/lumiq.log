@@ -1,0 +1,28 @@
+2026-06-05 19:30:45,296 - werkzeug - INFO - [_log:97] - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-06-05 19:30:45,348 - werkzeug - INFO - [_log:97] - [33mPress CTRL+C to quit[0m
+2026-06-05 19:32:06,857 - __main__ - INFO - [log_request:82] - Request: GET / from 127.0.0.1
+2026-06-05 19:32:06,943 - __main__ - INFO - [log_response:95] - Response: GET / - Status: 200 - Duration: 0.09s
+2026-06-05 19:32:06,959 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [05/Jun/2026 19:32:06] "GET / HTTP/1.1" 200 -
+2026-06-05 19:32:07,434 - __main__ - INFO - [log_request:82] - Request: GET /static/css/style.css from 127.0.0.1
+2026-06-05 19:32:07,474 - __main__ - INFO - [log_request:82] - Request: GET /static/js/main.js from 127.0.0.1
+2026-06-05 19:32:08,637 - __main__ - INFO - [log_response:95] - Response: GET /static/js/main.js - Status: 200 - Duration: 1.16s
+2026-06-05 19:32:08,639 - __main__ - INFO - [log_response:95] - Response: GET /static/css/style.css - Status: 200 - Duration: 1.20s
+2026-06-05 19:32:08,640 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [05/Jun/2026 19:32:08] "GET /static/js/main.js HTTP/1.1" 200 -
+2026-06-05 19:32:08,648 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [05/Jun/2026 19:32:08] "GET /static/css/style.css HTTP/1.1" 200 -
+2026-06-05 19:32:38,077 - __main__ - INFO - [log_request:82] - Request: GET / from 127.0.0.1
+2026-06-05 19:32:38,084 - __main__ - INFO - [log_response:95] - Response: GET / - Status: 200 - Duration: 0.01s
+2026-06-05 19:32:38,087 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [05/Jun/2026 19:32:38] "GET / HTTP/1.1" 200 -
+2026-06-05 19:32:38,535 - __main__ - INFO - [log_request:82] - Request: GET /static/css/style.css from 127.0.0.1
+2026-06-05 19:32:38,561 - __main__ - INFO - [log_request:82] - Request: GET /static/js/main.js from 127.0.0.1
+2026-06-05 19:32:38,576 - __main__ - INFO - [log_response:95] - Response: GET /static/css/style.css - Status: 200 - Duration: 0.04s
+2026-06-05 19:32:38,592 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [05/Jun/2026 19:32:38] "GET /static/css/style.css HTTP/1.1" 200 -
+2026-06-05 19:32:38,607 - __main__ - INFO - [log_response:95] - Response: GET /static/js/main.js - Status: 200 - Duration: 0.05s
+2026-06-05 19:32:38,631 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [05/Jun/2026 19:32:38] "GET /static/js/main.js HTTP/1.1" 200 -
+2026-06-05 19:37:08,266 - flask_wtf.csrf - INFO - [protect:288] - The CSRF token is missing.
+2026-06-05 19:37:08,304 - __main__ - WARNING - [bad_request:192] - Bad request from 127.0.0.1: 400 Bad Request: The CSRF token is missing.
+2026-06-05 19:37:08,877 - __main__ - INFO - [log_response:95] - Response: POST /upload - Status: 400 - Duration: 0.00s
+2026-06-05 19:37:08,884 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [05/Jun/2026 19:37:08] "[31m[1mPOST /upload HTTP/1.1[0m" 400 -
+2026-06-05 19:39:21,687 - werkzeug - INFO - [_log:97] - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-06-05 19:39:21,690 - werkzeug - INFO - [_log:97] - [33mPress CTRL+C to quit[0m
