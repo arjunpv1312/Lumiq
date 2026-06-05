@@ -1,13 +1,19 @@
-import pandas as pd
-import numpy as np
-import re, os, pickle, warnings, time
-warnings.filterwarnings("ignore")
+import functools
+import os
+import pickle
+import re
+import time
+import warnings
 
+import numpy as np
+import pandas as pd
 import nltk
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
-from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 from textblob import TextBlob
+from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
+
+warnings.filterwarnings("ignore")
 
 from sklearn.model_selection import (
     train_test_split, StratifiedKFold, cross_val_score)
@@ -50,7 +56,21 @@ CONTRACTIONS = {
     "aren't":"are not","wasn't":"was not",
 }
 
+URL_PATTERN = re.compile(r"http\S+|www\S+|@\w+|#\w+")
+REPEAT_PATTERN = re.compile(r"(.)\1{2,}")
+NON_LETTER_PATTERN = re.compile(r"[^a-zA-Z\s]")
+SPACE_PATTERN = re.compile(r"\s+")
+
 _progress = {"step":0,"message":"Starting...","pct":0}
+
+
+@functools.lru_cache(maxsize=1)
+def _load_saved_pipeline():
+    model_path = os.path.join("static", "outputs", "best_model.pkl")
+    if os.path.exists(model_path):
+        with open(model_path, "rb") as f:
+            return pickle.load(f)
+    return None
 
 def set_progress(step, message, pct):
     _progress.update({"step":step,"message":message,"pct":pct})
@@ -62,16 +82,15 @@ def clean_text_fast(text):
     text = str(text).lower()
     for k, v in CONTRACTIONS.items():
         text = text.replace(k, v)
-    text = re.sub(r"http\S+|www\S+|@\w+|#\w+", " ", text)
-    text = re.sub(r"(.)\1{2,}", r"\1\1", text)
-    text = re.sub(r"[^a-zA-Z\s]", " ", text)
-    text = re.sub(r"\s+", " ", text).strip()
-    tokens = [
+    text = URL_PATTERN.sub(" ", text)
+    text = REPEAT_PATTERN.sub(r"\1\1", text)
+    text = NON_LETTER_PATTERN.sub(" ", text)
+    text = SPACE_PATTERN.sub(" ", text).strip()
+    return " ".join(
         LEMMATIZER.lemmatize(w)
         for w in text.split()
         if len(w) > 1 and (w not in STOP_WORDS or w in NEGATION)
-    ]
-    return " ".join(tokens)
+    )
 
 def clean_series(series):
     return series.fillna("").apply(clean_text_fast)
@@ -119,11 +138,8 @@ def extract_keywords(texts, top_n=15):
     except Exception:
         return []
 
-_saved_pipeline = None
-
 def predict_live(text):
-    global _saved_pipeline
-    clean      = clean_text_fast(text)
+    cleaned = clean_text_fast(text)
     vader_score = VADER_INST.polarity_scores(str(text))["compound"]
     result = {
         "vader_label":   vader_label_one(text),
@@ -131,21 +147,19 @@ def predict_live(text):
         "ml_label":      None,
         "ml_confidence": None,
     }
-    model_path = os.path.join("static","outputs","best_model.pkl")
-    if os.path.exists(model_path):
-        try:
-            if _saved_pipeline is None:
-                with open(model_path,"rb") as f:
-                    _saved_pipeline = pickle.load(f)
-            label = _saved_pipeline.predict([clean])[0]
-            conf  = None
-            if hasattr(_saved_pipeline, "predict_proba"):
-                proba = _saved_pipeline.predict_proba([clean])[0]
-                conf  = round(float(max(proba)) * 100, 1)
-            result["ml_label"]      = label
-            result["ml_confidence"] = conf
-        except Exception:
-            pass
+    model = _load_saved_pipeline()
+    if model is None:
+        return result
+    try:
+        label = model.predict([cleaned])[0]
+        conf = None
+        if hasattr(model, "predict_proba"):
+            proba = model.predict_proba([cleaned])[0]
+            conf = round(float(max(proba)) * 100, 1)
+        result["ml_label"] = label
+        result["ml_confidence"] = conf
+    except Exception:
+        pass
     return result
 
 def get_models():

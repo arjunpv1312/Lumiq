@@ -2,39 +2,70 @@ from flask import (Flask, render_template, request,
                    redirect, url_for, session,
                    send_file, Response,
                    stream_with_context, jsonify)
-import os, uuid, json, threading, time as _time
+import json
+import logging
+import os
+import shutil
+import threading
+import time as _time
+import uuid
 from werkzeug.utils import secure_filename
 
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+UPLOAD_FOLDER = os.path.join(BASE_DIR, "uploads")
+OUTPUT_FOLDER = os.path.join(BASE_DIR, "static", "outputs")
+ALLOWED_EXTENSIONS = {"csv"}
+MAX_CONTENT_LENGTH = 20 * 1024 * 1024
+
 app = Flask(__name__)
-app.secret_key = "lumiq_secret_2024"
-UPLOAD_FOLDER  = "uploads"
+app.secret_key = os.environ.get("FLASK_SECRET_KEY", "lumiq_secret_2024")
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
+app.config["MAX_CONTENT_LENGTH"] = MAX_CONTENT_LENGTH
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-os.makedirs(os.path.join("static","outputs"), exist_ok=True)
+os.makedirs(OUTPUT_FOLDER, exist_ok=True)
 
 _results = {}
-_lock    = threading.Lock()
+_lock = threading.Lock()
+
 
 def store_result(k, v):
     with _lock:
         _results[k] = v
 
+
 def get_result(k):
     with _lock:
         return _results.get(k)
 
-def allowed_file(fn):
-    return "." in fn and \
-           fn.rsplit(".",1)[1].lower() == "csv"
+
+def _get_session_job():
+    return (
+        session.get("job_id"),
+        session.get("filepath"),
+        session.get("filename"),
+    )
+
+
+def _send_download(path, download_name):
+    if path and os.path.exists(path):
+        return send_file(path, as_attachment=True,
+                         download_name=download_name)
+    return redirect(url_for("index"))
+
+
+def allowed_file(filename):
+    return (
+        isinstance(filename, str)
+        and "." in filename
+        and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
+    )
 
 # ── Auto cleanup old files ─────────────────────────────────
 def cleanup_old_files(max_age_hours=2):
-    now     = _time.time()
+    now = _time.time()
     max_age = max_age_hours * 3600
     deleted = 0
-    for folder in [
-            "uploads",
-            os.path.join("static","outputs")]:
+    for folder in [UPLOAD_FOLDER, OUTPUT_FOLDER]:
         if not os.path.exists(folder):
             continue
         for fname in os.listdir(folder):
@@ -78,16 +109,14 @@ def upload():
 
 @app.route("/sample")
 def sample():
-    import shutil
-    src = os.path.join("static","sample_data.csv")
+    src = os.path.join(BASE_DIR, "static", "sample_data.csv")
     if not os.path.exists(src):
         return redirect(url_for("index"))
-    job_id   = str(uuid.uuid4())
+    job_id = str(uuid.uuid4())
     filename = "sample_reviews.csv"
-    filepath = os.path.join(
-        UPLOAD_FOLDER, job_id + "_" + filename)
-    shutil.copy(src, filepath)
-    session["job_id"]   = job_id
+    filepath = os.path.join(UPLOAD_FOLDER, job_id + "_" + filename)
+    shutil.copy2(src, filepath)
+    session["job_id"] = job_id
     session["filepath"] = filepath
     session["filename"] = filename
     return redirect(url_for("loading"))
@@ -257,36 +286,21 @@ def predict():
 # ── Downloads ──────────────────────────────────────────────
 @app.route("/download/csv")
 def download_csv():
-    job_id = session.get("job_id")
-    data   = get_result(job_id) or {}
-    path   = data.get("clean_path")
-    if path and os.path.exists(path):
-        return send_file(
-            path, as_attachment=True,
-            download_name="lumiq_cleaned.csv")
-    return redirect(url_for("index"))
+    job_id, _, _ = _get_session_job()
+    data = get_result(job_id) or {}
+    return _send_download(data.get("clean_path"), "lumiq_cleaned.csv")
 
 @app.route("/download/excel")
 def download_excel():
-    job_id = session.get("job_id")
-    data   = get_result(job_id) or {}
-    path   = data.get("excel_path")
-    if path and os.path.exists(path):
-        return send_file(
-            path, as_attachment=True,
-            download_name="lumiq_report.xlsx")
-    return redirect(url_for("index"))
+    job_id, _, _ = _get_session_job()
+    data = get_result(job_id) or {}
+    return _send_download(data.get("excel_path"), "lumiq_report.xlsx")
 
 @app.route("/download/pdf")
 def download_pdf():
-    job_id = session.get("job_id")
-    data   = get_result(job_id) or {}
-    path   = data.get("pdf_path")
-    if path and os.path.exists(path):
-        return send_file(
-            path, as_attachment=True,
-            download_name="lumiq_report.pdf")
-    return redirect(url_for("index"))
+    job_id, _, _ = _get_session_job()
+    data = get_result(job_id) or {}
+    return _send_download(data.get("pdf_path"), "lumiq_report.pdf")
 
 @app.route("/cleanup")
 def cleanup_route():
@@ -294,5 +308,8 @@ def cleanup_route():
     return jsonify({"deleted": deleted})
 
 if __name__ == "__main__":
-    app.run(debug=True, threaded=True,
-            use_reloader=False)
+    app.run(
+        debug=os.environ.get("FLASK_DEBUG", "false").lower() == "true",
+        threaded=True,
+        use_reloader=False,
+    )

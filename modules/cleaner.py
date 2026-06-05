@@ -1,9 +1,20 @@
-import pandas as pd
+import os
+import re
+import uuid
+
 import numpy as np
-import os, uuid, re
+import pandas as pd
 
 SAMPLE_THRESHOLD = 10000
-SAMPLE_SIZE      = 5000
+SAMPLE_SIZE = 5000
+
+
+def _looks_like_date(value):
+    try:
+        pd.to_datetime(value)
+        return True
+    except (ValueError, TypeError):
+        return False
 
 def clean_data(filepath):
     try:
@@ -35,10 +46,11 @@ def clean_data(filepath):
     df.drop_duplicates(inplace=True)
 
     for col in df.select_dtypes(include="object").columns:
-        df[col] = df[col].astype(str).str.strip()
-        df[col].replace(
-            {"nan":"","None":"","NaN":"","NULL":""},
-            inplace=True)
+        df[col] = (
+            df[col].astype(str)
+            .str.strip()
+            .replace({"nan": "", "None": "", "NaN": "", "NULL": ""})
+        )
 
     for col in df.select_dtypes(include="number").columns:
         df[col].fillna(df[col].median(), inplace=True)
@@ -48,21 +60,15 @@ def clean_data(filepath):
 
     date_cols = []
     for col in df.select_dtypes(include="object").columns:
-        sample = df[col].dropna().head(20)
-        hits   = 0
-        for val in sample:
-            try:
-                pd.to_datetime(str(val))
-                hits += 1
-            except Exception:
-                pass
-        if hits >= len(sample) * 0.7:
-            try:
-                df[col] = pd.to_datetime(
-                    df[col], errors="coerce")
-                date_cols.append(col)
-            except Exception:
-                pass
+        sample = df[col].dropna().head(20).astype(str)
+        hits = sum(1 for val in sample if _looks_like_date(val))
+        if sample.empty or hits < len(sample) * 0.7:
+            continue
+        try:
+            df[col] = pd.to_datetime(df[col], errors="coerce")
+            date_cols.append(col)
+        except Exception:
+            pass
 
     clean_filename = "cleaned_" + str(uuid.uuid4())[:8] + ".csv"
     clean_path     = os.path.join("uploads", clean_filename)

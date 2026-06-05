@@ -1,10 +1,13 @@
+import logging
 import os
-import numpy as np
+
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+import numpy as np
 from wordcloud import WordCloud, STOPWORDS
 
+LOGGER = logging.getLogger(__name__)
 OUTPUT_DIR = os.path.join("static","outputs")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
@@ -44,8 +47,9 @@ def generate_wordclouds(sentiment_stats):
     for key, keywords, color_fn, fname, title in configs:
         if not keywords or len(keywords) < 3:
             continue
+        fig = None
         try:
-            freq = {k["word"]: max(k["score"],0.001)*1000
+            freq = {k["word"]: max(k["score"], 0.001) * 1000
                     for k in keywords}
             wc = WordCloud(
                 width=900, height=400,
@@ -60,7 +64,7 @@ def generate_wordclouds(sentiment_stats):
                 margin=10,
             ).generate_from_frequencies(freq)
 
-            fig, ax = plt.subplots(figsize=(11,5), dpi=110)
+            fig, ax = plt.subplots(figsize=(11, 5), dpi=110)
             ax.imshow(wc, interpolation="bilinear")
             ax.axis("off")
             ax.set_title(
@@ -73,14 +77,13 @@ def generate_wordclouds(sentiment_stats):
             path = os.path.join(OUTPUT_DIR, fname)
             plt.savefig(path, bbox_inches="tight",
                         facecolor="white", dpi=110)
-            plt.close(fig)
             paths[key] = fname
 
-        except Exception as e:
-            print(f"WordCloud error ({key}): {e}")
-            try:
-                plt.close()
-            except Exception:
-                pass
+        except Exception as exc:
+            LOGGER.warning("WordCloud generation failed for %s: %s", key, exc)
+
+        finally:
+            if fig is not None:
+                plt.close(fig)
 
     return paths
