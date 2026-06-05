@@ -1029,7 +1029,11 @@ function bL(extra) {
 
 function plotFig(id, jsonStr, extra) {
   var el = document.getElementById(id);
-  if (!el || !jsonStr) return;
+  if (!el) return;
+  if (!jsonStr) {
+  el.innerHTML = '<div class="chart-placeholder"><i class="ti ti-help-circle"></i>No data for chart</div>';
+  return;
+}
   try {
     var fig = JSON.parse(jsonStr);
     var lay = bL(extra);

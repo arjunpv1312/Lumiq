@@ -313,5 +313,21 @@ def run_dashboard(df, sentiment_stats):
                 font=dict(size=13)),
         )
         charts["radar"] = fig_r.to_json()
+      # Add placeholder for missing charts
+    expected_charts = {
+
+        "distribution", "scatter", "boxplot",
+        "sentiment_bar", "sentiment_donut"
+        }
+    for chart_name in expected_charts:
+
+        if chart_name not in charts:
+
+            # Return empty figure instead of None
+            empty_fig = go.Figure().add_annotation(
+                text="No data available",
+                xref="paper", yref="paper",
+                x=0.5, y=0.5, showarrow=False)
+            charts[chart_name] = empty_fig.to_json()  
 
     return charts
