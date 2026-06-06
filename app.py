@@ -28,8 +28,8 @@ config = get_config()
 app = Flask(__name__)
 app.config.from_object(config)
 
-# If run directly as python app.py, disable secure session cookies and strict CSRF for HTTP local testing
-if __name__ == "__main__":
+# If running in debug/development/testing mode, disable secure session cookies and strict CSRF for HTTP local testing
+if app.config.get("DEBUG") or app.config.get("TESTING") or __name__ == "__main__":
     app.config["SESSION_COOKIE_SECURE"] = False
     app.config["WTF_CSRF_SSL_STRICT"] = False
 
@@ -68,12 +68,14 @@ Path(config.DATABASE_FOLDER).mkdir(parents=True, exist_ok=True)
 # ── Wrapper functions for database operations ────────────
 def store_result(job_id, data_dict):
     """Store job result in database."""
-    db_store_result(job_id, data_dict)
+    with app.app_context():
+        db_store_result(job_id, data_dict)
 
 
 def get_result(job_id):
     """Retrieve job result from database."""
-    return db_get_result(job_id)
+    with app.app_context():
+        return db_get_result(job_id)
 
 
 # ── Request logging and middleware ─────────────────────
@@ -448,8 +450,11 @@ def loading():
         filename=session.get("filename"),
         job_id=session.get("job_id"))
 
-# ── Background job ─────────────────────────────────────────
 def run_job(job_id, filepath, filename):
+    with app.app_context():
+        _run_job_impl(job_id, filepath, filename)
+
+def _run_job_impl(job_id, filepath, filename):
     try:
         # Clean up old files at start
         _cleanup_old_files(max_age_hours=config.JOB_CLEANUP_AGE_HOURS)
@@ -477,6 +482,36 @@ def run_job(job_id, filepath, filename):
         store_result(job_id,
                      {"status":"sentiment","pct":40})
         sentiment_stats = run_sentiment(df)
+
+        # Add sentiment labels to df for downstream dashboard modules
+        if sentiment_stats.get("available") and "text_column" in sentiment_stats:
+            text_col = sentiment_stats["text_column"]
+            from modules.sentiment import clean_series, vader_batch, detect_ground_truth
+            df["clean_text"] = clean_series(df[text_col])
+            df["vader_label"] = vader_batch(df["clean_text"].tolist())
+            
+            # Detect ground truth labels
+            gt_col, gt_type = detect_ground_truth(df)
+            if gt_col:
+                if gt_type == "rating":
+                    def rating_to_sentiment(r):
+                        try:
+                            val = float(r)
+                            if val >= 4.0: return "Positive"
+                            elif val <= 2.0: return "Negative"
+                            else: return "Neutral"
+                        except Exception:
+                            return "Neutral"
+                    df["target_label"] = df[gt_col].apply(rating_to_sentiment)
+                else:
+                    def standardize_sentiment(s):
+                        s_str = str(s).strip().lower()
+                        if s_str in ["positive", "pos", "1", "2", "4", "5", "good"]: return "Positive"
+                        elif s_str in ["negative", "neg", "0", "bad"]: return "Negative"
+                        else: return "Neutral"
+                    df["target_label"] = df[gt_col].apply(standardize_sentiment)
+            else:
+                df["target_label"] = df["vader_label"]
 
         store_result(job_id,
                      {"status":"topics","pct":60})

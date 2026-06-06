@@ -164,3 +164,253 @@ with app.app_context(). See the documentation for more information.
 2026-06-06 19:03:41,069 - werkzeug - INFO - [_log:97] -  * Restarting with stat
 2026-06-06 19:03:42,753 - werkzeug - WARNING - [_log:97] -  * Debugger is active!
 2026-06-06 19:03:42,761 - werkzeug - INFO - [_log:97] -  * Debugger PIN: 824-893-190
+2026-06-06 19:07:46,836 - werkzeug - INFO - [_log:97] -  * Detected change in 'C:\\Users\\seren\\Lumiq\\modules\\dashboard.py', reloading
+2026-06-06 19:07:49,658 - werkzeug - INFO - [_log:97] -  * Detected change in 'C:\\Users\\seren\\Lumiq\\modules\\dashboard.py', reloading
+2026-06-06 19:07:50,034 - werkzeug - INFO - [_log:97] -  * Restarting with stat
+2026-06-06 19:07:51,783 - werkzeug - WARNING - [_log:97] -  * Debugger is active!
+2026-06-06 19:07:51,793 - werkzeug - INFO - [_log:97] -  * Debugger PIN: 824-893-190
+2026-06-06 19:08:03,829 - werkzeug - INFO - [_log:97] -  * Detected change in 'C:\\Users\\seren\\Lumiq\\app.py', reloading
+2026-06-06 19:09:15,029 - werkzeug - INFO - [_log:97] - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-06-06 19:09:15,044 - werkzeug - INFO - [_log:97] - [33mPress CTRL+C to quit[0m
+2026-06-06 19:09:22,617 - __main__ - INFO - [log_request:84] - Request: GET / from 127.0.0.1
+2026-06-06 19:09:22,641 - __main__ - INFO - [log_response:97] - Response: GET / - Status: 200 - Duration: 0.02s
+2026-06-06 19:09:22,643 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:09:22] "GET / HTTP/1.1" 200 -
+2026-06-06 19:09:22,813 - __main__ - INFO - [log_request:84] - Request: GET /static/css/style.css from 127.0.0.1
+2026-06-06 19:09:22,817 - __main__ - INFO - [log_request:84] - Request: GET /static/js/main.js from 127.0.0.1
+2026-06-06 19:09:23,363 - __main__ - INFO - [log_response:97] - Response: GET /static/css/style.css - Status: 304 - Duration: 0.55s
+2026-06-06 19:09:23,365 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:09:23] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-06-06 19:09:23,385 - __main__ - INFO - [log_response:97] - Response: GET /static/js/main.js - Status: 304 - Duration: 0.57s
+2026-06-06 19:09:23,387 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:09:23] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-06-06 19:09:31,619 - __main__ - INFO - [log_request:84] - Request: POST /upload from 127.0.0.1
+2026-06-06 19:09:31,621 - __main__ - INFO - [upload:400] - File uploaded: large_test_dataset.csv (job_id: e45dbe71-6dfd-42ec-9fe3-0b8a810b0dde, size: 26298 bytes) from 127.0.0.1
+2026-06-06 19:09:31,649 - __main__ - INFO - [log_response:97] - Response: POST /upload - Status: 302 - Duration: 0.03s
+2026-06-06 19:09:31,649 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:09:31] "[32mPOST /upload HTTP/1.1[0m" 302 -
+2026-06-06 19:09:31,677 - __main__ - INFO - [log_request:84] - Request: GET /loading from 127.0.0.1
+2026-06-06 19:09:31,683 - __main__ - INFO - [log_response:97] - Response: GET /loading - Status: 200 - Duration: 0.01s
+2026-06-06 19:09:31,683 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:09:31] "GET /loading HTTP/1.1" 200 -
+2026-06-06 19:09:31,775 - __main__ - INFO - [log_request:84] - Request: GET /static/css/style.css from 127.0.0.1
+2026-06-06 19:09:31,778 - __main__ - INFO - [log_request:84] - Request: GET /static/js/main.js from 127.0.0.1
+2026-06-06 19:09:31,780 - __main__ - INFO - [log_response:97] - Response: GET /static/css/style.css - Status: 304 - Duration: 0.01s
+2026-06-06 19:09:31,781 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:09:31] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-06-06 19:09:31,782 - __main__ - INFO - [log_response:97] - Response: GET /static/js/main.js - Status: 304 - Duration: 0.00s
+2026-06-06 19:09:31,784 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:09:31] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-06-06 19:09:31,859 - __main__ - INFO - [log_request:84] - Request: GET /start_process from 127.0.0.1
+2026-06-06 19:09:31,884 - __main__ - INFO - [start_process:618] - Processing started (job_id: e45dbe71-6dfd-42ec-9fe3-0b8a810b0dde) from 127.0.0.1
+2026-06-06 19:09:31,900 - __main__ - INFO - [log_response:97] - Response: GET /start_process - Status: 200 - Duration: 0.04s
+2026-06-06 19:09:31,900 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:09:31] "GET /start_process HTTP/1.1" 200 -
+2026-06-06 19:09:31,918 - __main__ - INFO - [log_request:84] - Request: GET /progress/e45dbe71-6dfd-42ec-9fe3-0b8a810b0dde from 127.0.0.1
+2026-06-06 19:09:31,923 - __main__ - INFO - [log_response:97] - Response: GET /progress/e45dbe71-6dfd-42ec-9fe3-0b8a810b0dde - Status: 200 - Duration: 0.00s
+2026-06-06 19:09:31,929 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:09:31] "GET /progress/e45dbe71-6dfd-42ec-9fe3-0b8a810b0dde HTTP/1.1" 200 -
+2026-06-06 19:09:39,594 - __main__ - INFO - [run_job:467] - Job e45dbe71-6dfd-42ec-9fe3-0b8a810b0dde: Starting pipeline
+2026-06-06 19:09:39,594 - models - ERROR - [store_result:153] - Failed to store result for job e45dbe71-6dfd-42ec-9fe3-0b8a810b0dde: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+2026-06-06 19:09:39,724 - models - ERROR - [store_result:153] - Failed to store result for job e45dbe71-6dfd-42ec-9fe3-0b8a810b0dde: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+2026-06-06 19:09:39,746 - models - ERROR - [store_result:153] - Failed to store result for job e45dbe71-6dfd-42ec-9fe3-0b8a810b0dde: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+2026-06-06 19:09:45,956 - models - ERROR - [store_result:153] - Failed to store result for job e45dbe71-6dfd-42ec-9fe3-0b8a810b0dde: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+2026-06-06 19:09:46,887 - models - ERROR - [store_result:153] - Failed to store result for job e45dbe71-6dfd-42ec-9fe3-0b8a810b0dde: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+2026-06-06 19:09:47,896 - models - ERROR - [store_result:153] - Failed to store result for job e45dbe71-6dfd-42ec-9fe3-0b8a810b0dde: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+2026-06-06 19:09:48,893 - models - ERROR - [store_result:153] - Failed to store result for job e45dbe71-6dfd-42ec-9fe3-0b8a810b0dde: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+2026-06-06 19:09:48,899 - models - ERROR - [store_result:153] - Failed to store result for job e45dbe71-6dfd-42ec-9fe3-0b8a810b0dde: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+2026-06-06 19:09:49,434 - models - ERROR - [store_result:153] - Failed to store result for job e45dbe71-6dfd-42ec-9fe3-0b8a810b0dde: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+2026-06-06 19:09:49,461 - models - ERROR - [store_result:153] - Failed to store result for job e45dbe71-6dfd-42ec-9fe3-0b8a810b0dde: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+2026-06-06 19:09:49,462 - __main__ - INFO - [run_job:564] - Job e45dbe71-6dfd-42ec-9fe3-0b8a810b0dde: Pipeline completed successfully
+2026-06-06 19:18:02,103 - werkzeug - INFO - [_log:97] - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5002
+2026-06-06 19:18:02,104 - werkzeug - INFO - [_log:97] - [33mPress CTRL+C to quit[0m
+2026-06-06 19:18:03,196 - app - INFO - [log_request:86] - Request: GET / from 127.0.0.1
+2026-06-06 19:18:03,209 - app - INFO - [log_response:99] - Response: GET / - Status: 200 - Duration: 0.01s
+2026-06-06 19:18:03,211 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:18:03] "GET / HTTP/1.1" 200 -
+2026-06-06 19:18:03,218 - app - INFO - [log_request:86] - Request: GET /sample from 127.0.0.1
+2026-06-06 19:18:03,226 - app - INFO - [sample:436] - Sample loaded (job_id: aed00709-451d-4941-84d1-5f967282e4cf) from 127.0.0.1
+2026-06-06 19:18:03,244 - app - INFO - [log_response:99] - Response: GET /sample - Status: 302 - Duration: 0.03s
+2026-06-06 19:18:03,245 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:18:03] "[32mGET /sample HTTP/1.1[0m" 302 -
+2026-06-06 19:18:03,253 - app - INFO - [log_request:86] - Request: GET /start_process from 127.0.0.1
+2026-06-06 19:18:03,255 - app - WARNING - [start_process:596] - Invalid job ID from 127.0.0.1: None
+2026-06-06 19:18:03,266 - app - INFO - [log_response:99] - Response: GET /start_process - Status: 400 - Duration: 0.01s
+2026-06-06 19:18:03,266 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:18:03] "[31m[1mGET /start_process HTTP/1.1[0m" 400 -
+2026-06-06 19:20:27,157 - werkzeug - INFO - [_log:97] - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5002
+2026-06-06 19:20:27,157 - werkzeug - INFO - [_log:97] - [33mPress CTRL+C to quit[0m
+2026-06-06 19:20:28,702 - app - INFO - [log_request:86] - Request: GET / from 127.0.0.1
+2026-06-06 19:20:28,715 - app - INFO - [log_response:99] - Response: GET / - Status: 200 - Duration: 0.01s
+2026-06-06 19:20:28,722 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:20:28] "GET / HTTP/1.1" 200 -
+2026-06-06 19:20:28,729 - app - INFO - [log_request:86] - Request: GET /sample from 127.0.0.1
+2026-06-06 19:20:28,735 - app - INFO - [sample:436] - Sample loaded (job_id: 7d1f7c5a-23e9-46d0-8d09-5f4ab891dbfa) from 127.0.0.1
+2026-06-06 19:20:28,745 - app - INFO - [log_response:99] - Response: GET /sample - Status: 302 - Duration: 0.02s
+2026-06-06 19:20:28,757 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:20:28] "[32mGET /sample HTTP/1.1[0m" 302 -
+2026-06-06 19:20:28,766 - app - INFO - [log_request:86] - Request: GET /start_process from 127.0.0.1
+2026-06-06 19:20:28,768 - app - WARNING - [start_process:596] - Invalid job ID from 127.0.0.1: None
+2026-06-06 19:20:28,778 - app - INFO - [log_response:99] - Response: GET /start_process - Status: 400 - Duration: 0.01s
+2026-06-06 19:20:28,779 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:20:28] "[31m[1mGET /start_process HTTP/1.1[0m" 400 -
+2026-06-06 19:27:35,164 - werkzeug - INFO - [_log:97] - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5002
+2026-06-06 19:27:35,165 - werkzeug - INFO - [_log:97] - [33mPress CTRL+C to quit[0m
+2026-06-06 19:27:36,336 - app - INFO - [log_request:86] - Request: GET / from 127.0.0.1
+2026-06-06 19:27:36,350 - app - INFO - [log_response:99] - Response: GET / - Status: 200 - Duration: 0.01s
+2026-06-06 19:27:36,352 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:27:36] "GET / HTTP/1.1" 200 -
+2026-06-06 19:27:36,361 - app - INFO - [log_request:86] - Request: GET /sample from 127.0.0.1
+2026-06-06 19:27:36,368 - app - INFO - [sample:436] - Sample loaded (job_id: bcada553-b763-405d-8e3a-c6420ec1adfe) from 127.0.0.1
+2026-06-06 19:27:36,385 - app - INFO - [log_response:99] - Response: GET /sample - Status: 302 - Duration: 0.02s
+2026-06-06 19:27:36,387 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:27:36] "[32mGET /sample HTTP/1.1[0m" 302 -
+2026-06-06 19:27:36,398 - app - INFO - [log_request:86] - Request: GET /start_process from 127.0.0.1
+2026-06-06 19:27:36,421 - app - INFO - [start_process:620] - Processing started (job_id: bcada553-b763-405d-8e3a-c6420ec1adfe) from 127.0.0.1
+2026-06-06 19:27:36,433 - app - INFO - [log_response:99] - Response: GET /start_process - Status: 200 - Duration: 0.03s
+2026-06-06 19:27:36,434 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:27:36] "GET /start_process HTTP/1.1" 200 -
+2026-06-06 19:27:36,445 - app - INFO - [log_request:86] - Request: GET /results from 127.0.0.1
+2026-06-06 19:27:36,450 - app - INFO - [log_response:99] - Response: GET /results - Status: 302 - Duration: 0.00s
+2026-06-06 19:27:36,451 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:27:36] "[32mGET /results HTTP/1.1[0m" 302 -
+2026-06-06 19:27:38,478 - app - INFO - [log_request:86] - Request: GET /results from 127.0.0.1
+2026-06-06 19:27:38,488 - app - INFO - [log_response:99] - Response: GET /results - Status: 302 - Duration: 0.01s
+2026-06-06 19:27:38,490 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:27:38] "[32mGET /results HTTP/1.1[0m" 302 -
+2026-06-06 19:27:40,509 - app - INFO - [log_request:86] - Request: GET /results from 127.0.0.1
+2026-06-06 19:27:40,517 - app - INFO - [log_response:99] - Response: GET /results - Status: 302 - Duration: 0.01s
+2026-06-06 19:27:40,522 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:27:40] "[32mGET /results HTTP/1.1[0m" 302 -
+2026-06-06 19:27:42,546 - app - INFO - [log_request:86] - Request: GET /results from 127.0.0.1
+2026-06-06 19:27:42,559 - app - INFO - [log_response:99] - Response: GET /results - Status: 302 - Duration: 0.01s
+2026-06-06 19:27:42,561 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:27:42] "[32mGET /results HTTP/1.1[0m" 302 -
+2026-06-06 19:27:44,571 - app - INFO - [log_request:86] - Request: GET /results from 127.0.0.1
+2026-06-06 19:27:44,576 - app - INFO - [log_response:99] - Response: GET /results - Status: 302 - Duration: 0.00s
+2026-06-06 19:27:44,577 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:27:44] "[32mGET /results HTTP/1.1[0m" 302 -
+2026-06-06 19:27:46,585 - app - INFO - [log_request:86] - Request: GET /results from 127.0.0.1
+2026-06-06 19:27:46,589 - app - INFO - [log_response:99] - Response: GET /results - Status: 302 - Duration: 0.00s
+2026-06-06 19:27:46,590 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:27:46] "[32mGET /results HTTP/1.1[0m" 302 -
+2026-06-06 19:27:48,598 - app - INFO - [log_request:86] - Request: GET /results from 127.0.0.1
+2026-06-06 19:27:48,602 - app - INFO - [log_response:99] - Response: GET /results - Status: 302 - Duration: 0.00s
+2026-06-06 19:27:48,603 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:27:48] "[32mGET /results HTTP/1.1[0m" 302 -
+2026-06-06 19:27:50,611 - app - INFO - [log_request:86] - Request: GET /results from 127.0.0.1
+2026-06-06 19:27:50,617 - app - INFO - [log_response:99] - Response: GET /results - Status: 302 - Duration: 0.01s
+2026-06-06 19:27:50,617 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:27:50] "[32mGET /results HTTP/1.1[0m" 302 -
+2026-06-06 19:27:52,635 - app - INFO - [log_request:86] - Request: GET /results from 127.0.0.1
+2026-06-06 19:27:52,644 - app - INFO - [log_response:99] - Response: GET /results - Status: 302 - Duration: 0.01s
+2026-06-06 19:27:52,645 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:27:52] "[32mGET /results HTTP/1.1[0m" 302 -
+2026-06-06 19:27:54,659 - app - INFO - [log_request:86] - Request: GET /results from 127.0.0.1
+2026-06-06 19:27:54,663 - app - INFO - [log_response:99] - Response: GET /results - Status: 302 - Duration: 0.00s
+2026-06-06 19:27:54,665 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:27:54] "[32mGET /results HTTP/1.1[0m" 302 -
+2026-06-06 19:27:56,673 - app - INFO - [log_request:86] - Request: GET /results from 127.0.0.1
+2026-06-06 19:27:56,678 - app - INFO - [log_response:99] - Response: GET /results - Status: 302 - Duration: 0.00s
+2026-06-06 19:27:56,679 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:27:56] "[32mGET /results HTTP/1.1[0m" 302 -
+2026-06-06 19:27:58,688 - app - INFO - [log_request:86] - Request: GET /results from 127.0.0.1
+2026-06-06 19:27:58,693 - app - INFO - [log_response:99] - Response: GET /results - Status: 302 - Duration: 0.00s
+2026-06-06 19:27:58,694 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:27:58] "[32mGET /results HTTP/1.1[0m" 302 -
+2026-06-06 19:28:00,703 - app - INFO - [log_request:86] - Request: GET /results from 127.0.0.1
+2026-06-06 19:28:00,707 - app - INFO - [log_response:99] - Response: GET /results - Status: 302 - Duration: 0.00s
+2026-06-06 19:28:00,708 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:28:00] "[32mGET /results HTTP/1.1[0m" 302 -
+2026-06-06 19:28:02,720 - app - INFO - [log_request:86] - Request: GET /results from 127.0.0.1
+2026-06-06 19:28:02,724 - app - INFO - [log_response:99] - Response: GET /results - Status: 302 - Duration: 0.00s
+2026-06-06 19:28:02,726 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:28:02] "[32mGET /results HTTP/1.1[0m" 302 -
+2026-06-06 19:28:04,736 - app - INFO - [log_request:86] - Request: GET /results from 127.0.0.1
+2026-06-06 19:28:04,740 - app - INFO - [log_response:99] - Response: GET /results - Status: 302 - Duration: 0.00s
+2026-06-06 19:28:04,741 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:28:04] "[32mGET /results HTTP/1.1[0m" 302 -
+2026-06-06 19:28:06,750 - app - INFO - [log_request:86] - Request: GET /results from 127.0.0.1
+2026-06-06 19:28:06,757 - app - INFO - [log_response:99] - Response: GET /results - Status: 302 - Duration: 0.01s
+2026-06-06 19:28:06,758 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:28:06] "[32mGET /results HTTP/1.1[0m" 302 -
+2026-06-06 19:28:08,768 - app - INFO - [log_request:86] - Request: GET /results from 127.0.0.1
+2026-06-06 19:28:08,781 - app - INFO - [log_response:99] - Response: GET /results - Status: 302 - Duration: 0.01s
+2026-06-06 19:28:08,784 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:28:08] "[32mGET /results HTTP/1.1[0m" 302 -
+2026-06-06 19:28:10,731 - app - INFO - [run_job:469] - Job bcada553-b763-405d-8e3a-c6420ec1adfe: Starting pipeline
+2026-06-06 19:28:10,751 - app - ERROR - [run_job:570] - Job bcada553-b763-405d-8e3a-c6420ec1adfe failed: [Errno 2] No such file or directory: 'C:\\Users\\seren\\Lumiq\\uploads\\bcada553-b763-405d-8e3a-c6420ec1adfe_sample_reviews.csv'
+Traceback (most recent call last):
+  File "c:\Users\seren\Lumiq\modules\cleaner.py", line 10, in clean_data
+    df = pd.read_csv(filepath, encoding="utf-8",
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\seren\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\pandas\io\parsers\readers.py", line 1026, in read_csv
+    return _read(filepath_or_buffer, kwds)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\seren\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\pandas\io\parsers\readers.py", line 620, in _read
+    parser = TextFileReader(filepath_or_buffer, **kwds)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\seren\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\pandas\io\parsers\readers.py", line 1620, in __init__
+    self._engine = self._make_engine(f, self.engine)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\seren\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\pandas\io\parsers\readers.py", line 1880, in _make_engine
+    self.handles = get_handle(
+                   ^^^^^^^^^^^
+  File "C:\Users\seren\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\pandas\io\common.py", line 882, in get_handle
+    handle = open(handle, ioargs.mode)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\seren\\Lumiq\\uploads\\bcada553-b763-405d-8e3a-c6420ec1adfe_sample_reviews.csv'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "c:\Users\seren\Lumiq\app.py", line 473, in run_job
+    df, clean_path, clean_meta = clean_data(filepath)
+                                 ^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\seren\Lumiq\modules\cleaner.py", line 13, in clean_data
+    df = pd.read_csv(filepath, encoding="latin-1",
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\seren\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\pandas\io\parsers\readers.py", line 1026, in read_csv
+    return _read(filepath_or_buffer, kwds)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\seren\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\pandas\io\parsers\readers.py", line 620, in _read
+    parser = TextFileReader(filepath_or_buffer, **kwds)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\seren\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\pandas\io\parsers\readers.py", line 1620, in __init__
+    self._engine = self._make_engine(f, self.engine)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\seren\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\pandas\io\parsers\readers.py", line 1880, in _make_engine
+    self.handles = get_handle(
+                   ^^^^^^^^^^^
+  File "C:\Users\seren\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\pandas\io\common.py", line 873, in get_handle
+    handle = open(
+             ^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\seren\\Lumiq\\uploads\\bcada553-b763-405d-8e3a-c6420ec1adfe_sample_reviews.csv'
+2026-06-06 19:28:10,795 - app - INFO - [log_request:86] - Request: GET /results from 127.0.0.1
+2026-06-06 19:28:10,916 - models - ERROR - [log_event:105] - Failed to create audit log: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+2026-06-06 19:28:10,932 - app - INFO - [log_response:99] - Response: GET /results - Status: 302 - Duration: 0.14s
+2026-06-06 19:28:10,933 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:28:10] "[32mGET /results HTTP/1.1[0m" 302 -
+2026-06-06 19:28:12,953 - app - INFO - [log_request:86] - Request: GET /results from 127.0.0.1
+2026-06-06 19:28:12,963 - app - INFO - [log_response:99] - Response: GET /results - Status: 302 - Duration: 0.01s
+2026-06-06 19:28:12,964 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:28:12] "[32mGET /results HTTP/1.1[0m" 302 -
+2026-06-06 19:28:14,983 - app - INFO - [log_request:86] - Request: GET /results from 127.0.0.1
+2026-06-06 19:28:14,992 - app - INFO - [log_response:99] - Response: GET /results - Status: 302 - Duration: 0.01s
+2026-06-06 19:28:14,993 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:28:14] "[32mGET /results HTTP/1.1[0m" 302 -
+2026-06-06 19:28:17,007 - app - INFO - [log_request:86] - Request: GET /results from 127.0.0.1
+2026-06-06 19:28:17,009 - flask-limiter - INFO - [__evaluate_limits:1082] - ratelimit 20 per 1 minute (127.0.0.1) exceeded at endpoint: results
+2026-06-06 19:28:17,010 - app - WARNING - [ratelimit_handler:252] - Rate limit exceeded for 127.0.0.1: /results
+2026-06-06 19:28:17,022 - app - INFO - [log_response:99] - Response: GET /results - Status: 429 - Duration: 0.01s
+2026-06-06 19:28:17,022 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:28:17] "[31m[1mGET /results HTTP/1.1[0m" 429 -

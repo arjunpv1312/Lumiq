@@ -181,21 +181,36 @@ def run_dashboard(df, sentiment_stats):
                         col_y = num_cols[j]
 
         color_col = None
-        if (sentiment_stats.get("available") and
-                "vader_label" in df.columns):
-            color_col = "vader_label"
+        if sentiment_stats.get("available"):
+            if "target_label" in df.columns:
+                color_col = "target_label"
+            elif "vader_label" in df.columns:
+                color_col = "vader_label"
 
-        fig5 = px.scatter(
-            df, x=col_x, y=col_y,
-            color=color_col,
-            color_discrete_map={
-                "Positive": COLORS["green"],
-                "Neutral":  COLORS["purple"],
-                "Negative": COLORS["red"],
-            },
-            opacity=0.7,
-            trendline="ols" if not color_col else None,
-        )
+        try:
+            fig5 = px.scatter(
+                df, x=col_x, y=col_y,
+                color=color_col,
+                color_discrete_map={
+                    "Positive": COLORS["green"],
+                    "Neutral":  COLORS["purple"],
+                    "Negative": COLORS["red"],
+                },
+                opacity=0.7,
+                trendline="ols" if not color_col else None,
+            )
+        except Exception:
+            fig5 = px.scatter(
+                df, x=col_x, y=col_y,
+                color=color_col,
+                color_discrete_map={
+                    "Positive": COLORS["green"],
+                    "Neutral":  COLORS["purple"],
+                    "Negative": COLORS["red"],
+                },
+                opacity=0.7,
+                trendline=None,
+            )
         lay5 = base_layout(f"{col_x} vs {col_y}")
         fig5.update_layout(**lay5)
         charts["scatter"] = fig5.to_json()
@@ -210,16 +225,22 @@ def run_dashboard(df, sentiment_stats):
                 temp = temp.dropna(subset=["_date"])
                 temp = temp.sort_values("_date")
 
-                if (sentiment_stats.get("available") and
-                        "vader_label" in temp.columns):
+                color_col = None
+                if sentiment_stats.get("available"):
+                    if "target_label" in temp.columns:
+                        color_col = "target_label"
+                    elif "vader_label" in temp.columns:
+                        color_col = "vader_label"
+
+                if color_col:
                     ts = temp.groupby(
                         [temp["_date"].dt.to_period("M"),
-                         "vader_label"]
+                         color_col]
                     ).size().reset_index(name="count")
                     ts["_date"] = ts["_date"].astype(str)
                     fig_ts = px.line(
                         ts, x="_date", y="count",
-                        color="vader_label",
+                        color=color_col,
                         color_discrete_map={
                             "Positive": COLORS["green"],
                             "Neutral":  COLORS["purple"],

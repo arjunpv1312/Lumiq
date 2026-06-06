@@ -21,8 +21,8 @@ class Config:
     DATABASE_FOLDER = os.path.join(BASE_DIR, "data")
     
     # Flask settings
-    FLASK_ENV = os.getenv("FLASK_ENV", "production")
-    DEBUG = os.getenv("FLASK_DEBUG", "False").lower() in ("true", "1")
+    FLASK_ENV = os.getenv("FLASK_ENV", "development")
+    DEBUG = os.getenv("FLASK_DEBUG", "True").lower() in ("true", "1")
     SECRET_KEY = os.getenv("FLASK_SECRET_KEY", "lumiq_secret_2024_change_in_production")
     
     # Session settings
@@ -102,7 +102,7 @@ class TestingConfig(Config):
 
 def get_config():
     """Get configuration based on FLASK_ENV."""
-    env = os.getenv("FLASK_ENV", "production")
+    env = os.getenv("FLASK_ENV", "development")
     if env == "development":
         return DevelopmentConfig()
     elif env == "testing":
