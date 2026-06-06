@@ -427,7 +427,7 @@ def sample():
         
         filename = "sample_reviews.csv"
         filepath = os.path.join(config.UPLOAD_FOLDER, job_id + "_" + filename)
-        shutil.copy2(src, filepath)
+        shutil.copy(src, filepath)
         
         session["job_id"] = job_id
         session["filepath"] = filepath

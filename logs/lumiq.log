@@ -414,3 +414,227 @@ with app.app_context(). See the documentation for more information.
 2026-06-06 19:28:17,010 - app - WARNING - [ratelimit_handler:252] - Rate limit exceeded for 127.0.0.1: /results
 2026-06-06 19:28:17,022 - app - INFO - [log_response:99] - Response: GET /results - Status: 429 - Duration: 0.01s
 2026-06-06 19:28:17,022 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:28:17] "[31m[1mGET /results HTTP/1.1[0m" 429 -
+2026-06-06 19:33:11,936 - werkzeug - INFO - [_log:97] - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5002
+2026-06-06 19:33:11,937 - werkzeug - INFO - [_log:97] - [33mPress CTRL+C to quit[0m
+2026-06-06 19:33:12,938 - app - INFO - [log_request:86] - Request: GET / from 127.0.0.1
+2026-06-06 19:33:12,950 - app - INFO - [log_response:99] - Response: GET / - Status: 200 - Duration: 0.01s
+2026-06-06 19:33:12,952 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:33:12] "GET / HTTP/1.1" 200 -
+2026-06-06 19:33:12,953 - app - INFO - [log_request:86] - Request: GET /sample from 127.0.0.1
+2026-06-06 19:33:12,966 - app - INFO - [sample:436] - Sample loaded (job_id: 18b0ed05-45fd-4bb9-b594-68b5253fa484) from 127.0.0.1
+2026-06-06 19:33:12,984 - app - INFO - [log_response:99] - Response: GET /sample - Status: 302 - Duration: 0.03s
+2026-06-06 19:33:12,986 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:33:12] "[32mGET /sample HTTP/1.1[0m" 302 -
+2026-06-06 19:33:12,996 - app - INFO - [log_request:86] - Request: GET /loading from 127.0.0.1
+2026-06-06 19:33:13,003 - app - INFO - [log_response:99] - Response: GET /loading - Status: 200 - Duration: 0.01s
+2026-06-06 19:33:13,004 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:33:13] "GET /loading HTTP/1.1" 200 -
+2026-06-06 19:33:13,011 - app - INFO - [log_request:86] - Request: GET /start_process from 127.0.0.1
+2026-06-06 19:33:13,028 - app - INFO - [start_process:623] - Processing started (job_id: 18b0ed05-45fd-4bb9-b594-68b5253fa484) from 127.0.0.1
+2026-06-06 19:33:13,041 - app - INFO - [log_response:99] - Response: GET /start_process - Status: 200 - Duration: 0.03s
+2026-06-06 19:33:13,042 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:33:13] "GET /start_process HTTP/1.1" 200 -
+2026-06-06 19:33:13,048 - app - INFO - [log_request:86] - Request: GET /progress/18b0ed05-45fd-4bb9-b594-68b5253fa484 from 127.0.0.1
+2026-06-06 19:33:13,052 - app - INFO - [log_response:99] - Response: GET /progress/18b0ed05-45fd-4bb9-b594-68b5253fa484 - Status: 200 - Duration: 0.00s
+2026-06-06 19:33:13,055 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:33:13] "GET /progress/18b0ed05-45fd-4bb9-b594-68b5253fa484 HTTP/1.1" 200 -
+2026-06-06 19:33:21,100 - app - INFO - [_run_job_impl:472] - Job 18b0ed05-45fd-4bb9-b594-68b5253fa484: Starting pipeline
+2026-06-06 19:33:21,125 - app - ERROR - [_run_job_impl:573] - Job 18b0ed05-45fd-4bb9-b594-68b5253fa484 failed: [Errno 2] No such file or directory: 'C:\\Users\\seren\\Lumiq\\uploads\\18b0ed05-45fd-4bb9-b594-68b5253fa484_sample_reviews.csv'
+Traceback (most recent call last):
+  File "c:\Users\seren\Lumiq\modules\cleaner.py", line 10, in clean_data
+    df = pd.read_csv(filepath, encoding="utf-8",
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\seren\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\pandas\io\parsers\readers.py", line 1026, in read_csv
+    return _read(filepath_or_buffer, kwds)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\seren\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\pandas\io\parsers\readers.py", line 620, in _read
+    parser = TextFileReader(filepath_or_buffer, **kwds)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\seren\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\pandas\io\parsers\readers.py", line 1620, in __init__
+    self._engine = self._make_engine(f, self.engine)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\seren\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\pandas\io\parsers\readers.py", line 1880, in _make_engine
+    self.handles = get_handle(
+                   ^^^^^^^^^^^
+  File "C:\Users\seren\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\pandas\io\common.py", line 882, in get_handle
+    handle = open(handle, ioargs.mode)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\seren\\Lumiq\\uploads\\18b0ed05-45fd-4bb9-b594-68b5253fa484_sample_reviews.csv'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "c:\Users\seren\Lumiq\app.py", line 476, in _run_job_impl
+    df, clean_path, clean_meta = clean_data(filepath)
+                                 ^^^^^^^^^^^^^^^^^^^^
+  File "c:\Users\seren\Lumiq\modules\cleaner.py", line 13, in clean_data
+    df = pd.read_csv(filepath, encoding="latin-1",
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\seren\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\pandas\io\parsers\readers.py", line 1026, in read_csv
+    return _read(filepath_or_buffer, kwds)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\seren\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\pandas\io\parsers\readers.py", line 620, in _read
+    parser = TextFileReader(filepath_or_buffer, **kwds)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\seren\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\pandas\io\parsers\readers.py", line 1620, in __init__
+    self._engine = self._make_engine(f, self.engine)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\seren\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\pandas\io\parsers\readers.py", line 1880, in _make_engine
+    self.handles = get_handle(
+                   ^^^^^^^^^^^
+  File "C:\Users\seren\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\pandas\io\common.py", line 873, in get_handle
+    handle = open(
+             ^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\seren\\Lumiq\\uploads\\18b0ed05-45fd-4bb9-b594-68b5253fa484_sample_reviews.csv'
+2026-06-06 19:35:47,360 - werkzeug - INFO - [_log:97] - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5002
+2026-06-06 19:35:47,360 - werkzeug - INFO - [_log:97] - [33mPress CTRL+C to quit[0m
+2026-06-06 19:35:48,910 - app - INFO - [log_request:86] - Request: GET / from 127.0.0.1
+2026-06-06 19:35:48,922 - app - INFO - [log_response:99] - Response: GET / - Status: 200 - Duration: 0.01s
+2026-06-06 19:35:48,924 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:35:48] "GET / HTTP/1.1" 200 -
+2026-06-06 19:35:48,930 - app - INFO - [log_request:86] - Request: GET /sample from 127.0.0.1
+2026-06-06 19:35:48,934 - app - INFO - [sample:436] - Sample loaded (job_id: 0f572b22-4c13-4fa0-ae57-1b3de21e740f) from 127.0.0.1
+2026-06-06 19:35:48,952 - app - INFO - [log_response:99] - Response: GET /sample - Status: 302 - Duration: 0.02s
+2026-06-06 19:35:48,954 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:35:48] "[32mGET /sample HTTP/1.1[0m" 302 -
+2026-06-06 19:35:48,963 - app - INFO - [log_request:86] - Request: GET /loading from 127.0.0.1
+2026-06-06 19:35:48,965 - app - INFO - [log_response:99] - Response: GET /loading - Status: 200 - Duration: 0.00s
+2026-06-06 19:35:48,969 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:35:48] "GET /loading HTTP/1.1" 200 -
+2026-06-06 19:35:48,977 - app - INFO - [log_request:86] - Request: GET /start_process from 127.0.0.1
+2026-06-06 19:35:48,997 - app - INFO - [start_process:623] - Processing started (job_id: 0f572b22-4c13-4fa0-ae57-1b3de21e740f) from 127.0.0.1
+2026-06-06 19:35:49,009 - app - INFO - [log_response:99] - Response: GET /start_process - Status: 200 - Duration: 0.03s
+2026-06-06 19:35:49,010 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:35:49] "GET /start_process HTTP/1.1" 200 -
+2026-06-06 19:35:49,019 - app - INFO - [log_request:86] - Request: GET /progress/0f572b22-4c13-4fa0-ae57-1b3de21e740f from 127.0.0.1
+2026-06-06 19:35:49,021 - app - INFO - [log_response:99] - Response: GET /progress/0f572b22-4c13-4fa0-ae57-1b3de21e740f - Status: 200 - Duration: 0.00s
+2026-06-06 19:35:49,024 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:35:49] "GET /progress/0f572b22-4c13-4fa0-ae57-1b3de21e740f HTTP/1.1" 200 -
+2026-06-06 19:36:21,309 - app - INFO - [_run_job_impl:472] - Job 0f572b22-4c13-4fa0-ae57-1b3de21e740f: Starting pipeline
+2026-06-06 19:36:29,826 - app - INFO - [_run_job_impl:569] - Job 0f572b22-4c13-4fa0-ae57-1b3de21e740f: Pipeline completed successfully
+2026-06-06 19:36:29,854 - app - INFO - [log_request:86] - Request: GET /results from 127.0.0.1
+2026-06-06 19:36:29,860 - app - INFO - [results:693] - Results displayed (job_id: 0f572b22-4c13-4fa0-ae57-1b3de21e740f) from 127.0.0.1
+2026-06-06 19:36:29,943 - app - INFO - [log_response:99] - Response: GET /results - Status: 200 - Duration: 0.09s
+2026-06-06 19:36:29,951 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:36:29] "GET /results HTTP/1.1" 200 -
+2026-06-06 19:37:53,732 - werkzeug - INFO - [_log:97] - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-06-06 19:37:53,734 - werkzeug - INFO - [_log:97] - [33mPress CTRL+C to quit[0m
+2026-06-06 19:37:56,526 - __main__ - INFO - [log_request:86] - Request: GET / from 127.0.0.1
+2026-06-06 19:37:56,555 - __main__ - INFO - [log_response:99] - Response: GET / - Status: 200 - Duration: 0.03s
+2026-06-06 19:37:56,556 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:37:56] "GET / HTTP/1.1" 200 -
+2026-06-06 19:37:56,716 - __main__ - INFO - [log_request:86] - Request: GET /static/css/style.css from 127.0.0.1
+2026-06-06 19:37:56,720 - __main__ - INFO - [log_request:86] - Request: GET /static/js/main.js from 127.0.0.1
+2026-06-06 19:37:57,229 - __main__ - INFO - [log_response:99] - Response: GET /static/css/style.css - Status: 304 - Duration: 0.51s
+2026-06-06 19:37:57,231 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:37:57] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-06-06 19:37:57,242 - __main__ - INFO - [log_response:99] - Response: GET /static/js/main.js - Status: 304 - Duration: 0.52s
+2026-06-06 19:37:57,245 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:37:57] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-06-06 19:38:06,555 - __main__ - INFO - [log_request:86] - Request: POST /upload from 127.0.0.1
+2026-06-06 19:38:06,560 - __main__ - INFO - [upload:402] - File uploaded: large_test_dataset.csv (job_id: 2ffa28f0-465b-4bd1-b260-2a4e3530e186, size: 26298 bytes) from 127.0.0.1
+2026-06-06 19:38:06,595 - __main__ - INFO - [log_response:99] - Response: POST /upload - Status: 302 - Duration: 0.04s
+2026-06-06 19:38:06,598 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:38:06] "[32mPOST /upload HTTP/1.1[0m" 302 -
+2026-06-06 19:38:06,648 - __main__ - INFO - [log_request:86] - Request: GET /loading from 127.0.0.1
+2026-06-06 19:38:06,676 - __main__ - INFO - [log_response:99] - Response: GET /loading - Status: 200 - Duration: 0.03s
+2026-06-06 19:38:06,683 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:38:06] "GET /loading HTTP/1.1" 200 -
+2026-06-06 19:38:06,840 - __main__ - INFO - [log_request:86] - Request: GET /static/css/style.css from 127.0.0.1
+2026-06-06 19:38:06,848 - __main__ - INFO - [log_response:99] - Response: GET /static/css/style.css - Status: 304 - Duration: 0.01s
+2026-06-06 19:38:06,858 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:38:06] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-06-06 19:38:06,875 - __main__ - INFO - [log_request:86] - Request: GET /static/js/main.js from 127.0.0.1
+2026-06-06 19:38:06,883 - __main__ - INFO - [log_response:99] - Response: GET /static/js/main.js - Status: 304 - Duration: 0.01s
+2026-06-06 19:38:06,884 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:38:06] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-06-06 19:38:06,989 - __main__ - INFO - [log_request:86] - Request: GET /start_process from 127.0.0.1
+2026-06-06 19:38:07,022 - __main__ - INFO - [start_process:623] - Processing started (job_id: 2ffa28f0-465b-4bd1-b260-2a4e3530e186) from 127.0.0.1
+2026-06-06 19:38:07,027 - __main__ - INFO - [log_response:99] - Response: GET /start_process - Status: 200 - Duration: 0.04s
+2026-06-06 19:38:07,040 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:38:07] "GET /start_process HTTP/1.1" 200 -
+2026-06-06 19:38:07,059 - __main__ - INFO - [log_request:86] - Request: GET /progress/2ffa28f0-465b-4bd1-b260-2a4e3530e186 from 127.0.0.1
+2026-06-06 19:38:07,061 - __main__ - INFO - [log_response:99] - Response: GET /progress/2ffa28f0-465b-4bd1-b260-2a4e3530e186 - Status: 200 - Duration: 0.00s
+2026-06-06 19:38:07,061 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:38:07] "GET /progress/2ffa28f0-465b-4bd1-b260-2a4e3530e186 HTTP/1.1" 200 -
+2026-06-06 19:38:29,197 - __main__ - INFO - [_run_job_impl:472] - Job 2ffa28f0-465b-4bd1-b260-2a4e3530e186: Starting pipeline
+2026-06-06 19:38:41,287 - __main__ - INFO - [_run_job_impl:569] - Job 2ffa28f0-465b-4bd1-b260-2a4e3530e186: Pipeline completed successfully
+2026-06-06 19:38:42,562 - __main__ - INFO - [log_request:86] - Request: GET /results from 127.0.0.1
+2026-06-06 19:38:42,570 - __main__ - INFO - [results:693] - Results displayed (job_id: 2ffa28f0-465b-4bd1-b260-2a4e3530e186) from 127.0.0.1
+2026-06-06 19:38:42,653 - __main__ - INFO - [log_response:99] - Response: GET /results - Status: 200 - Duration: 0.09s
+2026-06-06 19:38:42,655 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:38:42] "GET /results HTTP/1.1" 200 -
+2026-06-06 19:38:42,745 - __main__ - INFO - [log_request:86] - Request: GET /static/css/style.css from 127.0.0.1
+2026-06-06 19:38:42,747 - __main__ - INFO - [log_request:86] - Request: GET /static/outputs/lumiq_wc_all.png from 127.0.0.1
+2026-06-06 19:38:42,748 - __main__ - INFO - [log_response:99] - Response: GET /static/css/style.css - Status: 304 - Duration: 0.00s
+2026-06-06 19:38:42,750 - __main__ - INFO - [log_request:86] - Request: GET /static/outputs/lumiq_wc_pos.png from 127.0.0.1
+2026-06-06 19:38:42,751 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:38:42] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-06-06 19:38:42,773 - __main__ - INFO - [log_response:99] - Response: GET /static/outputs/lumiq_wc_pos.png - Status: 200 - Duration: 0.02s
+2026-06-06 19:38:42,774 - __main__ - INFO - [log_response:99] - Response: GET /static/outputs/lumiq_wc_all.png - Status: 200 - Duration: 0.03s
+2026-06-06 19:38:42,774 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:38:42] "GET /static/outputs/lumiq_wc_pos.png HTTP/1.1" 200 -
+2026-06-06 19:38:42,775 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:38:42] "GET /static/outputs/lumiq_wc_all.png HTTP/1.1" 200 -
+2026-06-06 19:38:42,806 - __main__ - INFO - [log_request:86] - Request: GET /static/outputs/lumiq_wc_neg.png from 127.0.0.1
+2026-06-06 19:38:42,811 - __main__ - INFO - [log_request:86] - Request: GET /static/js/main.js from 127.0.0.1
+2026-06-06 19:38:42,811 - __main__ - INFO - [log_response:99] - Response: GET /static/js/main.js - Status: 304 - Duration: 0.00s
+2026-06-06 19:38:42,811 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:38:42] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-06-06 19:38:42,827 - __main__ - INFO - [log_response:99] - Response: GET /static/outputs/lumiq_wc_neg.png - Status: 200 - Duration: 0.02s
+2026-06-06 19:38:42,827 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:38:42] "GET /static/outputs/lumiq_wc_neg.png HTTP/1.1" 200 -
+2026-06-06 19:40:37,227 - werkzeug - INFO - [_log:97] - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-06-06 19:40:37,227 - werkzeug - INFO - [_log:97] - [33mPress CTRL+C to quit[0m
+2026-06-06 19:40:37,227 - __main__ - INFO - [log_request:86] - Request: GET /download/csv from 127.0.0.1
+2026-06-06 19:40:37,251 - __main__ - INFO - [download_csv:763] - CSV download (job_id: 2ffa28f0-465b-4bd1-b260-2a4e3530e186) from 127.0.0.1
+2026-06-06 19:40:37,473 - __main__ - INFO - [log_response:99] - Response: GET /download/csv - Status: 200 - Duration: 0.25s
+2026-06-06 19:40:37,474 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:40:37] "GET /download/csv HTTP/1.1" 200 -
+2026-06-06 19:40:42,624 - __main__ - INFO - [log_request:86] - Request: GET /download/csv from 127.0.0.1
+2026-06-06 19:40:42,632 - __main__ - INFO - [download_csv:763] - CSV download (job_id: 2ffa28f0-465b-4bd1-b260-2a4e3530e186) from 127.0.0.1
+2026-06-06 19:40:42,649 - __main__ - INFO - [log_response:99] - Response: GET /download/csv - Status: 304 - Duration: 0.02s
+2026-06-06 19:40:42,654 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:40:42] "[36mGET /download/csv HTTP/1.1[0m" 304 -
+2026-06-06 19:40:51,190 - __main__ - INFO - [log_request:86] - Request: GET /download/csv from 127.0.0.1
+2026-06-06 19:40:51,197 - __main__ - INFO - [download_csv:763] - CSV download (job_id: 2ffa28f0-465b-4bd1-b260-2a4e3530e186) from 127.0.0.1
+2026-06-06 19:40:51,197 - __main__ - INFO - [log_response:99] - Response: GET /download/csv - Status: 304 - Duration: 0.01s
+2026-06-06 19:40:51,211 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:40:51] "[36mGET /download/csv HTTP/1.1[0m" 304 -
+2026-06-06 19:41:07,694 - __main__ - INFO - [log_request:86] - Request: GET / from 127.0.0.1
+2026-06-06 19:41:07,725 - __main__ - INFO - [log_response:99] - Response: GET / - Status: 200 - Duration: 0.03s
+2026-06-06 19:41:07,727 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:41:07] "GET / HTTP/1.1" 200 -
+2026-06-06 19:41:07,854 - __main__ - INFO - [log_request:86] - Request: GET /static/css/style.css from 127.0.0.1
+2026-06-06 19:41:07,857 - __main__ - INFO - [log_request:86] - Request: GET /static/js/main.js from 127.0.0.1
+2026-06-06 19:41:07,858 - __main__ - INFO - [log_response:99] - Response: GET /static/css/style.css - Status: 304 - Duration: 0.00s
+2026-06-06 19:41:07,861 - __main__ - INFO - [log_response:99] - Response: GET /static/js/main.js - Status: 304 - Duration: 0.00s
+2026-06-06 19:41:07,862 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:41:07] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-06-06 19:41:07,863 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:41:07] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-06-06 19:41:17,023 - __main__ - INFO - [log_request:86] - Request: POST /upload from 127.0.0.1
+2026-06-06 19:41:17,027 - __main__ - INFO - [upload:402] - File uploaded: large_test_dataset.csv (job_id: a2db0c4b-5065-486d-93e8-1e983696e6a8, size: 26298 bytes) from 127.0.0.1
+2026-06-06 19:41:17,042 - __main__ - INFO - [log_response:99] - Response: POST /upload - Status: 302 - Duration: 0.02s
+2026-06-06 19:41:17,043 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:41:17] "[32mPOST /upload HTTP/1.1[0m" 302 -
+2026-06-06 19:41:17,062 - __main__ - INFO - [log_request:86] - Request: GET /loading from 127.0.0.1
+2026-06-06 19:41:17,072 - __main__ - INFO - [log_response:99] - Response: GET /loading - Status: 200 - Duration: 0.01s
+2026-06-06 19:41:17,075 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:41:17] "GET /loading HTTP/1.1" 200 -
+2026-06-06 19:41:17,168 - __main__ - INFO - [log_request:86] - Request: GET /static/css/style.css from 127.0.0.1
+2026-06-06 19:41:17,170 - __main__ - INFO - [log_request:86] - Request: GET /static/js/main.js from 127.0.0.1
+2026-06-06 19:41:17,171 - __main__ - INFO - [log_response:99] - Response: GET /static/css/style.css - Status: 304 - Duration: 0.00s
+2026-06-06 19:41:17,172 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:41:17] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-06-06 19:41:17,173 - __main__ - INFO - [log_response:99] - Response: GET /static/js/main.js - Status: 304 - Duration: 0.00s
+2026-06-06 19:41:17,174 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:41:17] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-06-06 19:41:17,253 - __main__ - INFO - [log_request:86] - Request: GET /start_process from 127.0.0.1
+2026-06-06 19:41:17,272 - __main__ - INFO - [start_process:623] - Processing started (job_id: a2db0c4b-5065-486d-93e8-1e983696e6a8) from 127.0.0.1
+2026-06-06 19:41:17,282 - __main__ - INFO - [log_response:99] - Response: GET /start_process - Status: 200 - Duration: 0.03s
+2026-06-06 19:41:17,282 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:41:17] "GET /start_process HTTP/1.1" 200 -
+2026-06-06 19:41:17,310 - __main__ - INFO - [log_request:86] - Request: GET /progress/a2db0c4b-5065-486d-93e8-1e983696e6a8 from 127.0.0.1
+2026-06-06 19:41:17,310 - __main__ - INFO - [log_response:99] - Response: GET /progress/a2db0c4b-5065-486d-93e8-1e983696e6a8 - Status: 200 - Duration: 0.00s
+2026-06-06 19:41:17,316 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:41:17] "GET /progress/a2db0c4b-5065-486d-93e8-1e983696e6a8 HTTP/1.1" 200 -
+2026-06-06 19:41:51,717 - __main__ - INFO - [_run_job_impl:472] - Job a2db0c4b-5065-486d-93e8-1e983696e6a8: Starting pipeline
+2026-06-06 19:42:05,735 - __main__ - INFO - [_run_job_impl:569] - Job a2db0c4b-5065-486d-93e8-1e983696e6a8: Pipeline completed successfully
+2026-06-06 19:42:07,841 - __main__ - INFO - [log_request:86] - Request: GET /results from 127.0.0.1
+2026-06-06 19:42:07,863 - __main__ - INFO - [results:693] - Results displayed (job_id: a2db0c4b-5065-486d-93e8-1e983696e6a8) from 127.0.0.1
+2026-06-06 19:42:08,145 - __main__ - INFO - [log_response:99] - Response: GET /results - Status: 200 - Duration: 0.30s
+2026-06-06 19:42:08,148 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:42:08] "GET /results HTTP/1.1" 200 -
+2026-06-06 19:42:08,463 - __main__ - INFO - [log_request:86] - Request: GET /static/css/style.css from 127.0.0.1
+2026-06-06 19:42:08,481 - __main__ - INFO - [log_response:99] - Response: GET /static/css/style.css - Status: 304 - Duration: 0.02s
+2026-06-06 19:42:08,481 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:42:08] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-06-06 19:42:08,485 - __main__ - INFO - [log_request:86] - Request: GET /static/outputs/lumiq_wc_all.png from 127.0.0.1
+2026-06-06 19:42:08,527 - __main__ - INFO - [log_request:86] - Request: GET /static/outputs/lumiq_wc_pos.png from 127.0.0.1
+2026-06-06 19:42:08,585 - __main__ - INFO - [log_response:99] - Response: GET /static/outputs/lumiq_wc_all.png - Status: 200 - Duration: 0.10s
+2026-06-06 19:42:08,604 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:42:08] "GET /static/outputs/lumiq_wc_all.png HTTP/1.1" 200 -
+2026-06-06 19:42:08,665 - __main__ - INFO - [log_request:86] - Request: GET /static/outputs/lumiq_wc_neg.png from 127.0.0.1
+2026-06-06 19:42:08,683 - __main__ - INFO - [log_response:99] - Response: GET /static/outputs/lumiq_wc_pos.png - Status: 200 - Duration: 0.16s
+2026-06-06 19:42:08,745 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:42:08] "GET /static/outputs/lumiq_wc_pos.png HTTP/1.1" 200 -
+2026-06-06 19:42:08,749 - __main__ - INFO - [log_response:99] - Response: GET /static/outputs/lumiq_wc_neg.png - Status: 200 - Duration: 0.08s
+2026-06-06 19:42:08,758 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:42:08] "GET /static/outputs/lumiq_wc_neg.png HTTP/1.1" 200 -
+2026-06-06 19:42:08,812 - __main__ - INFO - [log_request:86] - Request: GET /static/js/main.js from 127.0.0.1
+2026-06-06 19:42:08,817 - __main__ - INFO - [log_response:99] - Response: GET /static/js/main.js - Status: 304 - Duration: 0.01s
+2026-06-06 19:42:08,821 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:42:08] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-06-06 19:43:02,953 - __main__ - INFO - [log_request:86] - Request: GET /download/pdf from 127.0.0.1
+2026-06-06 19:43:02,961 - __main__ - INFO - [download_pdf:815] - PDF download (job_id: a2db0c4b-5065-486d-93e8-1e983696e6a8) from 127.0.0.1
+2026-06-06 19:43:03,038 - __main__ - INFO - [log_response:99] - Response: GET /download/pdf - Status: 200 - Duration: 0.08s
+2026-06-06 19:43:03,039 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:43:03] "GET /download/pdf HTTP/1.1" 200 -
+2026-06-06 19:43:13,714 - __main__ - INFO - [log_request:86] - Request: GET /download/excel from 127.0.0.1
+2026-06-06 19:43:13,715 - __main__ - INFO - [download_excel:789] - Excel download (job_id: a2db0c4b-5065-486d-93e8-1e983696e6a8) from 127.0.0.1
+2026-06-06 19:43:13,796 - __main__ - INFO - [log_response:99] - Response: GET /download/excel - Status: 200 - Duration: 0.08s
+2026-06-06 19:43:13,798 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:43:13] "GET /download/excel HTTP/1.1" 200 -
+2026-06-06 19:43:14,706 - __main__ - INFO - [log_request:86] - Request: GET /download/csv from 127.0.0.1
+2026-06-06 19:43:14,711 - __main__ - INFO - [download_csv:763] - CSV download (job_id: a2db0c4b-5065-486d-93e8-1e983696e6a8) from 127.0.0.1
+2026-06-06 19:43:14,734 - __main__ - INFO - [log_response:99] - Response: GET /download/csv - Status: 200 - Duration: 0.03s
+2026-06-06 19:43:14,737 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:43:14] "GET /download/csv HTTP/1.1" 200 -
