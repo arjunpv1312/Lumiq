@@ -142,21 +142,57 @@ def predict_live(text):
             if hasattr(_saved_pipeline, "predict_proba"):
                 proba = _saved_pipeline.predict_proba([clean])[0]
                 conf  = round(float(max(proba)) * 100, 1)
+            elif hasattr(_saved_pipeline, "decision_function"):
+                dec = _saved_pipeline.decision_function([clean])[0]
+                try:
+                    if hasattr(dec, "__len__") and len(dec) > 1:
+                        exp_dec = np.exp(dec - np.max(dec))
+                        proba = exp_dec / np.sum(exp_dec)
+                        conf = round(float(max(proba)) * 100, 1)
+                    else:
+                        val = float(dec)
+                        prob_pos = 1 / (1 + np.exp(-val))
+                        conf = round(float(max(prob_pos, 1 - prob_pos)) * 100, 1)
+                except Exception:
+                    conf = 95.0
             result["ml_label"]      = label
             result["ml_confidence"] = conf
         except Exception:
             pass
     return result
 
+def detect_ground_truth(df):
+    """Detect if there is a rating or sentiment column in the dataset to use as ground truth labels."""
+    # List of common sentiment column names
+    sent_cols = ["sentiment", "label", "sentiment_label", "target", "score_label"]
+    for col in df.columns:
+        if col.lower() in sent_cols:
+            vals = df[col].dropna().unique()
+            if len(vals) >= 2:
+                return col, "sentiment"
+                
+    # List of common rating column names
+    rating_cols = ["rating", "rating_score", "stars", "score", "user_rating"]
+    for col in df.columns:
+        if col.lower() in rating_cols:
+            try:
+                nums = pd.to_numeric(df[col], errors='coerce').dropna()
+                if not nums.empty and nums.min() >= 0 and nums.max() <= 10:
+                    return col, "rating"
+            except Exception:
+                pass
+                
+    return None, None
+
 def get_models():
     cfg = dict(max_features=5000, ngram_range=(1,2),
-               sublinear_tf=True, min_df=1,
+               sublinear_tf=True, min_df=2,
                strip_accents="unicode", stop_words="english")
     return {
         "Logistic Regression": Pipeline([
             ("tfidf", TfidfVectorizer(**cfg)),
             ("clf",   LogisticRegression(
-                C=3.0, max_iter=300, solver="saga",
+                C=2.0, max_iter=1000, solver="liblinear",
                 random_state=42, class_weight="balanced")),
         ]),
         "SGD Classifier": Pipeline([
@@ -173,10 +209,9 @@ def get_models():
         ]),
         "Linear SVM": Pipeline([
             ("tfidf", TfidfVectorizer(**cfg)),
-            ("clf",   CalibratedClassifierCV(
-                LinearSVC(C=1.0, max_iter=1000,
-                          random_state=42,
-                          class_weight="balanced"), cv=3)),
+            ("clf",   LinearSVC(C=0.5, max_iter=1000,
+                                random_state=42,
+                                class_weight="balanced")),
         ]),
     }
 
@@ -226,6 +261,18 @@ def train_one(name, pipe, X_tr, X_te,
                 le  = LabelEncoder()
                 yte = le.fit_transform(y_te)
                 yp  = pipe.predict_proba(X_te)
+                auc = round(roc_auc_score(
+                    yte, yp, multi_class="ovr",
+                    average="weighted"), 3)
+            elif hasattr(pipe.named_steps["clf"],"decision_function"):
+                le  = LabelEncoder()
+                yte = le.fit_transform(y_te)
+                dec = pipe.decision_function(X_te)
+                if len(dec.shape) > 1 and dec.shape[1] > 1:
+                    exp_dec = np.exp(dec - np.max(dec, axis=1, keepdims=True))
+                    yp = exp_dec / np.sum(exp_dec, axis=1, keepdims=True)
+                else:
+                    yp = 1 / (1 + np.exp(-dec))
                 auc = round(roc_auc_score(
                     yte, yp, multi_class="ovr",
                     average="weighted"), 3)
@@ -309,11 +356,35 @@ def run_sentiment(df):
 
     ml_stats = {"available": False}
 
-    if total >= 20 and df["vader_label"].nunique() >= 2:
+    # Detect ground truth labels (rating or sentiment columns)
+    gt_col, gt_type = detect_ground_truth(df)
+    if gt_col:
+        if gt_type == "rating":
+            def rating_to_sentiment(r):
+                try:
+                    val = float(r)
+                    if val >= 4.0: return "Positive"
+                    elif val <= 2.0: return "Negative"
+                    else: return "Neutral"
+                except Exception:
+                    return "Neutral"
+            df["gt_label"] = df[gt_col].apply(rating_to_sentiment)
+        else:
+            def standardize_sentiment(s):
+                s_str = str(s).strip().lower()
+                if s_str in ["positive", "pos", "1", "2", "4", "5", "good"]: return "Positive"
+                elif s_str in ["negative", "neg", "0", "bad"]: return "Negative"
+                else: return "Neutral"
+            df["gt_label"] = df[gt_col].apply(standardize_sentiment)
+        df["target_label"] = df["gt_label"]
+    else:
+        df["target_label"] = df["vader_label"]
+
+    if total >= 20 and df["target_label"].nunique() >= 2:
         try:
             set_progress(5,"Preparing training data...", 48)
             X = df["clean_text"]
-            y = df["vader_label"]
+            y = df["target_label"]
 
             # Safe test size
             test_sz = 0.2 if total >= 50 else 0.25

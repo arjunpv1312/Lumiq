@@ -26,3 +26,141 @@
 2026-06-05 19:39:21,687 - werkzeug - INFO - [_log:97] - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
  * Running on http://127.0.0.1:5000
 2026-06-05 19:39:21,690 - werkzeug - INFO - [_log:97] - [33mPress CTRL+C to quit[0m
+2026-06-05 21:20:59,740 - werkzeug - INFO - [_log:97] - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-06-05 21:20:59,741 - werkzeug - INFO - [_log:97] - [33mPress CTRL+C to quit[0m
+2026-06-05 21:21:16,002 - __main__ - INFO - [log_request:79] - Request: GET / from 127.0.0.1
+2026-06-05 21:21:16,022 - __main__ - INFO - [log_response:92] - Response: GET / - Status: 200 - Duration: 0.02s
+2026-06-05 21:21:16,024 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [05/Jun/2026 21:21:16] "GET / HTTP/1.1" 200 -
+2026-06-05 21:21:16,199 - __main__ - INFO - [log_request:79] - Request: GET /static/css/style.css from 127.0.0.1
+2026-06-05 21:21:16,202 - __main__ - INFO - [log_request:79] - Request: GET /static/js/main.js from 127.0.0.1
+2026-06-05 21:21:16,670 - __main__ - INFO - [log_response:92] - Response: GET /static/js/main.js - Status: 304 - Duration: 0.47s
+2026-06-05 21:21:16,670 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [05/Jun/2026 21:21:16] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-06-05 21:21:16,678 - __main__ - INFO - [log_response:92] - Response: GET /static/css/style.css - Status: 304 - Duration: 0.48s
+2026-06-05 21:21:16,682 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [05/Jun/2026 21:21:16] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-06-05 21:21:31,228 - flask_wtf.csrf - INFO - [protect:288] - The CSRF token is missing.
+2026-06-05 21:21:31,228 - __main__ - WARNING - [bad_request:189] - Bad request from 127.0.0.1: 400 Bad Request: The CSRF token is missing.
+2026-06-05 21:21:31,253 - __main__ - INFO - [log_response:92] - Response: POST /upload - Status: 400 - Duration: 0.00s
+2026-06-05 21:21:31,254 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [05/Jun/2026 21:21:31] "[31m[1mPOST /upload HTTP/1.1[0m" 400 -
+2026-06-06 18:38:40,029 - werkzeug - INFO - [_log:97] - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-06-06 18:38:40,030 - werkzeug - INFO - [_log:97] - [33mPress CTRL+C to quit[0m
+2026-06-06 18:38:50,393 - __main__ - INFO - [log_request:79] - Request: GET / from 127.0.0.1
+2026-06-06 18:38:50,521 - __main__ - INFO - [log_response:92] - Response: GET / - Status: 200 - Duration: 0.13s
+2026-06-06 18:38:50,529 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 18:38:50] "GET / HTTP/1.1" 200 -
+2026-06-06 18:38:50,736 - __main__ - INFO - [log_request:79] - Request: GET /static/css/style.css from 127.0.0.1
+2026-06-06 18:38:50,742 - __main__ - INFO - [log_request:79] - Request: GET /static/js/main.js from 127.0.0.1
+2026-06-06 18:38:51,372 - __main__ - INFO - [log_response:92] - Response: GET /static/css/style.css - Status: 200 - Duration: 0.64s
+2026-06-06 18:38:51,377 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 18:38:51] "GET /static/css/style.css HTTP/1.1" 200 -
+2026-06-06 18:38:51,399 - __main__ - INFO - [log_response:92] - Response: GET /static/js/main.js - Status: 200 - Duration: 0.66s
+2026-06-06 18:38:51,402 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 18:38:51] "GET /static/js/main.js HTTP/1.1" 200 -
+2026-06-06 18:38:52,735 - __main__ - INFO - [log_request:79] - Request: GET /favicon.ico from 127.0.0.1
+2026-06-06 18:38:52,736 - __main__ - INFO - [log_response:92] - Response: GET /favicon.ico - Status: 404 - Duration: 0.00s
+2026-06-06 18:38:52,738 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 18:38:52] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-06-06 18:39:03,692 - flask_wtf.csrf - INFO - [protect:288] - The CSRF token is missing.
+2026-06-06 18:39:03,692 - __main__ - WARNING - [bad_request:189] - Bad request from 127.0.0.1: 400 Bad Request: The CSRF token is missing.
+2026-06-06 18:39:03,718 - __main__ - INFO - [log_response:92] - Response: POST /upload - Status: 400 - Duration: 0.00s
+2026-06-06 18:39:03,718 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 18:39:03] "[31m[1mPOST /upload HTTP/1.1[0m" 400 -
+2026-06-06 18:57:38,428 - werkzeug - INFO - [_log:97] - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5001
+2026-06-06 18:57:38,428 - werkzeug - INFO - [_log:97] - [33mPress CTRL+C to quit[0m
+2026-06-06 18:57:38,448 - werkzeug - INFO - [_log:97] -  * Restarting with stat
+2026-06-06 18:57:39,800 - werkzeug - WARNING - [_log:97] -  * Debugger is active!
+2026-06-06 18:57:39,808 - werkzeug - INFO - [_log:97] -  * Debugger PIN: 824-893-190
+2026-06-06 18:58:18,293 - app - INFO - [log_request:84] - Request: GET / from 127.0.0.1
+2026-06-06 18:58:18,312 - app - INFO - [log_response:97] - Response: GET / - Status: 200 - Duration: 0.02s
+2026-06-06 18:58:18,314 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 18:58:18] "GET / HTTP/1.1" 200 -
+2026-06-06 18:58:26,297 - werkzeug - INFO - [_log:97] - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-06-06 18:58:26,297 - werkzeug - INFO - [_log:97] - [33mPress CTRL+C to quit[0m
+2026-06-06 18:58:31,633 - __main__ - INFO - [log_request:84] - Request: GET / from 127.0.0.1
+2026-06-06 18:58:31,663 - __main__ - INFO - [log_response:97] - Response: GET / - Status: 200 - Duration: 0.03s
+2026-06-06 18:58:31,669 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 18:58:31] "GET / HTTP/1.1" 200 -
+2026-06-06 18:58:31,888 - __main__ - INFO - [log_request:84] - Request: GET /static/css/style.css from 127.0.0.1
+2026-06-06 18:58:31,890 - __main__ - INFO - [log_request:84] - Request: GET /static/js/main.js from 127.0.0.1
+2026-06-06 18:58:32,486 - __main__ - INFO - [log_response:97] - Response: GET /static/js/main.js - Status: 304 - Duration: 0.60s
+2026-06-06 18:58:32,487 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 18:58:32] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-06-06 18:58:32,502 - __main__ - INFO - [log_response:97] - Response: GET /static/css/style.css - Status: 304 - Duration: 0.61s
+2026-06-06 18:58:32,505 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 18:58:32] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-06-06 18:58:43,032 - __main__ - INFO - [log_request:84] - Request: POST /upload from 127.0.0.1
+2026-06-06 18:58:43,041 - __main__ - INFO - [upload:400] - File uploaded: large_test_dataset.csv (job_id: 4753321b-b178-414e-84c2-4c5502efd330, size: 26298 bytes) from 127.0.0.1
+2026-06-06 18:58:43,072 - __main__ - INFO - [log_response:97] - Response: POST /upload - Status: 302 - Duration: 0.04s
+2026-06-06 18:58:43,074 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 18:58:43] "[32mPOST /upload HTTP/1.1[0m" 302 -
+2026-06-06 18:58:43,102 - __main__ - INFO - [log_request:84] - Request: GET /loading from 127.0.0.1
+2026-06-06 18:58:43,109 - __main__ - INFO - [log_response:97] - Response: GET /loading - Status: 200 - Duration: 0.01s
+2026-06-06 18:58:43,110 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 18:58:43] "GET /loading HTTP/1.1" 200 -
+2026-06-06 18:58:43,249 - __main__ - INFO - [log_request:84] - Request: GET /static/css/style.css from 127.0.0.1
+2026-06-06 18:58:43,253 - __main__ - INFO - [log_request:84] - Request: GET /static/js/main.js from 127.0.0.1
+2026-06-06 18:58:43,254 - __main__ - INFO - [log_response:97] - Response: GET /static/css/style.css - Status: 304 - Duration: 0.01s
+2026-06-06 18:58:43,255 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 18:58:43] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-06-06 18:58:43,256 - __main__ - INFO - [log_response:97] - Response: GET /static/js/main.js - Status: 304 - Duration: 0.00s
+2026-06-06 18:58:43,259 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 18:58:43] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-06-06 18:58:43,339 - __main__ - INFO - [log_request:84] - Request: GET /start_process from 127.0.0.1
+2026-06-06 18:58:43,369 - __main__ - INFO - [start_process:588] - Processing started (job_id: 4753321b-b178-414e-84c2-4c5502efd330) from 127.0.0.1
+2026-06-06 18:58:43,384 - __main__ - INFO - [log_response:97] - Response: GET /start_process - Status: 200 - Duration: 0.05s
+2026-06-06 18:58:43,386 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 18:58:43] "GET /start_process HTTP/1.1" 200 -
+2026-06-06 18:58:43,410 - __main__ - INFO - [log_request:84] - Request: GET /progress/4753321b-b178-414e-84c2-4c5502efd330 from 127.0.0.1
+2026-06-06 18:58:43,414 - __main__ - INFO - [log_response:97] - Response: GET /progress/4753321b-b178-414e-84c2-4c5502efd330 - Status: 200 - Duration: 0.00s
+2026-06-06 18:58:43,431 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 18:58:43] "GET /progress/4753321b-b178-414e-84c2-4c5502efd330 HTTP/1.1" 200 -
+2026-06-06 18:59:50,689 - __main__ - INFO - [run_job:467] - Job 4753321b-b178-414e-84c2-4c5502efd330: Starting pipeline
+2026-06-06 18:59:50,691 - models - ERROR - [store_result:153] - Failed to store result for job 4753321b-b178-414e-84c2-4c5502efd330: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+2026-06-06 18:59:50,959 - models - ERROR - [store_result:153] - Failed to store result for job 4753321b-b178-414e-84c2-4c5502efd330: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+2026-06-06 18:59:51,010 - models - ERROR - [store_result:153] - Failed to store result for job 4753321b-b178-414e-84c2-4c5502efd330: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+2026-06-06 18:59:57,737 - models - ERROR - [store_result:153] - Failed to store result for job 4753321b-b178-414e-84c2-4c5502efd330: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+2026-06-06 18:59:59,149 - models - ERROR - [store_result:153] - Failed to store result for job 4753321b-b178-414e-84c2-4c5502efd330: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+2026-06-06 19:00:13,793 - models - ERROR - [store_result:153] - Failed to store result for job 4753321b-b178-414e-84c2-4c5502efd330: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+2026-06-06 19:00:15,256 - models - ERROR - [store_result:153] - Failed to store result for job 4753321b-b178-414e-84c2-4c5502efd330: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+2026-06-06 19:00:15,256 - models - ERROR - [store_result:153] - Failed to store result for job 4753321b-b178-414e-84c2-4c5502efd330: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+2026-06-06 19:00:16,066 - models - ERROR - [store_result:153] - Failed to store result for job 4753321b-b178-414e-84c2-4c5502efd330: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+2026-06-06 19:00:16,115 - models - ERROR - [store_result:153] - Failed to store result for job 4753321b-b178-414e-84c2-4c5502efd330: Working outside of application context.
+
+This typically means that you attempted to use functionality that needed
+the current application. To solve this, set up an application context
+with app.app_context(). See the documentation for more information.
+2026-06-06 19:00:16,115 - __main__ - INFO - [run_job:534] - Job 4753321b-b178-414e-84c2-4c5502efd330: Pipeline completed successfully
+2026-06-06 19:02:54,500 - werkzeug - INFO - [_log:97] -  * Detected change in 'C:\\Users\\seren\\Lumiq\\modules\\sentiment.py', reloading
+2026-06-06 19:02:54,968 - werkzeug - INFO - [_log:97] -  * Restarting with stat
+2026-06-06 19:02:56,924 - werkzeug - WARNING - [_log:97] -  * Debugger is active!
+2026-06-06 19:02:56,929 - werkzeug - INFO - [_log:97] -  * Debugger PIN: 824-893-190
+2026-06-06 19:03:41,064 - werkzeug - INFO - [_log:97] - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5001
+2026-06-06 19:03:41,064 - werkzeug - INFO - [_log:97] - [33mPress CTRL+C to quit[0m
+2026-06-06 19:03:41,069 - werkzeug - INFO - [_log:97] -  * Restarting with stat
+2026-06-06 19:03:42,753 - werkzeug - WARNING - [_log:97] -  * Debugger is active!
+2026-06-06 19:03:42,761 - werkzeug - INFO - [_log:97] -  * Debugger PIN: 824-893-190

@@ -8,6 +8,7 @@
   <meta name="keywords" content="data analysis, EDA, sentiment analysis, CSV, AI, visualization">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   
   <title>Lumiq — Illuminate your data</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
@@ -54,6 +55,7 @@
 
   <form action="/upload" method="POST"
         enctype="multipart/form-data" id="upload-form" novalidate>
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
     <div class="upload-box" id="drop-zone" role="button" tabindex="0" aria-label="File drop area">
       <div class="upload-icon">
         <i class="ti ti-cloud-upload"></i>

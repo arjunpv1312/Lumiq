@@ -21,12 +21,17 @@ from flask_limiter.util import get_remote_address
 from config import get_config
 from models import db, init_db, store_result as db_store_result, get_result as db_get_result, AuditLog
 
-# Load configuration
+# Load configuration - FIXED: call get_config() function
 config = get_config()
 
 # Create Flask app with config
 app = Flask(__name__)
 app.config.from_object(config)
+
+# If run directly as python app.py, disable secure session cookies and strict CSRF for HTTP local testing
+if __name__ == "__main__":
+    app.config["SESSION_COOKIE_SECURE"] = False
+    app.config["WTF_CSRF_SSL_STRICT"] = False
 
 # Initialize database
 init_db(app)
@@ -60,9 +65,6 @@ logger = logging.getLogger(__name__)
 Path(config.UPLOAD_FOLDER).mkdir(parents=True, exist_ok=True)
 Path(config.OUTPUT_FOLDER).mkdir(parents=True, exist_ok=True)
 Path(config.DATABASE_FOLDER).mkdir(parents=True, exist_ok=True)
-
-
-
 # ── Wrapper functions for database operations ────────────
 def store_result(job_id, data_dict):
     """Store job result in database."""

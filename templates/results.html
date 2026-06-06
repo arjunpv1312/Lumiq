@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   <title>Lumiq - Results</title>
   <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
@@ -1257,9 +1258,13 @@ function runPredict() {
       '<i class="ti ti-loader"></i> Predicting...';
     btn.disabled = true;
   }
+  var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
   fetch("/predict", {
     method:"POST",
-    headers:{"Content-Type":"application/json"},
+    headers:{
+      "Content-Type":"application/json",
+      "X-CSRFToken": csrfToken
+    },
     body:JSON.stringify({text:text})
   })
   .then(function(r){return r.json();})

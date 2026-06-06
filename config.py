@@ -5,6 +5,10 @@ Loads settings from environment variables and .env file.
 
 import os
 from pathlib import Path
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 
 class Config:
@@ -79,6 +83,7 @@ class DevelopmentConfig(Config):
     DEBUG = True
     TESTING = False
     SESSION_COOKIE_SECURE = False
+    WTF_CSRF_SSL_STRICT = False
 
 
 class ProductionConfig(Config):
