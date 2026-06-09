@@ -691,3 +691,33 @@ FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\seren\\Lumiq
 2026-06-06 19:56:46,796 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:56:46] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
 2026-06-06 19:56:46,817 - __main__ - INFO - [log_response:99] - Response: GET /static/outputs/lumiq_wc_neg.png - Status: 200 - Duration: 0.04s
 2026-06-06 19:56:46,821 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:56:46] "GET /static/outputs/lumiq_wc_neg.png HTTP/1.1" 200 -
+2026-06-09 13:21:11,440 - werkzeug - INFO - [_log:97] - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.242.81:5000
+2026-06-09 13:21:11,442 - werkzeug - INFO - [_log:97] - [33mPress CTRL+C to quit[0m
+2026-06-09 13:36:34,822 - __main__ - INFO - [log_request:126] - Request: GET / from 192.168.242.81
+2026-06-09 13:36:35,082 - __main__ - INFO - [log_response:132] - Response: GET / — Status: 200 — Duration: 0.27s
+2026-06-09 13:36:35,093 - werkzeug - INFO - [_log:97] - 192.168.242.81 - - [09/Jun/2026 13:36:35] "GET / HTTP/1.1" 200 -
+2026-06-09 13:36:35,275 - __main__ - INFO - [log_request:126] - Request: GET /static/css/style.css from 192.168.242.81
+2026-06-09 13:36:35,335 - __main__ - INFO - [log_request:126] - Request: GET /static/js/main.js from 192.168.242.81
+2026-06-09 13:36:35,816 - __main__ - INFO - [log_response:132] - Response: GET /static/css/style.css — Status: 200 — Duration: 0.54s
+2026-06-09 13:36:35,830 - werkzeug - INFO - [_log:97] - 192.168.242.81 - - [09/Jun/2026 13:36:35] "GET /static/css/style.css HTTP/1.1" 200 -
+2026-06-09 13:36:35,981 - __main__ - INFO - [log_response:132] - Response: GET /static/js/main.js — Status: 200 — Duration: 0.65s
+2026-06-09 13:36:35,981 - werkzeug - INFO - [_log:97] - 192.168.242.81 - - [09/Jun/2026 13:36:35] "GET /static/js/main.js HTTP/1.1" 200 -
+2026-06-09 13:36:38,923 - __main__ - INFO - [log_request:126] - Request: GET /favicon.ico from 192.168.242.81
+2026-06-09 13:36:38,927 - __main__ - INFO - [log_response:132] - Response: GET /favicon.ico — Status: 404 — Duration: 0.00s
+2026-06-09 13:36:38,927 - werkzeug - INFO - [_log:97] - 192.168.242.81 - - [09/Jun/2026 13:36:38] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-06-09 13:37:00,634 - __main__ - INFO - [log_request:126] - Request: POST /upload from 192.168.242.81
+2026-06-09 13:37:00,639 - __main__ - WARNING - [upload:352] - Invalid filename:  from 192.168.242.81
+2026-06-09 13:37:00,809 - __main__ - INFO - [log_response:132] - Response: POST /upload — Status: 302 — Duration: 0.17s
+2026-06-09 13:37:00,809 - werkzeug - INFO - [_log:97] - 192.168.242.81 - - [09/Jun/2026 13:37:00] "[32mPOST /upload HTTP/1.1[0m" 302 -
+2026-06-09 13:37:00,847 - __main__ - INFO - [log_request:126] - Request: GET / from 192.168.242.81
+2026-06-09 13:37:00,847 - __main__ - INFO - [log_response:132] - Response: GET / — Status: 200 — Duration: 0.00s
+2026-06-09 13:37:00,847 - werkzeug - INFO - [_log:97] - 192.168.242.81 - - [09/Jun/2026 13:37:00] "GET / HTTP/1.1" 200 -
+2026-06-09 13:37:01,127 - __main__ - INFO - [log_request:126] - Request: GET /static/css/style.css from 192.168.242.81
+2026-06-09 13:37:01,129 - __main__ - INFO - [log_request:126] - Request: GET /static/js/main.js from 192.168.242.81
+2026-06-09 13:37:01,129 - __main__ - INFO - [log_response:132] - Response: GET /static/css/style.css — Status: 304 — Duration: 0.00s
+2026-06-09 13:37:01,138 - werkzeug - INFO - [_log:97] - 192.168.242.81 - - [09/Jun/2026 13:37:01] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-06-09 13:37:01,138 - __main__ - INFO - [log_response:132] - Response: GET /static/js/main.js — Status: 304 — Duration: 0.01s
+2026-06-09 13:37:01,143 - werkzeug - INFO - [_log:97] - 192.168.242.81 - - [09/Jun/2026 13:37:01] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -

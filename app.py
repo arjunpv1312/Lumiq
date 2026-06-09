@@ -698,11 +698,13 @@ def ws_unsubscribe(data: dict):
 # ── Entry point ───────────────────────────────────────────────────────────────
 
 if __name__ == "__main__":
-    # Use socketio.run() instead of app.run() so the WebSocket server starts
+    # Use socketio.run() instead of app.run() so the WebSocket server starts.
+    # allow_unsafe_werkzeug=True is safe for local dev only.
     socketio.run(
         app,
         debug=True,
-        use_reloader=False,   # reloader conflicts with gevent
+        use_reloader=False,          # reloader conflicts with gevent/threading
         port=5000,
         host="0.0.0.0",
+        allow_unsafe_werkzeug=True,  # dev only — Werkzeug is not prod-safe
     )
