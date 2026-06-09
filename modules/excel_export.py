@@ -80,17 +80,17 @@ def generate_excel(filename, df_path,
 
     kpis = [
         ("Total Rows",
-         f'{eda_stats.get("total_rows",0):,}', PUR),
+         f'{eda_stats.get("total_rows") or 0:,}', PUR),
         ("Columns",
-         str(eda_stats.get("total_cols",0)), PUR),
+         str(eda_stats.get("total_cols") or 0), PUR),
         ("Missing Data",
-         f'{eda_stats.get("missing_pct",0)}%', RED),
+         f'{eda_stats.get("missing_pct") or 0}%', RED),
         ("Dupes Removed",
-         str(eda_stats.get("dupes_removed",0)), RED),
+         str(eda_stats.get("dupes_removed") or 0), RED),
         ("Positive %",
-         f'{sentiment_stats.get("positive_pct",0)}%', GRN),
+         f'{sentiment_stats.get("positive_pct") or 0}%', GRN),
         ("Best Accuracy",
-         f'{sentiment_stats.get("ml",{}).get("best_accuracy",0)}%',
+         f'{(sentiment_stats.get("ml") or {}).get("best_accuracy", 0) or 0}%',
          GRN),
     ]
 
@@ -172,7 +172,7 @@ def generate_excel(filename, df_path,
     ws3["A1"].alignment = _center()
     ws3.row_dimensions[1].height = 30
 
-    num_summary = eda_stats.get("numeric_summary", {})
+    num_summary = eda_stats.get("numeric_summary") or {}
     if num_summary:
         headers = ["Column","Mean","Median",
                    "Std Dev","Min","Max","Outliers"]
@@ -249,7 +249,7 @@ def generate_excel(filename, df_path,
             vc.alignment = _center()
             _col_w(ws4, 2, 18)
 
-        ml = sentiment_stats.get("ml", {})
+        ml = sentiment_stats.get("ml") or {}
         if ml.get("available"):
             sr = len(pairs) + 5
             ws4.cell(row=sr-1, column=1,
@@ -301,11 +301,11 @@ def generate_excel(filename, df_path,
 
     sections = [
         ("All Keywords",
-         sentiment_stats.get("keywords",[]), 1),
+         sentiment_stats.get("keywords") or [], 1),
         ("Positive Keywords",
-         sentiment_stats.get("pos_keywords",[]), 3),
+         sentiment_stats.get("pos_keywords") or [], 3),
         ("Negative Keywords",
-         sentiment_stats.get("neg_keywords",[]), 5),
+         sentiment_stats.get("neg_keywords") or [], 5),
     ]
 
     for title, kws, sc in sections:

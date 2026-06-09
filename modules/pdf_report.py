@@ -92,24 +92,24 @@ def generate_pdf(filename, eda_stats,
     pairs = [
         ("File",              pdf.safe(str(filename))),
         ("Total Rows",        str(eda_stats.get(
-                                  "total_rows", 0))),
+                                  "total_rows") or 0)),
         ("Total Columns",     str(eda_stats.get(
-                                  "total_cols", 0))),
+                                  "total_cols") or 0)),
         ("Numeric Columns",   str(eda_stats.get(
-                                  "numeric_cols", 0))),
+                                  "numeric_cols") or 0)),
         ("Text Columns",      str(eda_stats.get(
-                                  "text_cols", 0))),
+                                  "text_cols") or 0)),
         ("Missing Data",      str(eda_stats.get(
-                                  "missing_pct", 0)) + "%"),
+                                  "missing_pct") or 0) + "%"),
         ("Duplicates Removed",str(eda_stats.get(
-                                  "dupes_removed", 0))),
+                                  "dupes_removed") or 0)),
     ]
     for i, (k, v) in enumerate(pairs):
         pdf.row(k, v, shade=bool(i % 2))
     pdf.ln(4)
 
     # ── Numeric summary ───────────────────────────────────
-    num = eda_stats.get("numeric_summary", {})
+    num = eda_stats.get("numeric_summary") or {}
     if num:
         pdf.section("Numeric Summary")
         pdf.set_font("Helvetica", "B", 8)
@@ -162,7 +162,7 @@ def generate_pdf(filename, eda_stats,
             pdf.row(k, v, shade=bool(i % 2))
         pdf.ln(4)
 
-        ml = sentiment_stats.get("ml", {})
+        ml = sentiment_stats.get("ml") or {}
         if ml.get("available"):
             pdf.section("ML Model Results")
             ml_pairs = [

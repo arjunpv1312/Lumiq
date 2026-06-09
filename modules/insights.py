@@ -2,10 +2,10 @@ def generate_insights(eda_stats, sentiment_stats):
     insights = []
 
     # ── EDA insights ──────────────────────────────────────
-    rows = eda_stats.get("total_rows", 0)
-    cols = eda_stats.get("total_cols", 0)
-    dupes = eda_stats.get("dupes_removed", 0)
-    missing = eda_stats.get("missing_pct", 0)
+    rows = eda_stats.get("total_rows") or 0
+    cols = eda_stats.get("total_cols") or 0
+    dupes = eda_stats.get("dupes_removed") or 0
+    missing = eda_stats.get("missing_pct") or 0
 
     insights.append({
         "icon":  "ti-table",
@@ -42,7 +42,7 @@ def generate_insights(eda_stats, sentiment_stats):
         })
 
     # ── Numeric insights ──────────────────────────────────
-    num_summary = eda_stats.get("numeric_summary", {})
+    num_summary = eda_stats.get("numeric_summary") or {}
     for col, s in list(num_summary.items())[:2]:
         skew = s.get("skewness", 0)
         out  = s.get("outliers", 0)
@@ -67,11 +67,11 @@ def generate_insights(eda_stats, sentiment_stats):
 
     # ── Sentiment insights ────────────────────────────────
     if sentiment_stats.get("available"):
-        pos = sentiment_stats.get("positive_pct", 0)
-        neg = sentiment_stats.get("negative_pct", 0)
-        neu = sentiment_stats.get("neutral_pct",  0)
-        col = sentiment_stats.get("text_column",  "text")
-        tot = sentiment_stats.get("total_samples", 0)
+        pos = sentiment_stats.get("positive_pct") or 0
+        neg = sentiment_stats.get("negative_pct") or 0
+        neu = sentiment_stats.get("neutral_pct")  or 0
+        col = sentiment_stats.get("text_column")  or "text"
+        tot = sentiment_stats.get("total_samples") or 0
 
         if pos >= 60:
             insights.append({
@@ -98,7 +98,7 @@ def generate_insights(eda_stats, sentiment_stats):
                          f"Negative: {neg}%. Balanced distribution.",
             })
 
-        ml = sentiment_stats.get("ml", {})
+        ml = sentiment_stats.get("ml") or {}
         if ml.get("available"):
             best  = ml.get("best_model", "")
             acc   = ml.get("best_accuracy", 0)
@@ -113,7 +113,7 @@ def generate_insights(eda_stats, sentiment_stats):
             })
 
         # Keyword insight
-        keywords = sentiment_stats.get("keywords", [])
+        keywords = sentiment_stats.get("keywords") or []
         if keywords:
             top3 = ", ".join(
                 f'"{k["word"]}' for k in keywords[:3])
