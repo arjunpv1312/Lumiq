@@ -638,3 +638,56 @@ FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\seren\\Lumiq
 2026-06-06 19:43:14,711 - __main__ - INFO - [download_csv:763] - CSV download (job_id: a2db0c4b-5065-486d-93e8-1e983696e6a8) from 127.0.0.1
 2026-06-06 19:43:14,734 - __main__ - INFO - [log_response:99] - Response: GET /download/csv - Status: 200 - Duration: 0.03s
 2026-06-06 19:43:14,737 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:43:14] "GET /download/csv HTTP/1.1" 200 -
+2026-06-06 19:55:44,347 - werkzeug - INFO - [_log:97] - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2026-06-06 19:55:44,411 - werkzeug - INFO - [_log:97] - [33mPress CTRL+C to quit[0m
+2026-06-06 19:56:07,671 - __main__ - INFO - [log_request:86] - Request: GET / from 127.0.0.1
+2026-06-06 19:56:07,704 - __main__ - INFO - [log_response:99] - Response: GET / - Status: 200 - Duration: 0.03s
+2026-06-06 19:56:07,708 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:56:07] "GET / HTTP/1.1" 200 -
+2026-06-06 19:56:07,968 - __main__ - INFO - [log_request:86] - Request: GET /static/css/style.css from 127.0.0.1
+2026-06-06 19:56:07,975 - __main__ - INFO - [log_request:86] - Request: GET /static/js/main.js from 127.0.0.1
+2026-06-06 19:56:08,568 - __main__ - INFO - [log_response:99] - Response: GET /static/css/style.css - Status: 304 - Duration: 0.60s
+2026-06-06 19:56:08,568 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:56:08] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-06-06 19:56:08,576 - __main__ - INFO - [log_response:99] - Response: GET /static/js/main.js - Status: 304 - Duration: 0.60s
+2026-06-06 19:56:08,579 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:56:08] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-06-06 19:56:18,111 - __main__ - INFO - [log_request:86] - Request: POST /upload from 127.0.0.1
+2026-06-06 19:56:18,114 - __main__ - INFO - [upload:402] - File uploaded: large_test_dataset.csv (job_id: 80cdfe48-2c54-4040-aa2d-c25abd7c6a14, size: 26298 bytes) from 127.0.0.1
+2026-06-06 19:56:18,140 - __main__ - INFO - [log_response:99] - Response: POST /upload - Status: 302 - Duration: 0.03s
+2026-06-06 19:56:18,140 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:56:18] "[32mPOST /upload HTTP/1.1[0m" 302 -
+2026-06-06 19:56:18,153 - __main__ - INFO - [log_request:86] - Request: GET /loading from 127.0.0.1
+2026-06-06 19:56:18,164 - __main__ - INFO - [log_response:99] - Response: GET /loading - Status: 200 - Duration: 0.01s
+2026-06-06 19:56:18,164 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:56:18] "GET /loading HTTP/1.1" 200 -
+2026-06-06 19:56:18,207 - __main__ - INFO - [log_request:86] - Request: GET /static/css/style.css from 127.0.0.1
+2026-06-06 19:56:18,215 - __main__ - INFO - [log_request:86] - Request: GET /static/js/main.js from 127.0.0.1
+2026-06-06 19:56:18,215 - __main__ - INFO - [log_response:99] - Response: GET /static/css/style.css - Status: 304 - Duration: 0.01s
+2026-06-06 19:56:18,215 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:56:18] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-06-06 19:56:18,215 - __main__ - INFO - [log_response:99] - Response: GET /static/js/main.js - Status: 304 - Duration: 0.00s
+2026-06-06 19:56:18,224 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:56:18] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-06-06 19:56:18,369 - __main__ - INFO - [log_request:86] - Request: GET /start_process from 127.0.0.1
+2026-06-06 19:56:18,404 - __main__ - INFO - [start_process:623] - Processing started (job_id: 80cdfe48-2c54-4040-aa2d-c25abd7c6a14) from 127.0.0.1
+2026-06-06 19:56:18,423 - __main__ - INFO - [log_response:99] - Response: GET /start_process - Status: 200 - Duration: 0.05s
+2026-06-06 19:56:18,427 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:56:18] "GET /start_process HTTP/1.1" 200 -
+2026-06-06 19:56:18,451 - __main__ - INFO - [log_request:86] - Request: GET /progress/80cdfe48-2c54-4040-aa2d-c25abd7c6a14 from 127.0.0.1
+2026-06-06 19:56:18,451 - __main__ - INFO - [log_response:99] - Response: GET /progress/80cdfe48-2c54-4040-aa2d-c25abd7c6a14 - Status: 200 - Duration: 0.00s
+2026-06-06 19:56:18,457 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:56:18] "GET /progress/80cdfe48-2c54-4040-aa2d-c25abd7c6a14 HTTP/1.1" 200 -
+2026-06-06 19:56:29,577 - __main__ - INFO - [_run_job_impl:472] - Job 80cdfe48-2c54-4040-aa2d-c25abd7c6a14: Starting pipeline
+2026-06-06 19:56:45,383 - __main__ - INFO - [_run_job_impl:569] - Job 80cdfe48-2c54-4040-aa2d-c25abd7c6a14: Pipeline completed successfully
+2026-06-06 19:56:46,368 - __main__ - INFO - [log_request:86] - Request: GET /results from 127.0.0.1
+2026-06-06 19:56:46,375 - __main__ - INFO - [results:693] - Results displayed (job_id: 80cdfe48-2c54-4040-aa2d-c25abd7c6a14) from 127.0.0.1
+2026-06-06 19:56:46,554 - __main__ - INFO - [log_response:99] - Response: GET /results - Status: 200 - Duration: 0.19s
+2026-06-06 19:56:46,554 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:56:46] "GET /results HTTP/1.1" 200 -
+2026-06-06 19:56:46,618 - __main__ - INFO - [log_request:86] - Request: GET /static/css/style.css from 127.0.0.1
+2026-06-06 19:56:46,626 - __main__ - INFO - [log_response:99] - Response: GET /static/css/style.css - Status: 304 - Duration: 0.01s
+2026-06-06 19:56:46,647 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:56:46] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-06-06 19:56:46,656 - __main__ - INFO - [log_request:86] - Request: GET /static/outputs/lumiq_wc_all.png from 127.0.0.1
+2026-06-06 19:56:46,670 - __main__ - INFO - [log_request:86] - Request: GET /static/outputs/lumiq_wc_pos.png from 127.0.0.1
+2026-06-06 19:56:46,740 - __main__ - INFO - [log_response:99] - Response: GET /static/outputs/lumiq_wc_pos.png - Status: 200 - Duration: 0.07s
+2026-06-06 19:56:46,742 - __main__ - INFO - [log_response:99] - Response: GET /static/outputs/lumiq_wc_all.png - Status: 200 - Duration: 0.09s
+2026-06-06 19:56:46,743 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:56:46] "GET /static/outputs/lumiq_wc_pos.png HTTP/1.1" 200 -
+2026-06-06 19:56:46,744 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:56:46] "GET /static/outputs/lumiq_wc_all.png HTTP/1.1" 200 -
+2026-06-06 19:56:46,780 - __main__ - INFO - [log_request:86] - Request: GET /static/outputs/lumiq_wc_neg.png from 127.0.0.1
+2026-06-06 19:56:46,791 - __main__ - INFO - [log_request:86] - Request: GET /static/js/main.js from 127.0.0.1
+2026-06-06 19:56:46,794 - __main__ - INFO - [log_response:99] - Response: GET /static/js/main.js - Status: 304 - Duration: 0.00s
+2026-06-06 19:56:46,796 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:56:46] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-06-06 19:56:46,817 - __main__ - INFO - [log_response:99] - Response: GET /static/outputs/lumiq_wc_neg.png - Status: 200 - Duration: 0.04s
+2026-06-06 19:56:46,821 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [06/Jun/2026 19:56:46] "GET /static/outputs/lumiq_wc_neg.png HTTP/1.1" 200 -

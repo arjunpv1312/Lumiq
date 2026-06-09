@@ -1,6 +1,11 @@
 import pandas as pd
 import numpy as np
 import os, uuid, re
+from pathlib import Path
+
+# Resolve the uploads directory relative to this module's parent (project root)
+_UPLOAD_DIR = Path(__file__).resolve().parent.parent / "uploads"
+
 
 SAMPLE_THRESHOLD = 10000
 SAMPLE_SIZE      = 5000
@@ -65,8 +70,10 @@ def clean_data(filepath):
                 pass
 
     clean_filename = "cleaned_" + str(uuid.uuid4())[:8] + ".csv"
-    clean_path     = os.path.join("uploads", clean_filename)
+    _UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+    clean_path     = str(_UPLOAD_DIR / clean_filename)
     df.to_csv(clean_path, index=False)
+
 
     meta = {
         "original_rows": original_rows,

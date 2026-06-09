@@ -4,9 +4,12 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from wordcloud import WordCloud, STOPWORDS
+from pathlib import Path
 
-OUTPUT_DIR = os.path.join("static","outputs")
+_PROJECT_ROOT = Path(__file__).resolve().parent.parent
+OUTPUT_DIR = str(_PROJECT_ROOT / "static" / "outputs")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
+
 
 # Custom color functions
 def purple_color(word, font_size, position,

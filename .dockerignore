@@ -1,0 +1,21 @@
+# .dockerignore — exclude from Docker build context
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.git/
+.gitignore
+.env
+*.log
+logs/
+data/
+uploads/
+static/outputs/
+*.db
+*.sqlite
+*.sqlite3
+node_modules/
+.DS_Store
+Thumbs.db
+migrations/
+*.md

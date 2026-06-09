@@ -1,16 +1,44 @@
-flask
-flask-sqlalchemy
-flask-wtf
-flask-limiter
-pandas
-numpy
-matplotlib
-seaborn
-scikit-learn
-nltk
-textblob
-vaderSentiment
-plotly
-fpdf2
-werkzeug
-python-dotenv
+# ── Core Flask ────────────────────────────────────────────────────────────────
+flask==3.0.3
+werkzeug==3.0.3
+flask-sqlalchemy==3.1.1
+flask-wtf==1.2.1
+flask-limiter==3.7.0
+python-dotenv==1.0.1
+
+# ── Task Queue (Celery + Redis) ───────────────────────────────────────────────
+celery[redis]==5.3.6
+redis==5.0.3
+flower==2.0.1
+
+# ── Database ─────────────────────────────────────────────────────────────────
+psycopg2-binary==2.9.9
+flask-migrate==4.0.7
+
+# ── WebSockets ────────────────────────────────────────────────────────────────
+flask-socketio==5.3.6
+python-socketio==5.10.0
+gevent==24.2.1
+gevent-websocket==0.10.1
+
+# ── File Storage (AWS S3) ────────────────────────────────────────────────────
+boto3==1.34.0
+
+# ── Data & NLP ────────────────────────────────────────────────────────────────
+pandas==2.2.2
+numpy==1.26.4
+matplotlib==3.9.0
+seaborn==0.13.2
+scikit-learn==1.5.0
+nltk==3.8.1
+textblob==0.18.0
+vaderSentiment==3.3.2
+plotly==5.22.0
+wordcloud==1.9.3
+
+# ── Reporting ────────────────────────────────────────────────────────────────
+fpdf2==2.7.9
+openpyxl==3.1.2
+
+# ── Utilities ────────────────────────────────────────────────────────────────
+joblib==1.4.2

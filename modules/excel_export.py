@@ -1,5 +1,10 @@
 import os
 import pandas as pd
+from pathlib import Path
+
+_PROJECT_ROOT = Path(__file__).resolve().parent.parent
+_OUTPUT_DIR   = _PROJECT_ROOT / "static" / "outputs"
+
 
 try:
     from openpyxl import Workbook
@@ -35,9 +40,9 @@ def generate_excel(filename, df_path,
     if not OPENPYXL:
         return None
 
-    out_path = os.path.join(
-        "static", "outputs", "lumiq_report.xlsx")
-    os.makedirs(os.path.dirname(out_path), exist_ok=True)
+    _OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    out_path = str(_OUTPUT_DIR / "lumiq_report.xlsx")
+
 
     try:
         df = pd.read_csv(df_path)

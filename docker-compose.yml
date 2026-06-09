@@ -1,0 +1,135 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Lumiq — Multi-service Docker Compose
+#
+# Services:
+#   postgres      — PostgreSQL 16 database
+#   redis         — Redis 7 broker/backend/rate-limit store
+#   flask         — Lumiq Flask + SocketIO web server (gevent)
+#   celery_worker — Celery pipeline worker
+#   flower        — Celery monitoring UI  (http://localhost:5555)
+#
+# Quick start:
+#   cp .env.example .env   # fill in your secrets
+#   docker compose up --build
+#
+# Production note: set FLASK_ENV=production and use a proper secret key.
+# ─────────────────────────────────────────────────────────────────────────────
+
+services:
+
+  # ── PostgreSQL ─────────────────────────────────────────────────────────────
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB:       ${POSTGRES_DB:-lumiq_db}
+      POSTGRES_USER:     ${POSTGRES_USER:-lumiq}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-lumiq_pass}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-lumiq} -d ${POSTGRES_DB:-lumiq_db}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ── Redis ──────────────────────────────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    command: redis-server --maxmemory 256mb --maxmemory-policy allkeys-lru
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ── Flask + SocketIO ───────────────────────────────────────────────────────
+  flask:
+    build:
+      context: .
+      target: runtime
+    restart: unless-stopped
+    command: >
+      python -c "
+      from app import socketio, app;
+      socketio.run(app, host='0.0.0.0', port=5000, use_reloader=False)
+      "
+    env_file: .env
+    environment:
+      DATABASE_URL:          postgresql://${POSTGRES_USER:-lumiq}:${POSTGRES_PASSWORD:-lumiq_pass}@postgres:5432/${POSTGRES_DB:-lumiq_db}
+      REDIS_URL:             redis://redis:6379/0
+      CELERY_BROKER_URL:     redis://redis:6379/0
+      CELERY_RESULT_BACKEND: redis://redis:6379/1
+      SOCKETIO_MESSAGE_QUEUE: redis://redis:6379/0
+      RATELIMIT_STORAGE_URL:  redis://redis:6379/2
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./uploads:/app/uploads
+      - ./static/outputs:/app/static/outputs
+      - ./logs:/app/logs
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  # ── Celery Worker ──────────────────────────────────────────────────────────
+  celery_worker:
+    build:
+      context: .
+      target: runtime
+    restart: unless-stopped
+    command: >
+      celery -A tasks.celery worker
+        --loglevel=info
+        --concurrency=${CELERY_WORKER_CONCURRENCY:-2}
+        --queues=celery
+        --hostname=worker@%h
+    env_file: .env
+    environment:
+      DATABASE_URL:          postgresql://${POSTGRES_USER:-lumiq}:${POSTGRES_PASSWORD:-lumiq_pass}@postgres:5432/${POSTGRES_DB:-lumiq_db}
+      REDIS_URL:             redis://redis:6379/0
+      CELERY_BROKER_URL:     redis://redis:6379/0
+      CELERY_RESULT_BACKEND: redis://redis:6379/1
+      SOCKETIO_MESSAGE_QUEUE: redis://redis:6379/0
+    volumes:
+      - ./uploads:/app/uploads
+      - ./static/outputs:/app/static/outputs
+      - ./logs:/app/logs
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  # ── Flower (Celery monitoring) ─────────────────────────────────────────────
+  flower:
+    build:
+      context: .
+      target: runtime
+    restart: unless-stopped
+    command: >
+      celery -A tasks.celery flower
+        --port=5555
+        --broker=redis://redis:6379/0
+        --broker_api=redis://redis:6379/0
+    env_file: .env
+    environment:
+      CELERY_BROKER_URL:     redis://redis:6379/0
+      CELERY_RESULT_BACKEND: redis://redis:6379/1
+    ports:
+      - "5555:5555"
+    depends_on:
+      - redis
+
+volumes:
+  postgres_data:
+  redis_data:

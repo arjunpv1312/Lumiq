@@ -1,7 +1,11 @@
 import pandas as pd
 import numpy as np
 import re, os, pickle, warnings, time
+from pathlib import Path
 warnings.filterwarnings("ignore")
+
+_PROJECT_ROOT = Path(__file__).resolve().parent.parent
+_OUTPUT_DIR   = _PROJECT_ROOT / "static" / "outputs"
 
 import nltk
 from nltk.corpus import stopwords
@@ -24,9 +28,10 @@ from sklearn.metrics import (
 from sklearn.preprocessing import LabelEncoder
 from joblib import Parallel, delayed, Memory
 
-CACHE_DIR = os.path.join("static", "outputs", "cache")
+CACHE_DIR = str(_OUTPUT_DIR / "cache")
 os.makedirs(CACHE_DIR, exist_ok=True)
 memory = Memory(CACHE_DIR, verbose=0)
+
 
 for pkg in ["stopwords", "wordnet", "omw-1.4"]:
     try:
@@ -131,7 +136,8 @@ def predict_live(text):
         "ml_label":      None,
         "ml_confidence": None,
     }
-    model_path = os.path.join("static","outputs","best_model.pkl")
+    model_path = str(_OUTPUT_DIR / "best_model.pkl")
+
     if os.path.exists(model_path):
         try:
             if _saved_pipeline is None:
@@ -419,9 +425,10 @@ def run_sentiment(df):
             best   = valid[best_n]
 
             set_progress(8,"Saving model...", 88)
-            out_dir    = os.path.join("static","outputs")
+            out_dir    = str(_OUTPUT_DIR)
             os.makedirs(out_dir, exist_ok=True)
-            model_path = os.path.join(out_dir,"best_model.pkl")
+            model_path = str(_OUTPUT_DIR / "best_model.pkl")
+
             if "pipeline" in best:
                 with open(model_path,"wb") as f:
                     pickle.dump(best["pipeline"],f)
