@@ -4103,3 +4103,60 @@ kombu.exceptions.OperationalError: Error 10061 connecting to localhost:6379. No 
 2026-06-09 15:58:17,841 - __main__ - INFO - [log_request:126] - Request: GET /results from 127.0.0.1
 2026-06-09 15:58:17,848 - __main__ - INFO - [log_response:132] - Response: GET /results — Status: 302 — Duration: 0.01s
 2026-06-09 15:58:17,849 - werkzeug - INFO - [_log:97] - 127.0.0.1 - - [09/Jun/2026 15:58:17] "[32mGET /results HTTP/1.1[0m" 302 -
+2026-06-09 16:02:17,794 - werkzeug - INFO - [_log:97] - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5005
+ * Running on http://192.168.242.81:5005
+2026-06-09 16:02:17,799 - werkzeug - INFO - [_log:97] - [33mPress CTRL+C to quit[0m
+2026-06-09 16:02:24,435 - __main__ - INFO - [log_request:126] - Request: GET / from 192.168.242.81
+2026-06-09 16:02:24,512 - __main__ - INFO - [log_response:132] - Response: GET / — Status: 200 — Duration: 0.08s
+2026-06-09 16:02:24,518 - werkzeug - INFO - [_log:97] - 192.168.242.81 - - [09/Jun/2026 16:02:24] "GET / HTTP/1.1" 200 -
+2026-06-09 16:02:24,877 - __main__ - INFO - [log_request:126] - Request: GET /static/css/style.css from 192.168.242.81
+2026-06-09 16:02:24,882 - __main__ - INFO - [log_request:126] - Request: GET /static/js/main.js from 192.168.242.81
+2026-06-09 16:02:24,906 - __main__ - INFO - [log_response:132] - Response: GET /static/css/style.css — Status: 200 — Duration: 0.03s
+2026-06-09 16:02:24,911 - werkzeug - INFO - [_log:97] - 192.168.242.81 - - [09/Jun/2026 16:02:24] "GET /static/css/style.css HTTP/1.1" 200 -
+2026-06-09 16:02:24,914 - __main__ - INFO - [log_response:132] - Response: GET /static/js/main.js — Status: 200 — Duration: 0.03s
+2026-06-09 16:02:24,932 - werkzeug - INFO - [_log:97] - 192.168.242.81 - - [09/Jun/2026 16:02:24] "GET /static/js/main.js HTTP/1.1" 200 -
+2026-06-09 16:02:25,827 - __main__ - INFO - [log_request:126] - Request: GET /favicon.ico from 192.168.242.81
+2026-06-09 16:02:25,839 - __main__ - INFO - [log_response:132] - Response: GET /favicon.ico — Status: 404 — Duration: 0.01s
+2026-06-09 16:02:25,840 - werkzeug - INFO - [_log:97] - 192.168.242.81 - - [09/Jun/2026 16:02:25] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-06-09 16:02:33,930 - __main__ - INFO - [log_request:126] - Request: POST /upload from 192.168.242.81
+2026-06-09 16:02:33,937 - __main__ - INFO - [upload:370] - File uploaded: large_test_dataset.csv (job_id: c29c891a-37b5-4c00-b794-50f5624f99fc, size: 26298 bytes) from 192.168.242.81
+2026-06-09 16:02:33,990 - __main__ - INFO - [log_response:132] - Response: POST /upload — Status: 302 — Duration: 0.06s
+2026-06-09 16:02:33,991 - werkzeug - INFO - [_log:97] - 192.168.242.81 - - [09/Jun/2026 16:02:33] "[32mPOST /upload HTTP/1.1[0m" 302 -
+2026-06-09 16:02:34,028 - __main__ - INFO - [log_request:126] - Request: GET /loading from 192.168.242.81
+2026-06-09 16:02:34,028 - __main__ - INFO - [log_response:132] - Response: GET /loading — Status: 200 — Duration: 0.00s
+2026-06-09 16:02:34,039 - werkzeug - INFO - [_log:97] - 192.168.242.81 - - [09/Jun/2026 16:02:34] "GET /loading HTTP/1.1" 200 -
+2026-06-09 16:02:34,238 - __main__ - INFO - [log_request:126] - Request: GET /static/css/style.css from 192.168.242.81
+2026-06-09 16:02:34,241 - __main__ - INFO - [log_response:132] - Response: GET /static/css/style.css — Status: 304 — Duration: 0.00s
+2026-06-09 16:02:34,248 - __main__ - INFO - [log_request:126] - Request: GET /static/js/main.js from 192.168.242.81
+2026-06-09 16:02:34,248 - werkzeug - INFO - [_log:97] - 192.168.242.81 - - [09/Jun/2026 16:02:34] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-06-09 16:02:34,253 - __main__ - INFO - [log_response:132] - Response: GET /static/js/main.js — Status: 304 — Duration: 0.01s
+2026-06-09 16:02:34,255 - werkzeug - INFO - [_log:97] - 192.168.242.81 - - [09/Jun/2026 16:02:34] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-06-09 16:02:34,678 - __main__ - INFO - [log_request:126] - Request: GET /start_process from 192.168.242.81
+2026-06-09 16:02:34,811 - __main__ - INFO - [start_process:611] - Pipeline dispatched — job_id=c29c891a-37b5-4c00-b794-50f5624f99fc, task_id=c5ac53d9-ea3e-4691-85ef-4256ec2ac589 from 192.168.242.81
+2026-06-09 16:02:34,821 - __main__ - INFO - [log_response:132] - Response: GET /start_process — Status: 200 — Duration: 0.14s
+2026-06-09 16:02:34,825 - werkzeug - INFO - [_log:97] - 192.168.242.81 - - [09/Jun/2026 16:02:34] "GET /start_process HTTP/1.1" 200 -
+2026-06-09 16:02:34,851 - __main__ - INFO - [log_request:126] - Request: GET /progress/c29c891a-37b5-4c00-b794-50f5624f99fc from 192.168.242.81
+2026-06-09 16:02:34,855 - __main__ - INFO - [log_response:132] - Response: GET /progress/c29c891a-37b5-4c00-b794-50f5624f99fc — Status: 200 — Duration: 0.00s
+2026-06-09 16:02:34,886 - werkzeug - INFO - [_log:97] - 192.168.242.81 - - [09/Jun/2026 16:02:34] "GET /progress/c29c891a-37b5-4c00-b794-50f5624f99fc HTTP/1.1" 200 -
+2026-06-09 16:02:41,688 - __main__ - INFO - [_run_pipeline_thread:585] - Pipeline completed — job_id=c29c891a-37b5-4c00-b794-50f5624f99fc
+2026-06-09 16:02:43,049 - __main__ - INFO - [log_request:126] - Request: GET /results from 192.168.242.81
+2026-06-09 16:02:43,067 - __main__ - INFO - [results:698] - Results displayed (job_id: c29c891a-37b5-4c00-b794-50f5624f99fc) from 192.168.242.81
+2026-06-09 16:02:43,088 - __main__ - INFO - [log_response:132] - Response: GET /results — Status: 200 — Duration: 0.04s
+2026-06-09 16:02:43,089 - werkzeug - INFO - [_log:97] - 192.168.242.81 - - [09/Jun/2026 16:02:43] "GET /results HTTP/1.1" 200 -
+2026-06-09 16:02:43,270 - __main__ - INFO - [log_request:126] - Request: GET /static/css/style.css from 192.168.242.81
+2026-06-09 16:02:43,271 - __main__ - INFO - [log_response:132] - Response: GET /static/css/style.css — Status: 304 — Duration: 0.00s
+2026-06-09 16:02:43,272 - werkzeug - INFO - [_log:97] - 192.168.242.81 - - [09/Jun/2026 16:02:43] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-06-09 16:02:43,335 - __main__ - INFO - [log_request:126] - Request: GET /static/outputs/lumiq_wc_all.png from 192.168.242.81
+2026-06-09 16:02:43,355 - __main__ - INFO - [log_request:126] - Request: GET /static/outputs/lumiq_wc_pos.png from 192.168.242.81
+2026-06-09 16:02:43,382 - __main__ - INFO - [log_response:132] - Response: GET /static/outputs/lumiq_wc_all.png — Status: 200 — Duration: 0.05s
+2026-06-09 16:02:43,382 - werkzeug - INFO - [_log:97] - 192.168.242.81 - - [09/Jun/2026 16:02:43] "GET /static/outputs/lumiq_wc_all.png HTTP/1.1" 200 -
+2026-06-09 16:02:43,382 - __main__ - INFO - [log_response:132] - Response: GET /static/outputs/lumiq_wc_pos.png — Status: 200 — Duration: 0.03s
+2026-06-09 16:02:43,389 - werkzeug - INFO - [_log:97] - 192.168.242.81 - - [09/Jun/2026 16:02:43] "GET /static/outputs/lumiq_wc_pos.png HTTP/1.1" 200 -
+2026-06-09 16:02:43,412 - __main__ - INFO - [log_request:126] - Request: GET /static/outputs/lumiq_wc_neg.png from 192.168.242.81
+2026-06-09 16:02:43,417 - __main__ - INFO - [log_request:126] - Request: GET /static/js/main.js from 192.168.242.81
+2026-06-09 16:02:43,419 - __main__ - INFO - [log_response:132] - Response: GET /static/js/main.js — Status: 304 — Duration: 0.00s
+2026-06-09 16:02:43,420 - werkzeug - INFO - [_log:97] - 192.168.242.81 - - [09/Jun/2026 16:02:43] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-06-09 16:02:43,438 - __main__ - INFO - [log_response:132] - Response: GET /static/outputs/lumiq_wc_neg.png — Status: 200 — Duration: 0.03s
+2026-06-09 16:02:43,438 - werkzeug - INFO - [_log:97] - 192.168.242.81 - - [09/Jun/2026 16:02:43] "GET /static/outputs/lumiq_wc_neg.png HTTP/1.1" 200 -
