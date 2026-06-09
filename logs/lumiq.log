@@ -721,3 +721,161 @@ FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\seren\\Lumiq
 2026-06-09 13:37:01,138 - werkzeug - INFO - [_log:97] - 192.168.242.81 - - [09/Jun/2026 13:37:01] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
 2026-06-09 13:37:01,138 - __main__ - INFO - [log_response:132] - Response: GET /static/js/main.js — Status: 304 — Duration: 0.01s
 2026-06-09 13:37:01,143 - werkzeug - INFO - [_log:97] - 192.168.242.81 - - [09/Jun/2026 13:37:01] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-06-09 13:37:09,431 - __main__ - INFO - [log_request:126] - Request: POST /upload from 192.168.242.81
+2026-06-09 13:37:09,443 - __main__ - INFO - [upload:370] - File uploaded: large_test_dataset.csv (job_id: 7aaa4262-7901-4a9c-8c46-fb8e4fee6523, size: 26298 bytes) from 192.168.242.81
+2026-06-09 13:37:09,457 - __main__ - INFO - [log_response:132] - Response: POST /upload — Status: 302 — Duration: 0.03s
+2026-06-09 13:37:09,462 - werkzeug - INFO - [_log:97] - 192.168.242.81 - - [09/Jun/2026 13:37:09] "[32mPOST /upload HTTP/1.1[0m" 302 -
+2026-06-09 13:37:09,502 - __main__ - INFO - [log_request:126] - Request: GET /loading from 192.168.242.81
+2026-06-09 13:37:09,516 - __main__ - INFO - [log_response:132] - Response: GET /loading — Status: 200 — Duration: 0.01s
+2026-06-09 13:37:09,523 - werkzeug - INFO - [_log:97] - 192.168.242.81 - - [09/Jun/2026 13:37:09] "GET /loading HTTP/1.1" 200 -
+2026-06-09 13:37:09,810 - __main__ - INFO - [log_request:126] - Request: GET /static/css/style.css from 192.168.242.81
+2026-06-09 13:37:09,814 - __main__ - INFO - [log_response:132] - Response: GET /static/css/style.css — Status: 304 — Duration: 0.01s
+2026-06-09 13:37:09,819 - __main__ - INFO - [log_request:126] - Request: GET /static/js/main.js from 192.168.242.81
+2026-06-09 13:37:09,819 - werkzeug - INFO - [_log:97] - 192.168.242.81 - - [09/Jun/2026 13:37:09] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-06-09 13:37:09,819 - __main__ - INFO - [log_response:132] - Response: GET /static/js/main.js — Status: 304 — Duration: 0.00s
+2026-06-09 13:37:09,822 - werkzeug - INFO - [_log:97] - 192.168.242.81 - - [09/Jun/2026 13:37:09] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-06-09 13:37:19,790 - __main__ - INFO - [log_request:126] - Request: GET /start_process from 192.168.242.81
+2026-06-09 13:37:19,874 - models - ERROR - [store_result:190] - Failed to store result for job 7aaa4262-7901-4a9c-8c46-fb8e4fee6523: (sqlite3.OperationalError) no such column: job_results.celery_task_id
+[SQL: SELECT job_results.id AS job_results_id, job_results.job_id AS job_results_job_id, job_results.celery_task_id AS job_results_celery_task_id, job_results.filename AS job_results_filename, job_results.status AS job_results_status, job_results.progress AS job_results_progress, job_results.data AS job_results_data, job_results.error AS job_results_error, job_results.trace AS job_results_trace, job_results.created_at AS job_results_created_at, job_results.updated_at AS job_results_updated_at, job_results.completed_at AS job_results_completed_at 
+FROM job_results 
+WHERE job_results.job_id = ?
+ LIMIT ? OFFSET ?]
+[parameters: ('7aaa4262-7901-4a9c-8c46-fb8e4fee6523', 1, 0)]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2026-06-09 13:37:23,667 - models - INFO - [init_db:143] - Database initialised successfully
+2026-06-09 13:37:32,524 - celery.backends.redis - ERROR - [on_connection_error:391] - Connection to Redis lost: Retry (0/20) now.
+2026-06-09 13:37:36,562 - celery.backends.redis - ERROR - [on_connection_error:391] - Connection to Redis lost: Retry (1/20) in 1.00 second.
+2026-06-09 13:37:41,615 - celery.backends.redis - ERROR - [on_connection_error:391] - Connection to Redis lost: Retry (2/20) in 1.00 second.
+2026-06-09 13:37:46,658 - celery.backends.redis - ERROR - [on_connection_error:391] - Connection to Redis lost: Retry (3/20) in 1.00 second.
+2026-06-09 13:37:51,732 - celery.backends.redis - ERROR - [on_connection_error:391] - Connection to Redis lost: Retry (4/20) in 1.00 second.
+2026-06-09 13:37:56,817 - celery.backends.redis - ERROR - [on_connection_error:391] - Connection to Redis lost: Retry (5/20) in 1.00 second.
+2026-06-09 13:38:01,878 - celery.backends.redis - ERROR - [on_connection_error:391] - Connection to Redis lost: Retry (6/20) in 1.00 second.
+2026-06-09 13:38:06,971 - celery.backends.redis - ERROR - [on_connection_error:391] - Connection to Redis lost: Retry (7/20) in 1.00 second.
+2026-06-09 13:38:12,069 - celery.backends.redis - ERROR - [on_connection_error:391] - Connection to Redis lost: Retry (8/20) in 1.00 second.
+2026-06-09 13:38:17,142 - celery.backends.redis - ERROR - [on_connection_error:391] - Connection to Redis lost: Retry (9/20) in 1.00 second.
+2026-06-09 13:38:22,200 - celery.backends.redis - ERROR - [on_connection_error:391] - Connection to Redis lost: Retry (10/20) in 1.00 second.
+2026-06-09 13:38:27,297 - celery.backends.redis - ERROR - [on_connection_error:391] - Connection to Redis lost: Retry (11/20) in 1.00 second.
+2026-06-09 13:38:32,377 - celery.backends.redis - ERROR - [on_connection_error:391] - Connection to Redis lost: Retry (12/20) in 1.00 second.
+2026-06-09 13:38:37,440 - celery.backends.redis - ERROR - [on_connection_error:391] - Connection to Redis lost: Retry (13/20) in 1.00 second.
+2026-06-09 13:38:42,501 - celery.backends.redis - ERROR - [on_connection_error:391] - Connection to Redis lost: Retry (14/20) in 1.00 second.
+2026-06-09 13:38:47,569 - celery.backends.redis - ERROR - [on_connection_error:391] - Connection to Redis lost: Retry (15/20) in 1.00 second.
+2026-06-09 13:38:52,632 - celery.backends.redis - ERROR - [on_connection_error:391] - Connection to Redis lost: Retry (16/20) in 1.00 second.
+2026-06-09 13:38:57,689 - celery.backends.redis - ERROR - [on_connection_error:391] - Connection to Redis lost: Retry (17/20) in 1.00 second.
+2026-06-09 13:39:02,747 - celery.backends.redis - ERROR - [on_connection_error:391] - Connection to Redis lost: Retry (18/20) in 1.00 second.
+2026-06-09 13:39:07,826 - celery.backends.redis - ERROR - [on_connection_error:391] - Connection to Redis lost: Retry (19/20) in 1.00 second.
+2026-06-09 13:39:12,889 - celery.backends.redis - CRITICAL - [reconnect_on_error:132] - 
+Retry limit exceeded while trying to reconnect to the Celery redis result store backend. The Celery application must be restarted.
+
+2026-06-09 13:39:12,889 - __main__ - ERROR - [start_process:474] - Start process error for job 7aaa4262-7901-4a9c-8c46-fb8e4fee6523: Error 10061 connecting to localhost:6379. No connection could be made because the target machine actively refused it.
+Traceback (most recent call last):
+  File "C:\Users\seren\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\redis\connection.py", line 276, in connect
+    sock = self.retry.call_with_retry(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\seren\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\redis\retry.py", line 46, in call_with_retry
+    return do()
+           ^^^^
+  File "C:\Users\seren\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\redis\connection.py", line 277, in <lambda>
+    lambda: self._connect(), lambda error: self.disconnect(error)
+            ^^^^^^^^^^^^^^^
+  File "C:\Users\seren\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\redis\connection.py", line 639, in _connect
+    raise err
+  File "C:\Users\seren\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\redis\connection.py", line 627, in _connect
+    sock.connect(socket_address)
+ConnectionRefusedError: [WinError 10061] No connection could be made because the target machine actively refused it
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\seren\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\celery\backends\redis.py", line 127, in reconnect_on_error
+    yield
+  File "C:\Users\seren\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\celery\backends\redis.py", line 177, in _consume_from
+    self._pubsub.subscribe(key)
+  File "C:\Users\seren\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\redis\client.py", line 927, in subscribe
+    ret_val = self.execute_command("SUBSCRIBE", *new_channels.keys())
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\seren\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\redis\client.py", line 756, in execute_command
+    self.connection = self.connection_pool.get_connection(
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\seren\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\redis\connection.py", line 1104, in get_connection
+    connection.connect()
+  File "C:\Users\seren\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\redis\connection.py", line 282, in connect
+    raise ConnectionError(self._error_message(e))
+redis.exceptions.ConnectionError: Error 10061 connecting to localhost:6379. No connection could be made because the target machine actively refused it.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\seren\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\redis\connection.py", line 276, in connect
+    sock = self.retry.call_with_retry(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\seren\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\redis\retry.py", line 46, in call_with_retry
+    return do()
+           ^^^^
+  File "C:\Users\seren\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\redis\connection.py", line 277, in <lambda>
+    lambda: self._connect(), lambda error: self.disconnect(error)
+            ^^^^^^^^^^^^^^^
+  File "C:\Users\seren\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\redis\connection.py", line 639, in _connect
+    raise err
+  File "C:\Users\seren\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\redis\connection.py", line 627, in _connect
+    sock.connect(socket_address)
+ConnectionRefusedError: [WinError 10061] No connection could be made because the target machine actively refused it
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\seren\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\kombu\connection.py", line 474, in _reraise_as_library_errors
+    yield
+  File "C:\Users\seren\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\celery\app\base.py", line 798, in send_task
+    self.backend.on_task_call(P, task_id)
+  File "C:\Users\seren\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\celery\backends\redis.py", line 373, in on_task_call
+    self.result_consumer.consume_from(task_id)
+  File "C:\Users\seren\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\celery\backends\redis.py", line 169, in consume_from
+    return self.start(task_id)
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\seren\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\celery\backends\redis.py", line 147, in start
+    self._consume_from(initial_task_id)
+  File "C:\Users\seren\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\celery\backends\redis.py", line 176, in _consume_from
+    with self.reconnect_on_error():
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "C:\Users\seren\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\celery\backends\redis.py", line 130, in reconnect_on_error
+    self._ensure(self._reconnect_pubsub, ())
+  File "C:\Users\seren\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\celery\backends\redis.py", line 384, in ensure
+    return retry_over_time(
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\seren\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\kombu\utils\functional.py", line 318, in retry_over_time
+    return fun(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\seren\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\celery\backends\redis.py", line 106, in _reconnect_pubsub
+    metas = self.backend.client.mget(self.subscribed_to)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\seren\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\redis\commands\core.py", line 2016, in mget
+    return self.execute_command("MGET", *args, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\seren\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\redis\client.py", line 540, in execute_command
+    conn = self.connection or pool.get_connection(command_name, **options)
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\seren\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\redis\connection.py", line 1104, in get_connection
+    connection.connect()
+  File "C:\Users\seren\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\redis\connection.py", line 282, in connect
+    raise ConnectionError(self._error_message(e))
+redis.exceptions.ConnectionError: Error 10061 connecting to localhost:6379. No connection could be made because the target machine actively refused it.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\seren\Lumiq\app.py", line 453, in start_process
+    task = run_pipeline.apply_async(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\seren\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\celery\app\task.py", line 594, in apply_async
+    return app.send_task(
+           ^^^^^^^^^^^^^^
+  File "C:\Users\seren\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\celery\app\base.py", line 796, in send_task
+    with P.connection._reraise_as_library_errors():
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\contextlib.py", line 158, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "C:\Users\seren\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\kombu\connection.py", line 478, in _reraise_as_library_errors
+    raise ConnectionError(str(exc)) from exc
+kombu.exceptions.OperationalError: Error 10061 connecting to localhost:6379. No connection could be made because the target machine actively refused it.
+2026-06-09 13:39:13,091 - __main__ - INFO - [log_response:132] - Response: GET /start_process — Status: 500 — Duration: 113.30s
+2026-06-09 13:39:13,095 - werkzeug - INFO - [_log:97] - 192.168.242.81 - - [09/Jun/2026 13:39:13] "[35m[1mGET /start_process HTTP/1.1[0m" 500 -
