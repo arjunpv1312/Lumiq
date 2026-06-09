@@ -42,6 +42,7 @@ class Config:
     ALLOWED_EXTENSIONS = {"csv"}
 
     # ── Rate limiting settings ────────────────────────────────────────────────
+    RATELIMIT_ENABLED = True
     RATELIMIT_STORAGE_URL = os.getenv("RATELIMIT_STORAGE_URL", "redis://localhost:6379/2")
     RATELIMIT_DEFAULT = os.getenv("RATELIMIT_DEFAULT", "200 per day, 50 per hour")
     RATELIMIT_UPLOAD = os.getenv("RATELIMIT_UPLOAD", "5 per minute")
@@ -129,6 +130,7 @@ class DevelopmentConfig(Config):
     TESTING = False
     SESSION_COOKIE_SECURE = False
     WTF_CSRF_SSL_STRICT = False
+    RATELIMIT_ENABLED = False
     # Use in-memory rate limiting; no Redis required in dev
     RATELIMIT_STORAGE_URL = os.getenv("RATELIMIT_STORAGE_URL", "memory://")
     # SQLite doesn't support pool_size/max_overflow — only pre_ping is safe
@@ -164,6 +166,7 @@ class TestingConfig(Config):
     TESTING = True
     SQLALCHEMY_DATABASE_URI = "sqlite:///:memory:"
     WTF_CSRF_ENABLED = False
+    RATELIMIT_ENABLED = False
     CELERY_TASK_ALWAYS_EAGER = True   # run tasks synchronously in tests
     CELERY_TASK_EAGER_PROPAGATES = True
     SOCKETIO_ASYNC_MODE = "threading"

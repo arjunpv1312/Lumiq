@@ -10,7 +10,7 @@ import time
 import json
 import sys
 
-BASE = "http://127.0.0.1:5000"
+BASE = "http://127.0.0.1:5005"
 session = requests.Session()
 
 # Step 1: Load sample data
