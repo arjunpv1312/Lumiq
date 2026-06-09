@@ -424,7 +424,11 @@ def loading():
 @app.route("/start_process")
 @limiter.limit("10 per minute")
 def start_process():
-    """Validate the uploaded file and dispatch a Celery pipeline task."""
+    """Validate the uploaded file and dispatch the analytics pipeline.
+
+    In development mode (no Redis/Celery), runs the pipeline directly
+    in a background thread.  In production, dispatches to Celery.
+    """
     user_ip  = request.remote_addr
     job_id   = session.get("job_id")
     filepath = session.get("filepath")
@@ -448,27 +452,167 @@ def start_process():
             "filename": filename,
         })
 
-        # ── Dispatch to Celery (replaces threading.Thread) ────────────────────
-        from tasks import run_pipeline
-        task = run_pipeline.apply_async(
-            args=[job_id, filepath, filename],
-            task_id=None,         # let Celery generate a UUID task ID
-            countdown=0,          # start immediately
-        )
+        use_celery = not config.DEBUG  # Production → Celery; Dev → thread
 
-        # Persist the Celery task ID for later status lookups
+        if use_celery:
+            # ── Production: dispatch to Celery worker ─────────────────────────
+            from tasks import run_pipeline
+            task = run_pipeline.apply_async(
+                args=[job_id, filepath, filename],
+                task_id=None,
+                countdown=0,
+            )
+            task_id = task.id
+        else:
+            # ── Development: run pipeline in a background thread ──────────────
+            import threading
+            task_id = str(uuid.uuid4())
+
+            def _run_pipeline_thread(_app, _job_id, _filepath, _filename, _task_id):
+                """Run pipeline inside a Flask app context (for DB access)."""
+                with _app.app_context():
+                    try:
+                        from modules.cleaner       import clean_data
+                        from modules.eda           import run_eda
+                        from modules.sentiment     import run_sentiment, clean_series, vader_batch, detect_ground_truth
+                        from modules.dashboard     import run_dashboard
+                        from modules.wordcloud_gen import generate_wordclouds
+                        from modules.insights      import generate_insights
+                        from modules.pdf_report    import generate_pdf
+                        from modules.topic_model   import extract_topics
+                        from modules.excel_export  import generate_excel
+                        from storage               import get_storage
+                        import traceback
+
+                        storage = get_storage()
+
+                        # Stage 1: Cleaning
+                        db_store_result(_job_id, {"status": "cleaning", "pct": 8})
+                        df, clean_path, clean_meta = clean_data(_filepath)
+
+                        clean_key = f"outputs/{_job_id}/cleaned.csv"
+                        storage.save(clean_path, clean_key)
+                        resolved_clean_path = storage.get_url(clean_key)
+
+                        # Stage 2: EDA
+                        db_store_result(_job_id, {"status": "eda", "pct": 20})
+                        eda_stats = run_eda(df, clean_meta)
+
+                        # Stage 3: Sentiment
+                        db_store_result(_job_id, {"status": "sentiment", "pct": 40})
+                        sentiment_stats = run_sentiment(df)
+
+                        if sentiment_stats.get("available") and "text_column" in sentiment_stats:
+                            text_col = sentiment_stats["text_column"]
+                            df["clean_text"] = clean_series(df[text_col])
+                            df["vader_label"] = vader_batch(df["clean_text"].tolist())
+                            gt_col, gt_type = detect_ground_truth(df)
+                            if gt_col:
+                                if gt_type == "rating":
+                                    def _rating_to_sent(r):
+                                        try:
+                                            val = float(r)
+                                            return "Positive" if val >= 4.0 else ("Negative" if val <= 2.0 else "Neutral")
+                                        except Exception:
+                                            return "Neutral"
+                                    df["target_label"] = df[gt_col].apply(_rating_to_sent)
+                                else:
+                                    def _std_sent(s):
+                                        s = str(s).strip().lower()
+                                        if s in ["positive", "pos", "1", "2", "4", "5", "good"]: return "Positive"
+                                        if s in ["negative", "neg", "0", "bad"]:                  return "Negative"
+                                        return "Neutral"
+                                    df["target_label"] = df[gt_col].apply(_std_sent)
+                            else:
+                                df["target_label"] = df["vader_label"]
+
+                        # Stage 4: Topics
+                        db_store_result(_job_id, {"status": "topics", "pct": 60})
+                        text_col = sentiment_stats.get("text_column")
+                        topic_data = (
+                            extract_topics(df[text_col].dropna().tolist())
+                            if text_col and text_col in df.columns
+                            else {"available": False}
+                        )
+
+                        # Stage 5: Dashboard
+                        db_store_result(_job_id, {"status": "dashboard", "pct": 70})
+                        dashboard_charts = run_dashboard(df, sentiment_stats)
+
+                        # Stage 6: Word Clouds
+                        db_store_result(_job_id, {"status": "wordcloud", "pct": 78})
+                        wc_paths = generate_wordclouds(sentiment_stats)
+
+                        # Stage 7: Insights
+                        db_store_result(_job_id, {"status": "insights", "pct": 84})
+                        insights = generate_insights(eda_stats, sentiment_stats)
+
+                        # Stage 8: Excel
+                        db_store_result(_job_id, {"status": "excel", "pct": 90})
+                        excel_path_local = generate_excel(_filename, clean_path, eda_stats, sentiment_stats, insights)
+                        excel_key = f"outputs/{_job_id}/report.xlsx"
+                        storage.save(excel_path_local, excel_key)
+                        resolved_excel_path = storage.get_url(excel_key)
+
+                        # Stage 9: PDF
+                        db_store_result(_job_id, {"status": "pdf", "pct": 95})
+                        pdf_path_local = generate_pdf(_filename, eda_stats, sentiment_stats, insights)
+                        pdf_key = f"outputs/{_job_id}/report.pdf"
+                        storage.save(pdf_path_local, pdf_key)
+                        resolved_pdf_path = storage.get_url(pdf_key)
+
+                        # Done
+                        final_result = {
+                            "status":           "done",
+                            "pct":              100,
+                            "celery_task_id":   _task_id,
+                            "clean_path":       resolved_clean_path,
+                            "clean_key":        clean_key,
+                            "excel_path":       resolved_excel_path,
+                            "excel_key":        excel_key,
+                            "pdf_path":         resolved_pdf_path,
+                            "pdf_key":          pdf_key,
+                            "eda_stats":        eda_stats,
+                            "sentiment_stats":  sentiment_stats,
+                            "dashboard_charts": dashboard_charts,
+                            "wc_paths":         wc_paths,
+                            "insights":         insights,
+                            "topic_data":       topic_data,
+                            "sample_note":      clean_meta.get("sample_note", ""),
+                            "was_sampled":      clean_meta.get("was_sampled", False),
+                        }
+                        db_store_result(_job_id, final_result)
+                        logger.info("Pipeline completed — job_id=%s", _job_id)
+                        AuditLog.log_event("pipeline", "Pipeline completed", "info", job_id=_job_id)
+
+                    except Exception as exc:
+                        tb = traceback.format_exc()
+                        logger.error("Pipeline failed — job_id=%s: %s\n%s", _job_id, exc, tb)
+                        db_store_result(_job_id, {
+                            "status": "error", "pct": 0,
+                            "error": str(exc), "trace": tb,
+                            "celery_task_id": _task_id,
+                        })
+                        AuditLog.log_event("pipeline_error", f"Pipeline failed: {exc}", "error", job_id=_job_id)
+
+            t = threading.Thread(
+                target=_run_pipeline_thread,
+                args=(app, job_id, filepath, filename, task_id),
+                daemon=True,
+            )
+            t.start()
+
+        # Persist task ID for later status lookups
         db_store_result(job_id, {
-            "status":         "starting",
-            "pct":            3,
-            "celery_task_id": task.id,
+            "celery_task_id": task_id,
             "filename":       filename,
         })
 
         logger.info("Pipeline dispatched — job_id=%s, task_id=%s from %s",
-                    job_id, task.id, user_ip)
+                    job_id, task_id, user_ip)
         AuditLog.log_event("process", "Pipeline dispatched", "info", user_ip, job_id)
 
-        return jsonify({"started": True, "task_id": task.id})
+        return jsonify({"started": True, "task_id": task_id})
 
     except Exception as e:
         logger.error("Start process error for job %s: %s", job_id, str(e), exc_info=True)
@@ -518,6 +662,23 @@ def progress(job_id):
         logger.error("Progress route error for job %s: %s", job_id, e, exc_info=True)
         return jsonify({"error": "stream failed"}), 500
 
+
+# ── JSON progress endpoint (polling fallback) ─────────────────────────────────
+@app.route("/progress_json/<job_id>")
+@limiter.limit("60 per minute")
+def progress_json(job_id):
+    """Return current job status as JSON (used when SSE is unavailable)."""
+    try:
+        if not job_id or not validate_job_id(job_id):
+            return jsonify({"error": "invalid job"}), 400
+        result = get_result(job_id) or {}
+        safe = {k: v for k, v in result.items()
+                if k not in ("eda_stats", "sentiment_stats",
+                             "dashboard_charts", "insights", "topic_data")}
+        return jsonify(safe)
+    except Exception as e:
+        logger.error("Progress JSON error for job %s: %s", job_id, e)
+        return jsonify({"error": "lookup failed"}), 500
 
 @app.route("/results")
 @limiter.limit("20 per minute")
@@ -704,7 +865,7 @@ if __name__ == "__main__":
         app,
         debug=True,
         use_reloader=False,          # reloader conflicts with gevent/threading
-        port=5000,
+        port=5005,
         host="0.0.0.0",
         allow_unsafe_werkzeug=True,  # dev only — Werkzeug is not prod-safe
     )

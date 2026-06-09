@@ -122,8 +122,10 @@
 <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 <script>
 var JOB_ID = "{{ job_id }}";
+var _redirected = false;
 
 var STATUS_MAP = {
+  "queued":    {pct:2,  text:"Queued..."},
   "starting":  {pct:5,  text:"Starting engine..."},
   "cleaning":  {pct:8,  text:"Cleaning your data..."},
   "eda":       {pct:20, text:"Running EDA analysis..."},
@@ -197,25 +199,6 @@ function updateUI(data) {
   }
 }
 
-/* ── WebSocket progress client ──────────────────────────────────────────────
- *
- * Primary:  Socket.IO WebSocket → /jobs namespace
- * Fallback: Legacy SSE /progress/<job_id> endpoint (max 3 attempts)
- *
- * Flow:
- *   1. Fetch /start_process  → Celery task dispatched
- *   2. Connect socket to /jobs namespace
- *   3. Emit 'subscribe_job' → server joins us to job's room
- *   4. Receive 'progress_update' events pushed by the Celery worker
- *   5. On 'done' → redirect to /results
- * ─────────────────────────────────────────────────────────────────────────── */
-
-var _socket = null;
-var _sseSource = null;
-var _wsRetries = 0;
-var _maxWsRetries = 3;
-var _redirected = false;
-
 function redirectToResults() {
   if (_redirected) return;
   _redirected = true;
@@ -229,64 +212,49 @@ function handleError(msg) {
   if (s) s.textContent = "Analysis failed";
 }
 
-/* ── SSE fallback ────────────────────────────────────────────────────────── */
-function startSseFallback() {
-  console.warn("[Lumiq] WebSocket unavailable — falling back to SSE");
-  _sseSource = new EventSource("/progress/" + JOB_ID);
-  _sseSource.onmessage = function(e) {
-    var data = JSON.parse(e.data);
-    updateUI(data);
-    if (data.status === "done")  { _sseSource.close(); redirectToResults(); }
-    if (data.status === "error") { _sseSource.close(); handleError(data.error); }
+/* ── Simple HTTP polling ──────────────────────────────────────────────────
+ *  Polls /progress/<job_id> via SSE to track the background pipeline.
+ *  Works with both Celery workers and dev-mode threads since both
+ *  write progress to the same SQLite/Postgres database.
+ * ────────────────────────────────────────────────────────────────────── */
+
+function startPolling() {
+  var source = new EventSource("/progress/" + JOB_ID);
+
+  source.onmessage = function(e) {
+    try {
+      var data = JSON.parse(e.data);
+      updateUI(data);
+      if (data.status === "done")  { source.close(); redirectToResults(); }
+      if (data.status === "error") { source.close(); handleError(data.error); }
+    } catch(err) {
+      console.error("[Lumiq] Parse error:", err);
+    }
   };
-  _sseSource.onerror = function() {
-    _sseSource.close();
-    redirectToResults(); /* Best-effort: navigate and let /results redirect if not done */
+
+  source.onerror = function() {
+    source.close();
+    // Connection dropped — try simple fetch polling as last resort
+    startFetchPolling();
   };
 }
 
-/* ── WebSocket (Socket.IO) ───────────────────────────────────────────────── */
-function startWebSocket() {
-  _socket = io("/jobs", {
-    transports: ["websocket", "polling"],
-    reconnection: true,
-    reconnectionAttempts: _maxWsRetries,
-    reconnectionDelay: 1500,
-  });
-
-  _socket.on("connect", function() {
-    console.info("[Lumiq] WebSocket connected — subscribing to job:", JOB_ID);
-    _wsRetries = 0;
-    _socket.emit("subscribe_job", { job_id: JOB_ID });
-  });
-
-  _socket.on("progress_update", function(data) {
-    updateUI(data);
-    if (data.status === "done") {
-      _socket.disconnect();
-      redirectToResults();
-    }
-    if (data.status === "error") {
-      _socket.disconnect();
-      handleError(data.error);
-    }
-  });
-
-  _socket.on("disconnect", function(reason) {
-    console.warn("[Lumiq] WebSocket disconnected:", reason);
-  });
-
-  _socket.on("connect_error", function(err) {
-    _wsRetries++;
-    console.warn("[Lumiq] WebSocket connect error (", _wsRetries, "):", err.message);
-    if (_wsRetries >= _maxWsRetries) {
-      _socket.disconnect();
-      startSseFallback(); /* Fall back to SSE after max retries */
-    }
-  });
+function startFetchPolling() {
+  var interval = setInterval(function() {
+    fetch("/progress_json/" + JOB_ID)
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        updateUI(data);
+        if (data.status === "done")  { clearInterval(interval); redirectToResults(); }
+        if (data.status === "error") { clearInterval(interval); handleError(data.error); }
+      })
+      .catch(function(err) {
+        console.error("[Lumiq] Polling error:", err);
+      });
+  }, 1500);
 }
 
-/* ── Entry point ─────────────────────────────────────────────────────────── */
+/* ── Entry point ─────────────────────────────────────────────────────── */
 window.onload = function() {
   initLoading();
 
@@ -297,12 +265,7 @@ window.onload = function() {
         handleError(data.error);
         return;
       }
-      /* Try WebSocket first; SSE fallback is handled in connect_error handler */
-      if (typeof io !== "undefined") {
-        startWebSocket();
-      } else {
-        startSseFallback();
-      }
+      startPolling();
     })
     .catch(function(err) {
       console.error("[Lumiq] /start_process failed:", err);

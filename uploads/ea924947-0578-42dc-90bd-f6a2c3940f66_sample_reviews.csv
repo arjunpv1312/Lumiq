@@ -1,0 +1,51 @@
+id,product_name,category,rating,review,date,helpful_votes,verified_purchase
+1,Wireless Headphones,Electronics,5,"This product is absolutely amazing! The sound quality is outstanding and the battery life is incredible. I love everything about it!",2024-01-15,45,Yes
+2,Wireless Headphones,Electronics,1,"Terrible product. Broke after just 2 days. Worst purchase I have ever made. Do not buy this garbage.",2024-01-16,32,Yes
+3,Running Shoes,Sports,4,"Pretty good shoes overall. Comfortable for long runs but a little tight around the toes. Would recommend with minor reservations.",2024-01-17,18,Yes
+4,Coffee Maker,Kitchen,5,"Best coffee maker I have ever owned! Makes perfect coffee every single morning. Absolutely worth every penny!",2024-01-18,67,Yes
+5,Laptop Stand,Electronics,2,"Very disappointing. Feels cheap and wobbly. Not sturdy at all. Expected much better quality for the price.",2024-01-19,23,Yes
+6,Yoga Mat,Sports,5,"Perfect yoga mat! Non slip surface is excellent. Very comfortable and durable. Highly recommend to everyone!",2024-01-20,89,Yes
+7,Bluetooth Speaker,Electronics,1,"Complete waste of money. Sound is horrible and it stopped working after one week. Absolutely not worth it.",2024-01-21,41,Yes
+8,Water Bottle,Kitchen,4,"Good water bottle. Keeps drinks cold for a long time. Minor issue with the lid but overall very satisfied.",2024-01-22,15,Yes
+9,Phone Case,Electronics,3,"It is okay nothing special. Does the job of protecting the phone but quality could be better.",2024-01-23,8,No
+10,Desk Lamp,Home,5,"Wonderful lamp! Perfect lighting for reading and working. Very elegant design. So happy with this purchase!",2024-01-24,54,Yes
+11,Gaming Mouse,Electronics,5,"Absolutely love this mouse! Extremely precise and comfortable for long gaming sessions. Best gaming gear ever!",2024-01-25,76,Yes
+12,Resistance Bands,Sports,1,"These bands snapped within minutes of use. Very dangerous and poor quality. Returning immediately.",2024-01-26,38,Yes
+13,Air Purifier,Home,4,"Works really well. Air quality has improved noticeably. A little noisy on high settings but acceptable.",2024-01-27,29,Yes
+14,Smartwatch,Electronics,5,"This smartwatch is phenomenal! Tracks everything perfectly and the display is gorgeous. Life changing device!",2024-01-28,92,Yes
+15,Kitchen Knife Set,Kitchen,2,"Very poor quality knives. They went dull after just a few uses. Expected much better. Very disappointed.",2024-01-29,19,Yes
+16,Camping Tent,Sports,5,"Amazing tent! Easy to set up and very spacious inside. Kept us dry during heavy rain. Highly recommend!",2024-01-30,83,Yes
+17,USB Hub,Electronics,3,"Decent product. Works fine for basic needs but gets warm after extended use. Average quality.",2024-02-01,11,No
+18,Face Cream,Beauty,5,"Absolutely love this cream! My skin looks so much better after just one week. Incredible results!",2024-02-02,61,Yes
+19,Protein Powder,Health,1,"Tastes absolutely horrible. Made me feel sick after drinking it. Cannot recommend this at all.",2024-02-03,44,Yes
+20,Backpack,Travel,4,"Great backpack! Very spacious and comfortable to carry. Looks stylish too. Happy with the purchase.",2024-02-04,37,Yes
+21,Electric Toothbrush,Health,5,"Best toothbrush I have ever used! My teeth have never felt cleaner. Dentist noticed the improvement too!",2024-02-05,71,Yes
+22,Monitor Stand,Electronics,2,"Flimsy and unstable. Almost dropped my monitor. Very unsafe product. Do not waste your money on this.",2024-02-06,28,Yes
+23,Sunglasses,Fashion,4,"Nice sunglasses! Good UV protection and comfortable to wear. Looks great. Minor scratch on lens.",2024-02-07,16,Yes
+24,Portable Charger,Electronics,5,"Fantastic power bank! Charges devices super fast and holds charge for days. Essential travel accessory!",2024-02-08,58,Yes
+25,Pillow,Home,1,"Worst pillow ever. Completely flat after first night. Terrible quality. Gave me neck pain.",2024-02-09,33,Yes
+26,Running Watch,Sports,5,"Outstanding running watch! GPS is incredibly accurate. Heart rate monitoring is spot on. Love it!",2024-02-10,95,Yes
+27,Cooking Pan,Kitchen,3,"Average pan. Nothing exceptional. Does the job but food sticks occasionally. Mediocre quality.",2024-02-11,14,No
+28,Wireless Earbuds,Electronics,5,"These earbuds are mind blowing! Crystal clear sound and perfect fit. Best audio purchase ever made!",2024-02-12,88,Yes
+29,Desk Chair,Home,1,"Absolute garbage chair. Armrest broke on day one. Back support is nonexistent. Extremely uncomfortable.",2024-02-13,52,Yes
+30,Vitamin Supplements,Health,4,"Feeling much more energetic since taking these vitamins. Good quality and easy to swallow. Recommend.",2024-02-14,41,Yes
+31,Camera Tripod,Electronics,5,"Incredibly sturdy and stable tripod. Perfect for photography and videography. Very easy to adjust!",2024-02-15,63,Yes
+32,Dog Leash,Pets,2,"Poor quality leash. Clip broke after first walk. Very unsafe for walking dogs. Very disappointed.",2024-02-16,27,Yes
+33,Hand Sanitizer,Health,3,"Does the job. Nothing remarkable about it. Standard sanitizer. Gets the hands clean.",2024-02-17,9,No
+34,Smart Bulb,Home,5,"These smart bulbs are incredible! Easy to set up and the app control is seamless. Love the color options!",2024-02-18,74,Yes
+35,Notebook,Stationery,4,"Really nice notebook. Paper quality is excellent. Smooth writing experience. Very happy with it.",2024-02-19,22,Yes
+36,Gym Gloves,Sports,1,"Complete rubbish. Stitching came apart after one gym session. Absolute waste of money.",2024-02-20,35,Yes
+37,Rice Cooker,Kitchen,5,"Perfect rice every single time! So easy to use and clean. Best kitchen appliance I have purchased!",2024-02-21,81,Yes
+38,Laptop Bag,Travel,4,"Sturdy and well made bag. Fits laptop perfectly with room for accessories. Looks professional.",2024-02-22,46,Yes
+39,Mechanical Keyboard,Electronics,5,"This keyboard is absolutely fantastic! Typing feel is incredible and the RGB lighting is beautiful!",2024-02-23,97,Yes
+40,Extension Cord,Home,2,"Dangerous product. Gets extremely hot during use. Fire hazard. Returning immediately for safety.",2024-02-24,59,Yes
+41,Shampoo,Beauty,4,"Really good shampoo. Hair feels clean and soft after washing. Pleasant smell. Will buy again.",2024-02-25,31,Yes
+42,Resistance Bands,Sports,5,"Excellent quality bands! Great variety of resistance levels. Perfect for home workouts. Love them!",2024-02-26,68,Yes
+43,Desk Organizer,Home,3,"It is fine. Holds things together. Nothing exciting but serves the purpose adequately.",2024-02-27,7,No
+44,Smart Scale,Health,5,"Absolutely brilliant scale! Tracks so many health metrics. App integration is seamless. Highly recommend!",2024-02-28,85,Yes
+45,Cooking Gloves,Kitchen,1,"Extremely poor heat protection. Got burned while using these. Dangerous and useless product.",2024-03-01,48,Yes
+46,Travel Pillow,Travel,4,"Very comfortable neck pillow for flights. Good support. Compact and easy to pack. Happy purchase.",2024-03-02,34,Yes
+47,Drawing Tablet,Electronics,5,"This drawing tablet has transformed my digital art workflow! Incredible sensitivity and precision!",2024-03-03,79,Yes
+48,Shower Head,Home,2,"Water pressure is extremely weak. Installation was confusing. Not what was advertised at all.",2024-03-04,26,Yes
+49,Protein Bar,Health,4,"Tastes surprisingly good for a protein bar! Good macros and filling. Will definitely order again.",2024-03-05,43,Yes
+50,Wireless Keyboard,Electronics,5,"Superb wireless keyboard! Connects instantly and battery lasts for months. Highly recommend!",2024-03-06,91,Yes

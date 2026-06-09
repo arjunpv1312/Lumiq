@@ -133,6 +133,13 @@ class DevelopmentConfig(Config):
     RATELIMIT_STORAGE_URL = os.getenv("RATELIMIT_STORAGE_URL", "memory://")
     # SQLite doesn't support pool_size/max_overflow — only pre_ping is safe
     SQLALCHEMY_ENGINE_OPTIONS = {"pool_pre_ping": True}
+    
+    # Bypass Redis for Celery in local development (runs tasks synchronously)
+    CELERY_ALWAYS_EAGER = True
+    CELERY_EAGER_PROPAGATES_EXCEPTIONS = True
+    SOCKETIO_MESSAGE_QUEUE = None
+    CELERY_BROKER_URL = "memory://"
+    CELERY_RESULT_BACKEND = "cache+memory://"
 
     def __init__(self):
         super().__init__()
